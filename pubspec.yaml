@@ -1,0 +1,45 @@
+name: jobs
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: ^3.6.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+ 
+  cupertino_icons: ^1.0.2
+  flutter_svg: ^2.0.10+1
+  pinput: ^5.0.0
+  provider: ^6.1.2
+
+dev_dependencies:
+  flutter_gen: ^5.8.0
+  build_runner: ^2.4.9
+  flutter_gen_runner: ^5.8.0
+  flutter_test:
+    sdk: flutter
+
+
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+     - assets/icons/
+     - assets/checkbox/
+     - assets/images/
+  fonts:
+    - family: JosefinSans 
+      fonts:
+        - asset: assets/fonts/JosefinSans-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/JosefinSans-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/JosefinSans-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/JosefinSans-Bold.ttf
+          weight: 700  
