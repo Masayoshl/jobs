@@ -78,7 +78,6 @@ class _PasswordTextFieldState extends BaseTextFieldState<PasswordTextField> {
 
   @override
   Widget buildTextField(PrefixIcon prefixIcon) {
-    debugPrint('isEnabled2: ${focusNode}');
     return TextField(
       style: AppTextStyles.textXLSemibold,
       focusNode: focusNode,

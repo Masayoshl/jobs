@@ -19,18 +19,21 @@ class ScreenBuilder extends StatelessWidget {
             ? const AlwaysScrollableScrollPhysics()
             : const NeverScrollableScrollPhysics();
 
-        return CustomScrollView(
-          physics: physics,
-          slivers: [
-            SliverAppBar(
-              automaticallyImplyLeading: false,
-              title: Padding(
-                padding: const EdgeInsets.only(top: 10.0),
-                child: appBarWidget,
+        return GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: CustomScrollView(
+            physics: physics,
+            slivers: [
+              SliverAppBar(
+                automaticallyImplyLeading: false,
+                title: Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: appBarWidget,
+                ),
               ),
-            ),
-            SliverToBoxAdapter(child: bodyWidget),
-          ],
+              SliverToBoxAdapter(child: bodyWidget),
+            ],
+          ),
         );
       }),
       bottomNavigationBar: SafeArea(

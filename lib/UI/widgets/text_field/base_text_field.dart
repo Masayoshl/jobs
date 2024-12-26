@@ -7,13 +7,6 @@ abstract class _TextFieldColor {
   static const _focusedColor = primaryColor300;
   static const _defaultColor = grayColor25;
 
-  // static const defaultBorder = BoxShadow(
-  //   color: _defaultColor,
-  //   spreadRadius: 0.1,
-  //   blurRadius: 5,
-  //   blurStyle: BlurStyle.normal,
-  //   offset: Offset(0, 2),
-  // );
   static final defaultBorder = BoxShadow(
     color: _defaultColor.withValues(alpha: 0.4),
     spreadRadius: 1,
@@ -21,6 +14,7 @@ abstract class _TextFieldColor {
     blurStyle: BlurStyle.normal,
     offset: const Offset(0, 2),
   );
+
   static const focusSolidBorder = BoxShadow(
     color: _focusedColor,
     spreadRadius: 0.3,
@@ -89,6 +83,7 @@ abstract class BaseTextFieldState<T extends BaseTextField> extends State<T> {
   late Color _iconColor;
   FocusNode get focusNode => _focusNode;
   Color get iconColor => _iconColor;
+
   @override
   void initState() {
     super.initState();
@@ -133,17 +128,18 @@ abstract class BaseTextFieldState<T extends BaseTextField> extends State<T> {
     final themeData = Theme.of(context).copyWith(
       textSelectionTheme: TextSelectionThemeData(
         cursorColor: _iconColor,
-        selectionColor: _iconColor.withValues(alpha: 0.2), // alpha == opacity,
+        selectionColor: _iconColor.withValues(alpha: 0.2),
         selectionHandleColor: _iconColor,
       ),
     );
     return Theme(
       data: themeData,
       child: Column(
-        //mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            curve: Curves.easeOut,
             margin: EdgeInsets.only(
               left: widget.left ?? 18,
               right: widget.right ?? 18,
@@ -176,13 +172,23 @@ class _ErrorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!isError || errorText == null) return const SizedBox.shrink();
-
-    return Padding(
-      padding: const EdgeInsets.only(left: 22),
-      child: Text(
-        errorText!,
-        style: AppTextStyles.textM.copyWith(color: errorColor700),
+    return AnimatedSize(
+      duration: const Duration(milliseconds: 200),
+      curve: Curves.easeOut,
+      child: AnimatedOpacity(
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.easeOut,
+        opacity: (isError && errorText != null) ? 1.0 : 0.0,
+        child: SizedBox(
+          height: (isError && errorText != null) ? null : 0.0,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 22),
+            child: Text(
+              errorText ?? '',
+              style: AppTextStyles.textM.copyWith(color: errorColor700),
+            ),
+          ),
+        ),
       ),
     );
   }

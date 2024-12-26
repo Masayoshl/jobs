@@ -56,7 +56,6 @@ class _CustomTextFieldState extends BaseTextFieldState<CustomTextField> {
 
   @override
   Widget buildTextField(PrefixIcon prefixIcon) {
-    debugPrint('isEnabled1: ${focusNode.hasFocus}');
     return TextField(
       style: AppTextStyles.textXLSemibold,
       focusNode: focusNode,
