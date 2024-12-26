@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:jobs/UI/auth/view/sign_in_screen.dart';
-import 'package:jobs/UI/auth/view/sign_up_screen.dart';
-import 'package:jobs/UI/auth/view_models/sign_in_view_model/sign_in_view_model.dart';
-import 'package:jobs/UI/auth/view_models/sign_up_view_model.dart';
-import 'package:jobs/UI/forgot_password/view/forgot_password_screen.dart';
-import 'package:jobs/UI/forgot_password/view/one_time_password_screen.dart';
-import 'package:jobs/UI/forgot_password/view_model/forgot_password_view_model/forgot_password_view_model.dart';
-import 'package:jobs/UI/forgot_password/view_model/one_time_password_view_model/one_time_password_view_model.dart';
-import 'package:jobs/UI/loader/view/loader_screen.dart';
-import 'package:jobs/UI/loader/view_model/loader_view_model.dart';
-import 'package:jobs/UI/new_password/view/new_password_screen.dart';
-import 'package:jobs/UI/new_password/view_model/new_password_view_model.dart';
+import 'package:jobs/UI/screens/auth/sign_in/sign_in_screen.dart';
+import 'package:jobs/UI/screens/auth/sign_up/sign_up_screen.dart';
+import 'package:jobs/UI/view_models/sign_in/sign_in_view_model.dart';
+import 'package:jobs/UI/view_models/sign_up/sign_up_view_model.dart';
+import 'package:jobs/UI/screens/forgot_password/forgot_password_screen.dart';
+import 'package:jobs/UI/screens/one_time_password/one_time_password_screen.dart';
+import 'package:jobs/UI/view_models/forgot_password/forgot_password_view_model.dart';
+import 'package:jobs/UI/view_models/one_time_password/one_time_password_view_model.dart';
+import 'package:jobs/UI/screens/loader/loader_screen.dart';
+import 'package:jobs/UI/view_models/loader/loader_view_model.dart';
+import 'package:jobs/UI/screens/new_password/new_password_screen.dart';
+import 'package:jobs/UI/view_models/new_password/new_password_view_model.dart';
 import 'package:provider/provider.dart';
 
 class ScreenFactory {
