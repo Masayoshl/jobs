@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jobs/UI/screens/auth/widgets/widgets.dart';
 import 'package:jobs/UI/view_models/sign_up/sign_up_view_model.dart';
-import 'package:jobs/domain/interfaces/auth/base_state.dart';
-
 import 'package:jobs/gen/assets.gen.dart';
 import 'package:provider/provider.dart';
 import '../../../theme/theme.dart';
@@ -37,7 +35,7 @@ class _SignUpForm extends StatelessWidget {
     return const SignForm(children: [
       _EmalWidget(),
       _PasswordWidget(),
-      _ConfirmPasswordWidget(),
+      _NameWidget(),
       _CheckBoxWidget(),
       _RegistrationButton(),
     ]);
@@ -85,21 +83,20 @@ class _PasswordWidget extends StatelessWidget {
   }
 }
 
-class _ConfirmPasswordWidget extends StatelessWidget {
-  const _ConfirmPasswordWidget();
+class _NameWidget extends StatelessWidget {
+  const _NameWidget();
 
   @override
   Widget build(BuildContext context) {
     final model = context.read<SignUpViewModel>();
-    final errorText = context.select(
-        (SignUpViewModel value) => value.state.confirmPasswordErrorMessage);
-    final isHavePasswordError = context.select(
-        (SignUpViewModel value) => value.state.isConfirmPasswordHaveError);
-    return PasswordTextField(
-      hintText: 'Confirm Password',
-      prefixIcon: Assets.icons.unlockIcon,
-      suffixIcon: Assets.icons.hideIcon,
-      onChanged: model.changeConfirmPassword,
+    final errorText =
+        context.select((SignUpViewModel value) => value.state.nameErrorMessage);
+    final isHavePasswordError =
+        context.select((SignUpViewModel value) => value.state.isNameHaveError);
+    return CustomTextField(
+      hintText: 'Email',
+      prefixIcon: Assets.icons.mailIcon,
+      onChanged: model.changeName,
       errorText: errorText,
       error: isHavePasswordError,
     );
@@ -125,6 +122,7 @@ class _CheckBoxWidget extends StatelessWidget {
 class _RegistrationButton extends StatelessWidget {
   const _RegistrationButton();
 
+  @override
   Widget build(BuildContext context) {
     final model = context.read<SignUpViewModel>();
     final authButtonState =

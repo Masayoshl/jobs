@@ -3,35 +3,23 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:jobs/UI/router/main_router.dart';
 import 'package:jobs/domain/data_providers/otp_api_provider.dart';
-import 'package:jobs/domain/interfaces/auth/auth_states.dart';
-import 'package:jobs/domain/interfaces/auth/base_state.dart';
+
 import 'package:jobs/domain/servi%D1%81es/otp_service.dart';
 import 'package:jobs/domain/validators/otp_code_validator.dart';
 
-class _OtpState implements IOtpState {
-  @override
+enum ButtonState { canSubmit, inProcess, disable }
+
+class _OneTimePasswordViewModelState {
   final String code;
-  @override
   final String? codeErrorMessage;
-  @override
   final bool isCodeHaveError;
-  @override
-  final bool inProcess;
-  @override
-  final int remainingTime;
-  @override
+
   final String userEmail;
 
-  _OtpState({
-    this.code = '',
-    this.userEmail = '',
-    this.codeErrorMessage,
-    this.isCodeHaveError = false,
-    this.inProcess = false,
-    this.remainingTime = 0,
-  });
+  final bool inProcess;
 
-  @override
+  final int remainingTime;
+
   ButtonState get buttonState {
     if (inProcess) {
       return ButtonState.inProcess;
@@ -42,7 +30,16 @@ class _OtpState implements IOtpState {
     }
   }
 
-  _OtpState copyWith({
+  _OneTimePasswordViewModelState({
+    this.code = '',
+    this.userEmail = 'luckoandrej@gmail.com',
+    this.codeErrorMessage,
+    this.isCodeHaveError = false,
+    this.inProcess = false,
+    this.remainingTime = 0,
+  });
+
+  _OneTimePasswordViewModelState copyWith({
     String? code,
     String? userEmail,
     String? codeErrorMessage,
@@ -50,7 +47,7 @@ class _OtpState implements IOtpState {
     bool? inProcess,
     int? remainingTime,
   }) {
-    return _OtpState(
+    return _OneTimePasswordViewModelState(
       code: code ?? this.code,
       userEmail: userEmail ?? this.userEmail,
       codeErrorMessage: codeErrorMessage ?? this.codeErrorMessage,
@@ -75,9 +72,9 @@ class OneTimePasswordViewModel extends ChangeNotifier {
   final _Timer _timer = _Timer();
   StreamSubscription<int>? _timerSubscription;
 
-  var _state = _OtpState();
+  var _state = _OneTimePasswordViewModelState();
 
-  _OtpState get state => _state;
+  _OneTimePasswordViewModelState get state => _state;
 
   OneTimePasswordViewModel() {
     _otpService.getOtpCode();

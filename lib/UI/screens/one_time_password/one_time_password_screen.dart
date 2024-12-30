@@ -5,7 +5,6 @@ import 'package:jobs/UI/theme/theme.dart';
 import 'package:jobs/UI/widgets/confirm_button.dart';
 import 'package:jobs/UI/widgets/custom_header.dart';
 import 'package:jobs/UI/widgets/screen_builder/screen_builder.dart';
-import 'package:jobs/domain/interfaces/auth/base_state.dart';
 
 import 'package:provider/provider.dart';
 

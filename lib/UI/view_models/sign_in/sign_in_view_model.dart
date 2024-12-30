@@ -3,33 +3,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jobs/UI/router/main_router.dart';
 import 'package:jobs/domain/data_providers/auth_api_provider.dart';
-import 'package:jobs/domain/interfaces/auth/auth_states.dart';
-import 'package:jobs/domain/interfaces/auth/base_state.dart';
+
 import 'package:jobs/domain/servi%D1%81es/auth_service.dart';
 import 'package:jobs/domain/validators/auth_validator.dart';
 
-class _SignInState implements ISignInState {
-  @override
+enum ButtonState { canSubmit, inProcess, disable }
+
+class _SignInViewModelState {
   final String email;
-  @override
   final String? emailErrorMessage;
-  @override
   final bool isEmailHaveError;
 
-  @override
   final String password;
-  @override
   final String? passwordErrorMessage;
-  @override
   final bool isPasswordHaveError;
 
-  @override
   final bool keepIn;
 
-  @override
   final bool inProcess;
-
-  _SignInState({
+  _SignInViewModelState({
     this.email = '',
     this.emailErrorMessage,
     this.isEmailHaveError = false,
@@ -40,7 +32,6 @@ class _SignInState implements ISignInState {
     this.inProcess = false,
   });
 
-  @override
   ButtonState get buttonState {
     if (inProcess) {
       return ButtonState.inProcess;
@@ -51,7 +42,7 @@ class _SignInState implements ISignInState {
     }
   }
 
-  _SignInState copyWith({
+  _SignInViewModelState copyWith({
     String? email,
     String? emailErrorMessage,
     bool? isEmailHaveError,
@@ -61,7 +52,7 @@ class _SignInState implements ISignInState {
     bool? keepIn,
     bool? inProcess,
   }) {
-    return _SignInState(
+    return _SignInViewModelState(
       email: email ?? this.email,
       emailErrorMessage: emailErrorMessage ?? this.emailErrorMessage,
       isEmailHaveError: isEmailHaveError ?? this.isEmailHaveError,
@@ -76,9 +67,9 @@ class _SignInState implements ISignInState {
 
 class SignInViewModel extends ChangeNotifier {
   final _authService = AuthService();
-  var _state = _SignInState();
+  var _state = _SignInViewModelState();
   // ignore: library_private_types_in_public_api
-  _SignInState get state => _state;
+  _SignInViewModelState get state => _state;
 
   void changeEmail(String value) {
     final emailError = AuthValidator.validateEmail(value);

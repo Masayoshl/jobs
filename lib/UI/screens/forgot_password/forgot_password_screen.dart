@@ -7,7 +7,6 @@ import 'package:jobs/UI/widgets/confirm_button.dart';
 import 'package:jobs/UI/widgets/custom_header.dart';
 import 'package:jobs/UI/widgets/screen_builder/screen_builder.dart';
 import 'package:jobs/UI/widgets/text_field/custom_text_field.dart';
-import 'package:jobs/domain/interfaces/auth/base_state.dart';
 
 import 'package:jobs/gen/assets.gen.dart';
 import 'package:provider/provider.dart';

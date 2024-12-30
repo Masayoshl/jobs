@@ -3,30 +3,19 @@ import 'package:flutter/material.dart';
 
 import 'package:jobs/UI/router/main_router.dart';
 import 'package:jobs/domain/data_providers/auth_api_provider.dart';
-import 'package:jobs/domain/interfaces/auth/auth_states.dart';
-import 'package:jobs/domain/interfaces/auth/base_state.dart';
 
 import 'package:jobs/domain/servi%D1%81es/auth_service.dart';
 import 'package:jobs/domain/validators/auth_validator.dart';
 
-class _ForgotPasswordState implements IForgotPasswordState {
-  @override
+enum ButtonState { canSubmit, inProcess, disable }
+
+class _ForgotPasswordViewModelState {
   final String email;
-  @override
   final String? emailErrorMessage;
-  @override
   final bool isEmailHaveError;
-  @override
+
   final bool inProcess;
 
-  _ForgotPasswordState({
-    this.email = '',
-    this.emailErrorMessage,
-    this.isEmailHaveError = false,
-    this.inProcess = false,
-  });
-
-  @override
   ButtonState get buttonState {
     if (inProcess) {
       return ButtonState.inProcess;
@@ -37,13 +26,19 @@ class _ForgotPasswordState implements IForgotPasswordState {
     }
   }
 
-  _ForgotPasswordState copyWith({
+  _ForgotPasswordViewModelState(
+      {this.email = '',
+      this.emailErrorMessage,
+      this.isEmailHaveError = false,
+      this.inProcess = false});
+
+  _ForgotPasswordViewModelState copyWith({
     String? email,
     String? emailErrorMessage,
     bool? isEmailHaveError,
     bool? inProcess,
   }) {
-    return _ForgotPasswordState(
+    return _ForgotPasswordViewModelState(
       email: email ?? this.email,
       emailErrorMessage: emailErrorMessage ?? this.emailErrorMessage,
       isEmailHaveError: isEmailHaveError ?? this.isEmailHaveError,
@@ -54,8 +49,8 @@ class _ForgotPasswordState implements IForgotPasswordState {
 
 class ForgotPasswordViewModel extends ChangeNotifier {
   final _authService = AuthService();
-  var _state = _ForgotPasswordState();
-  _ForgotPasswordState get state => _state;
+  var _state = _ForgotPasswordViewModelState();
+  _ForgotPasswordViewModelState get state => _state;
   void changeEmail(String value) {
     final emailError = AuthValidator.validateEmail(value);
 

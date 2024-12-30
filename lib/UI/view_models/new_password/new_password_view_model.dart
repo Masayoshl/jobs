@@ -1,56 +1,47 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:jobs/UI/router/main_router.dart';
-import 'package:jobs/domain/interfaces/auth/auth_states.dart';
-import 'package:jobs/domain/interfaces/auth/base_state.dart';
 
 import 'package:jobs/domain/servi%D1%81es/new_password_service.dart';
 import 'package:jobs/domain/validators/auth_validator.dart';
 import 'package:jobs/domain/validators/new_password_validator.dart';
 
-class _NewPasswordState implements INewPasswordState {
-  @override
+enum ButtonState { canSubmit, inProcess, disable }
+
+class _NewPasswordViewModelState {
   final String password;
-  @override
   final String? passwordErrorMessage;
-  @override
   final bool isPasswordHaveError;
 
-  @override
   final String confirmPassword;
-  @override
   final String? confirmPasswordErrorMessage;
-  @override
   final bool isConfirmPasswordHaveError;
 
-  @override
   final bool keepIn;
-  @override
   final bool inProcess;
 
-  _NewPasswordState({
-    this.password = '',
-    this.passwordErrorMessage,
-    this.isPasswordHaveError = false,
-    this.confirmPassword = '',
-    this.confirmPasswordErrorMessage,
-    this.isConfirmPasswordHaveError = false,
-    this.keepIn = false,
-    this.inProcess = false,
-  });
-
-  @override
   ButtonState get buttonState {
     if (inProcess) {
       return ButtonState.inProcess;
-    } else if (!isPasswordHaveError && !isConfirmPasswordHaveError) {
+    } else if (!isConfirmPasswordHaveError) {
       return ButtonState.canSubmit;
     } else {
       return ButtonState.disable;
     }
   }
 
-  _NewPasswordState copyWith({
+  _NewPasswordViewModelState({
+    this.password = '',
+    this.passwordErrorMessage,
+    this.isPasswordHaveError = false,
+    this.confirmPassword = '',
+    this.confirmPasswordErrorMessage,
+    this.isConfirmPasswordHaveError = false,
+    this.inProcess = false,
+    this.keepIn = false,
+  });
+
+  _NewPasswordViewModelState copyWith({
     String? password,
     String? passwordErrorMessage,
     bool? isPasswordHaveError,
@@ -60,7 +51,7 @@ class _NewPasswordState implements INewPasswordState {
     bool? keepIn,
     bool? inProcess,
   }) {
-    return _NewPasswordState(
+    return _NewPasswordViewModelState(
       password: password ?? this.password,
       passwordErrorMessage: passwordErrorMessage ?? this.passwordErrorMessage,
       isPasswordHaveError: isPasswordHaveError ?? this.isPasswordHaveError,
@@ -77,9 +68,9 @@ class _NewPasswordState implements INewPasswordState {
 
 class NewPasswordViewModel extends ChangeNotifier {
   var _newPasswordSevice = NewPasswordService();
-  var _state = _NewPasswordState();
+  var _state = _NewPasswordViewModelState();
   // ignore: library_private_types_in_public_api
-  _NewPasswordState get state => _state;
+  _NewPasswordViewModelState get state => _state;
 
   void changePassword(String value) {
     final passwordError = AuthValidator.validatePassword(value);
