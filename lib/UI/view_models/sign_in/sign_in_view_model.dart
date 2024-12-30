@@ -3,39 +3,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jobs/UI/router/main_router.dart';
 import 'package:jobs/domain/data_providers/auth_api_provider.dart';
-
-import 'package:jobs/domain/servi%D1%81es/auth_service.dart';
+import 'package:jobs/domain/entity/email.dart';
+import 'package:jobs/domain/serviсes/auth_service.dart';
 import 'package:jobs/domain/validators/auth_validator.dart';
 
 enum ButtonState { canSubmit, inProcess, disable }
 
 class _SignInViewModelState {
-  final String email;
-  final String? emailErrorMessage;
-  final bool isEmailHaveError;
-
+  final Email email;
   final String password;
   final String? passwordErrorMessage;
   final bool isPasswordHaveError;
-
   final bool keepIn;
-
   final bool inProcess;
+
   _SignInViewModelState({
-    this.email = '',
-    this.emailErrorMessage,
-    this.isEmailHaveError = false,
+    Email? email,
     this.password = '',
     this.passwordErrorMessage,
     this.isPasswordHaveError = false,
     this.keepIn = false,
     this.inProcess = false,
-  });
+  }) : email = email ?? Email();
 
   ButtonState get buttonState {
     if (inProcess) {
       return ButtonState.inProcess;
-    } else if (!isEmailHaveError && !isPasswordHaveError) {
+    } else if (!email.hasError && !isPasswordHaveError) {
       return ButtonState.canSubmit;
     } else {
       return ButtonState.disable;
@@ -43,9 +37,7 @@ class _SignInViewModelState {
   }
 
   _SignInViewModelState copyWith({
-    String? email,
-    String? emailErrorMessage,
-    bool? isEmailHaveError,
+    Email? email,
     String? password,
     String? passwordErrorMessage,
     bool? isPasswordHaveError,
@@ -54,8 +46,6 @@ class _SignInViewModelState {
   }) {
     return _SignInViewModelState(
       email: email ?? this.email,
-      emailErrorMessage: emailErrorMessage ?? this.emailErrorMessage,
-      isEmailHaveError: isEmailHaveError ?? this.isEmailHaveError,
       password: password ?? this.password,
       passwordErrorMessage: passwordErrorMessage ?? this.passwordErrorMessage,
       isPasswordHaveError: isPasswordHaveError ?? this.isPasswordHaveError,
@@ -68,16 +58,14 @@ class _SignInViewModelState {
 class SignInViewModel extends ChangeNotifier {
   final _authService = AuthService();
   var _state = _SignInViewModelState();
-  // ignore: library_private_types_in_public_api
   _SignInViewModelState get state => _state;
 
   void changeEmail(String value) {
-    final emailError = AuthValidator.validateEmail(value);
-    _state = _state.copyWith(
-      email: value.trim(),
-      isEmailHaveError: !emailError.isValid,
-      emailErrorMessage: emailError.errorMessage,
+    final newEmail = Email(
+      value: value,
+      isDirty: true, // Помечаем как "грязный" при изменении
     );
+    _state = _state.copyWith(email: newEmail);
     notifyListeners();
   }
 
@@ -104,39 +92,36 @@ class SignInViewModel extends ChangeNotifier {
 
   void navToSignUpScreen(BuildContext context) {
     SystemSound.play(SystemSoundType.click);
-
     Navigator.of(context).pushReplacementNamed(MainRouterNames.signUp);
   }
 
   Future<void> onAuthButtonPressed(BuildContext context) async {
-    if (_state.isEmailHaveError || _state.isPasswordHaveError) return;
-    if (_state.email.isEmpty || _state.password.isEmpty) return;
+    if (_state.email.hasError || _state.isPasswordHaveError) return;
+    if (_state.email.value.isEmpty || _state.password.isEmpty) return;
 
     _state = _state.copyWith(
-      emailErrorMessage: null,
+      email: Email(value: _state.email.value), // Reset email validation
       passwordErrorMessage: null,
-      isEmailHaveError: false,
       isPasswordHaveError: false,
       inProcess: true,
     );
     notifyListeners();
 
     try {
-      await _authService.signIn(_state.email, _state.password);
+      await _authService.signIn(_state.email.value, _state.password);
       _state = _state.copyWith(inProcess: false);
     } on AuthApiProviderIncorrectEmailDataError {
       _state = _state.copyWith(
-        emailErrorMessage:
-            'The email you entered isn’t connected to an account.',
+        email: Email(value: _state.email.value), // This will revalidate email
         inProcess: false,
-        isEmailHaveError: true,
       );
     } catch (e) {
+      // В случае неизвестной ошибки создаем новый Email с тем же значением
+      final errorEmail = Email(value: _state.email.value);
       _state = _state.copyWith(
-        emailErrorMessage: 'Unknown error, try later',
+        email: errorEmail,
         inProcess: false,
       );
-
       debugPrint('$e');
     } finally {
       notifyListeners();

@@ -33,17 +33,37 @@ class _SignUpForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const SignForm(children: [
-      _EmalWidget(),
-      _PasswordWidget(),
       _NameWidget(),
-      _CheckBoxWidget(),
+      _EmailWidget(),
+      _PasswordWidget(),
+      _KeepInWidget(),
       _RegistrationButton(),
     ]);
   }
 }
 
-class _EmalWidget extends StatelessWidget {
-  const _EmalWidget();
+class _NameWidget extends StatelessWidget {
+  const _NameWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    final model = context.read<SignUpViewModel>();
+    final errorText =
+        context.select((SignUpViewModel value) => value.state.nameErrorMessage);
+    final isHavePasswordError =
+        context.select((SignUpViewModel value) => value.state.isNameHaveError);
+    return CustomTextField(
+      hintText: 'Name',
+      prefixIcon: Assets.icons.mailIcon,
+      onChanged: model.changeName,
+      errorText: errorText,
+      error: isHavePasswordError,
+    );
+  }
+}
+
+class _EmailWidget extends StatelessWidget {
+  const _EmailWidget();
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +95,6 @@ class _PasswordWidget extends StatelessWidget {
     return PasswordTextField(
       hintText: 'Password',
       prefixIcon: Assets.icons.unlockIcon,
-      suffixIcon: Assets.icons.hideIcon,
       onChanged: model.changePassword,
       errorText: errorText,
       error: isPasswordHaveError,
@@ -83,28 +102,8 @@ class _PasswordWidget extends StatelessWidget {
   }
 }
 
-class _NameWidget extends StatelessWidget {
-  const _NameWidget();
-
-  @override
-  Widget build(BuildContext context) {
-    final model = context.read<SignUpViewModel>();
-    final errorText =
-        context.select((SignUpViewModel value) => value.state.nameErrorMessage);
-    final isHavePasswordError =
-        context.select((SignUpViewModel value) => value.state.isNameHaveError);
-    return CustomTextField(
-      hintText: 'Email',
-      prefixIcon: Assets.icons.mailIcon,
-      onChanged: model.changeName,
-      errorText: errorText,
-      error: isHavePasswordError,
-    );
-  }
-}
-
-class _CheckBoxWidget extends StatelessWidget {
-  const _CheckBoxWidget();
+class _KeepInWidget extends StatelessWidget {
+  const _KeepInWidget();
 
   @override
   Widget build(BuildContext context) {

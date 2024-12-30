@@ -38,7 +38,6 @@ class SignInForm extends StatelessWidget {
   const SignInForm({
     super.key,
   });
-
   @override
   Widget build(BuildContext context) {
     return const SignForm(children: [
@@ -59,15 +58,15 @@ class EmailWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final model = context.read<SignInViewModel>();
     final errorText = context
-        .select((SignInViewModel value) => value.state.emailErrorMessage);
-    final isHaveEmailError =
-        context.select((SignInViewModel value) => value.state.isEmailHaveError);
+        .select((SignInViewModel value) => value.state.email.errorMessage);
+    final hasError =
+        context.select((SignInViewModel value) => value.state.email.hasError);
     return CustomTextField(
       hintText: 'Email',
       prefixIcon: Assets.icons.mailIcon,
       onChanged: model.changeEmail,
       errorText: errorText,
-      error: isHaveEmailError,
+      error: hasError,
     );
   }
 }
@@ -82,16 +81,16 @@ class PasswordWidget extends StatelessWidget {
     final model = context.read<SignInViewModel>();
     final errorText = context
         .select((SignInViewModel value) => value.state.passwordErrorMessage);
-    final isHavePasswordError = context
+    final hasError = context
         .select((SignInViewModel value) => value.state.isPasswordHaveError);
 
     return PasswordTextField(
       hintText: 'Password',
       prefixIcon: Assets.icons.unlockIcon,
-      suffixIcon: Assets.icons.hideIcon,
+      //ffixIcon: Assets.icons.hideIcon,
       onChanged: model.changePassword,
       errorText: errorText,
-      error: isHavePasswordError,
+      error: hasError,
     );
   }
 }

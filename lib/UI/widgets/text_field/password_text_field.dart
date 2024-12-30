@@ -2,17 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jobs/UI/theme/theme.dart';
 import 'package:jobs/UI/widgets/text_field/base_text_field.dart';
+import 'package:jobs/gen/assets.gen.dart';
 
 import 'prefix_icon.dart';
 
 class PasswordTextField extends BaseTextField {
-  final String suffixIcon;
-
   const PasswordTextField({
     super.key,
     required super.hintText,
     required super.prefixIcon,
-    required this.suffixIcon,
     required super.error,
     super.bottom,
     super.top,
@@ -43,7 +41,7 @@ class _PasswordTextFieldState extends BaseTextFieldState<PasswordTextField> {
     final suffixIcon = GestureDetector(
       onTap: _togglePasswordVisibility,
       child: _SuffixIcon(
-        iconPath: widget.suffixIcon,
+        iconPath: Assets.icons.hideIcon,
         iconColor: _isObscured ? super.iconColor : grayColor25,
       ),
     );

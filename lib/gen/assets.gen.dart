@@ -164,6 +164,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/ShareIcon.svg
   String get shareIcon => 'assets/icons/ShareIcon.svg';
 
+  /// File path: assets/icons/ShowIcon.svg
+  String get showIcon => 'assets/icons/ShowIcon.svg';
+
   /// File path: assets/icons/TerminalIcon.svg
   String get terminalIcon => 'assets/icons/TerminalIcon.svg';
 
@@ -249,6 +252,7 @@ class $AssetsIconsGen {
         searchIcon,
         settingsIcon,
         shareIcon,
+        showIcon,
         terminalIcon,
         timerIcon,
         trendingUpIcon,

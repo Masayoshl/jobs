@@ -119,7 +119,6 @@ class ConfirmPasswordWidget extends StatelessWidget {
     return PasswordTextField(
       hintText: 'Confirm Password',
       prefixIcon: Assets.icons.unlockIcon,
-      suffixIcon: Assets.icons.hideIcon,
       onChanged: model.changeConfirmPassword,
       errorText: errorText,
       error: isHavePasswordError,
@@ -144,7 +143,6 @@ class PasswordWidget extends StatelessWidget {
     return PasswordTextField(
       hintText: 'Password',
       prefixIcon: Assets.icons.unlockIcon,
-      suffixIcon: Assets.icons.hideIcon,
       onChanged: model.changePassword,
       errorText: errorText,
       error: isHavePasswordError,
