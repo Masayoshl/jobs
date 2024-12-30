@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:jobs/UI/view_models/sign_in/sign_in_view_model.dart';
 import 'package:jobs/UI/screens/auth/widgets/auth_form.dart';
-
+import 'package:jobs/UI/view_models/sign_in/sign_in_view_model.dart';
 import 'package:jobs/UI/screens/auth/sign_in/widgets/forgot_password.dart';
 import 'package:jobs/UI/screens/auth/widgets/login_prompt.dart';
 import 'package:jobs/UI/screens/auth/widgets/screen_title.dart';
@@ -43,8 +42,7 @@ class SignInForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const AuthForm(children: [
-      SizedBox(height: 32),
+    return const SignForm(children: [
       EmailWidget(),
       PasswordWidget(),
       CheckBoxWidget(),

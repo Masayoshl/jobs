@@ -34,45 +34,13 @@ class _SignUpForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          color: neutralColor300,
-        ),
-        margin: const EdgeInsets.symmetric(horizontal: 16),
-        width: 400,
-        child: const Column(
-          children: [
-            SizedBox(
-              height: 32,
-            ),
-            _NameWidget(),
-            _EmalWidget(),
-            _PasswordWidget(),
-            _CheckBoxWidget(),
-            _RegistrationButton(),
-          ],
-        ));
-  }
-}
-
-class _NameWidget extends StatelessWidget {
-  const _NameWidget();
-
-  @override
-  Widget build(BuildContext context) {
-    final model = context.read<SignUpViewModel>();
-    final errorText =
-        context.select((SignUpViewModel value) => value.state.nameErrorMessage);
-    final isNameHaveError =
-        context.select((SignUpViewModel value) => value.state.isNameHaveError);
-    return CustomTextField(
-      hintText: 'Name',
-      prefixIcon: Assets.icons.userSignIcon,
-      onChanged: model.changeName,
-      errorText: errorText,
-      error: isNameHaveError,
-    );
+    return const SignForm(children: [
+      _EmalWidget(),
+      _PasswordWidget(),
+      _ConfirmPasswordWidget(),
+      _CheckBoxWidget(),
+      _RegistrationButton(),
+    ]);
   }
 }
 
@@ -113,6 +81,27 @@ class _PasswordWidget extends StatelessWidget {
       onChanged: model.changePassword,
       errorText: errorText,
       error: isPasswordHaveError,
+    );
+  }
+}
+
+class _ConfirmPasswordWidget extends StatelessWidget {
+  const _ConfirmPasswordWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    final model = context.read<SignUpViewModel>();
+    final errorText = context.select(
+        (SignUpViewModel value) => value.state.confirmPasswordErrorMessage);
+    final isHavePasswordError = context.select(
+        (SignUpViewModel value) => value.state.isConfirmPasswordHaveError);
+    return PasswordTextField(
+      hintText: 'Confirm Password',
+      prefixIcon: Assets.icons.unlockIcon,
+      suffixIcon: Assets.icons.hideIcon,
+      onChanged: model.changeConfirmPassword,
+      errorText: errorText,
+      error: isHavePasswordError,
     );
   }
 }

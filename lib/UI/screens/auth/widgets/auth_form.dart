@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:jobs/UI/theme/theme.dart';
 
-enum AuthFormType { signIn, signUp }
-
-class AuthForm extends StatelessWidget {
+class SignForm extends StatelessWidget {
   final List<Widget> children;
   final double width;
 
-  const AuthForm({
+  const SignForm({
     super.key,
     required this.children,
     this.width = 400,
@@ -25,7 +23,7 @@ class AuthForm extends StatelessWidget {
       width: width,
       child: Column(
         children: [
-          const SizedBox(height: 22),
+          const SizedBox(height: 32),
           ...children,
         ],
       ),

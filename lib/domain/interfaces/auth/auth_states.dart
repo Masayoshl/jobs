@@ -1,7 +1,6 @@
 // Интерфейс для аутентификации
 import 'package:jobs/domain/interfaces/auth/base_state.dart';
 import 'package:jobs/domain/interfaces/auth/email_state.dart';
-import 'package:jobs/domain/interfaces/auth/name_state.dart';
 import 'package:jobs/domain/interfaces/auth/password_state.dart';
 
 // Интерфейс для аутентификации
@@ -10,8 +9,9 @@ abstract interface class ISignInState implements IEmailState, IPasswordState {
 }
 
 // Интерфейс для регистрации
-abstract interface class ISignUpState implements ISignInState, INameState {
-  // Наследует все необходимые поля от IAuthState и INameState
+abstract interface class ISignUpState
+    implements IEmailState, IConfirmPasswordState {
+  bool get keepIn;
 }
 
 abstract interface class IForgotPasswordState implements IEmailState {

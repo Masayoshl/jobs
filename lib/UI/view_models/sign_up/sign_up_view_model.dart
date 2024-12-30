@@ -1,12 +1,14 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'package:jobs/UI/router/main_router.dart';
 import 'package:jobs/domain/data_providers/auth_api_provider.dart';
 import 'package:jobs/domain/interfaces/auth/auth_states.dart';
 import 'package:jobs/domain/interfaces/auth/base_state.dart';
 import 'package:jobs/domain/servi%D1%81es/auth_service.dart';
 import 'package:jobs/domain/validators/auth_validator.dart';
+import 'package:jobs/domain/validators/new_password_validator.dart';
 
 class _SignUpState implements ISignUpState {
   @override
@@ -24,11 +26,11 @@ class _SignUpState implements ISignUpState {
   final bool isPasswordHaveError;
 
   @override
-  final String name;
+  final String confirmPassword;
   @override
-  final String? nameErrorMessage;
+  final String? confirmPasswordErrorMessage;
   @override
-  final bool isNameHaveError;
+  final bool isConfirmPasswordHaveError;
 
   @override
   final bool keepIn;
@@ -43,9 +45,9 @@ class _SignUpState implements ISignUpState {
     this.password = '',
     this.passwordErrorMessage,
     this.isPasswordHaveError = false,
-    this.name = '',
-    this.nameErrorMessage,
-    this.isNameHaveError = false,
+    this.confirmPassword = '',
+    this.confirmPasswordErrorMessage,
+    this.isConfirmPasswordHaveError = false,
     this.keepIn = false,
     this.inProcess = false,
   });
@@ -54,7 +56,9 @@ class _SignUpState implements ISignUpState {
   ButtonState get buttonState {
     if (inProcess) {
       return ButtonState.inProcess;
-    } else if (!isEmailHaveError && !isPasswordHaveError && !isNameHaveError) {
+    } else if (!isEmailHaveError &&
+        !isPasswordHaveError &&
+        !isConfirmPasswordHaveError) {
       return ButtonState.canSubmit;
     } else {
       return ButtonState.disable;
@@ -68,9 +72,9 @@ class _SignUpState implements ISignUpState {
     String? password,
     String? passwordErrorMessage,
     bool? isPasswordHaveError,
-    String? name,
-    String? nameErrorMessage,
-    bool? isNameHaveError,
+    String? confirmPassword,
+    String? confirmPasswordErrorMessage,
+    bool? isConfirmPasswordHaveError,
     bool? keepIn,
     bool? inProcess,
   }) {
@@ -81,9 +85,11 @@ class _SignUpState implements ISignUpState {
       password: password ?? this.password,
       passwordErrorMessage: passwordErrorMessage ?? this.passwordErrorMessage,
       isPasswordHaveError: isPasswordHaveError ?? this.isPasswordHaveError,
-      name: name ?? this.name,
-      nameErrorMessage: nameErrorMessage ?? this.nameErrorMessage,
-      isNameHaveError: isNameHaveError ?? this.isNameHaveError,
+      confirmPassword: confirmPassword ?? this.confirmPassword,
+      confirmPasswordErrorMessage:
+          confirmPasswordErrorMessage ?? this.confirmPasswordErrorMessage,
+      isConfirmPasswordHaveError:
+          isConfirmPasswordHaveError ?? this.isConfirmPasswordHaveError,
       keepIn: keepIn ?? this.keepIn,
       inProcess: inProcess ?? this.inProcess,
     );
@@ -113,15 +119,26 @@ class SignUpViewModel extends ChangeNotifier {
       isPasswordHaveError: !passwordError.isValid,
       passwordErrorMessage: passwordError.errorMessage,
     );
+    if (state.confirmPassword.isNotEmpty) {
+      final confirmPasswordError = NewPasswordValidator.comparePasswords(
+        value.trim(),
+        state.confirmPassword,
+      );
+      _state = _state.copyWith(
+        isConfirmPasswordHaveError: !confirmPasswordError.isValid,
+        confirmPasswordErrorMessage: confirmPasswordError.errorMessage,
+      );
+    }
     notifyListeners();
   }
 
-  void changeName(String value) {
-    final nameError = AuthValidator.validateName(value);
+  void changeConfirmPassword(String value) {
+    _state = _state.copyWith(confirmPassword: value.trim());
+    final confirmPasswordError = NewPasswordValidator.comparePasswords(
+        _state.password, _state.confirmPassword);
     _state = _state.copyWith(
-      name: value.trim(),
-      isNameHaveError: !nameError.isValid,
-      nameErrorMessage: nameError.errorMessage,
+      isConfirmPasswordHaveError: !confirmPasswordError.isValid,
+      confirmPasswordErrorMessage: confirmPasswordError.errorMessage,
     );
     notifyListeners();
   }
@@ -140,23 +157,25 @@ class SignUpViewModel extends ChangeNotifier {
   Future<void> onAuthButtonPressed(BuildContext context) async {
     if (_state.isEmailHaveError ||
         _state.isPasswordHaveError ||
-        _state.isNameHaveError) return;
-    if (_state.email.isEmpty || _state.password.isEmpty || _state.name.isEmpty)
-      return;
+        _state.isConfirmPasswordHaveError) return;
+    if (_state.email.isEmpty ||
+        _state.password.isEmpty ||
+        _state.confirmPassword.isEmpty) return;
 
     _state = _state.copyWith(
       emailErrorMessage: null,
       passwordErrorMessage: null,
-      nameErrorMessage: null,
+      confirmPasswordErrorMessage: null,
       isEmailHaveError: false,
       isPasswordHaveError: false,
-      isNameHaveError: false,
+      isConfirmPasswordHaveError: false,
       inProcess: true,
     );
     notifyListeners();
 
     try {
-      await _authService.signUp(_state.email, _state.password, _state.name);
+      await _authService.signUp(
+          _state.email, _state.password, _state.confirmPassword);
       _state = _state.copyWith(inProcess: false);
       notifyListeners();
     } on AuthApiProviderIncorrectEmailDataError {
