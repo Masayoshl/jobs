@@ -113,9 +113,9 @@ class ConfirmPasswordWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final model = context.read<NewPasswordViewModel>();
     final errorText = context.select((NewPasswordViewModel value) =>
-        value.state.confirmPasswordErrorMessage);
+        value.state.password.confirmErrorMessage);
     final isHavePasswordError = context.select(
-        (NewPasswordViewModel value) => value.state.isConfirmPasswordHaveError);
+        (NewPasswordViewModel value) => value.state.password.hasConfirmError);
     return PasswordTextField(
       hintText: 'Confirm Password',
       prefixIcon: Assets.icons.unlockIcon,
@@ -137,9 +137,9 @@ class PasswordWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final model = context.read<NewPasswordViewModel>();
     final errorText = context.select(
-        (NewPasswordViewModel value) => value.state.passwordErrorMessage);
-    final isHavePasswordError = context.select(
-        (NewPasswordViewModel value) => value.state.isPasswordHaveError);
+        (NewPasswordViewModel value) => value.state.password.errorMessage);
+    final isHavePasswordError = context
+        .select((NewPasswordViewModel value) => value.state.password.hasError);
     return PasswordTextField(
       hintText: 'Password',
       prefixIcon: Assets.icons.unlockIcon,

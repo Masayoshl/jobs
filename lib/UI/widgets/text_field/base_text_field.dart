@@ -143,7 +143,7 @@ abstract class BaseTextFieldState<T extends BaseTextField> extends State<T> {
             margin: EdgeInsets.only(
               left: widget.left ?? 18,
               right: widget.right ?? 18,
-              bottom: widget.error ? widget.bottom ?? 4 : 24,
+              bottom: widget.error ? widget.bottom ?? 4 : 20,
             ),
             width: widget.width,
             height: widget.height,
@@ -156,6 +156,9 @@ abstract class BaseTextFieldState<T extends BaseTextField> extends State<T> {
             isError: widget.error,
             errorText: widget.errorText,
           ),
+          const SizedBox(
+            height: 4,
+          )
         ],
       ),
     );
@@ -172,24 +175,26 @@ class _ErrorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedSize(
+    return TweenAnimationBuilder<double>(
       duration: const Duration(milliseconds: 200),
       curve: Curves.easeOut,
-      child: AnimatedOpacity(
-        duration: const Duration(milliseconds: 200),
-        curve: Curves.easeOut,
-        opacity: (isError && errorText != null) ? 1.0 : 0.0,
-        child: SizedBox(
-          height: (isError && errorText != null) ? null : 0.0,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 22),
+      tween: Tween<double>(
+        begin: 0.0,
+        end: (isError && errorText != null) ? 1.0 : 0.0,
+      ),
+      builder: (context, value, child) {
+        return Opacity(
+          opacity: value,
+          child: Container(
+            height: value * 20, // Регулируем высоту контейнера
+            padding: const EdgeInsets.only(left: 32),
             child: Text(
               errorText ?? '',
               style: AppTextStyles.textM.copyWith(color: errorColor700),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

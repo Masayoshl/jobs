@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jobs/UI/theme/theme.dart';
 import 'package:jobs/UI/widgets/text_field/base_text_field.dart';
-import 'package:jobs/gen/assets.gen.dart';
 
 import 'prefix_icon.dart';
 
@@ -41,12 +39,13 @@ class _PasswordTextFieldState extends BaseTextFieldState<PasswordTextField> {
     final suffixIcon = GestureDetector(
       onTap: _togglePasswordVisibility,
       child: _SuffixIcon(
-        iconPath: Assets.icons.hideIcon,
-        iconColor: _isObscured ? super.iconColor : grayColor25,
+        iconPath: _isObscured
+            ? Icons.visibility_off_outlined
+            : Icons.visibility_outlined,
+        iconColor: _isObscured ? grayColor25 : super.iconColor,
       ),
     );
-
-    return InputDecoration(
+    final decoration = InputDecoration(
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(128),
         borderSide: const BorderSide(color: Colors.white),
@@ -63,6 +62,7 @@ class _PasswordTextFieldState extends BaseTextFieldState<PasswordTextField> {
       prefixIcon: prefixIcon,
       suffixIcon: suffixIcon,
     );
+    return decoration;
   }
 
   @override
@@ -90,7 +90,7 @@ class _PasswordTextFieldState extends BaseTextFieldState<PasswordTextField> {
 }
 
 class _SuffixIcon extends StatelessWidget {
-  final String iconPath;
+  final IconData iconPath;
   final Color iconColor;
 
   const _SuffixIcon({
@@ -102,10 +102,20 @@ class _SuffixIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(right: 30).copyWith(left: 16),
-      child: SvgPicture.asset(
-        iconPath,
-        colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
-        fit: BoxFit.none,
+      child: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 100),
+        transitionBuilder: (Widget child, Animation<double> animation) {
+          return FadeTransition(
+            opacity: animation,
+            child: child,
+          );
+        },
+        child: Icon(
+          key: ValueKey<IconData>(iconPath),
+          size: 32,
+          iconPath,
+          color: iconColor,
+        ),
       ),
     );
   }

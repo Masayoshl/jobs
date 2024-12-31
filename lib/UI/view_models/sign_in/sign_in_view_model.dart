@@ -4,32 +4,29 @@ import 'package:flutter/services.dart';
 import 'package:jobs/UI/router/main_router.dart';
 import 'package:jobs/domain/data_providers/auth_api_provider.dart';
 import 'package:jobs/domain/entity/email.dart';
+import 'package:jobs/domain/entity/password.dart';
 import 'package:jobs/domain/serviсes/auth_service.dart';
-import 'package:jobs/domain/validators/auth_validator.dart';
 
 enum ButtonState { canSubmit, inProcess, disable }
 
 class _SignInViewModelState {
   final Email email;
-  final String password;
-  final String? passwordErrorMessage;
-  final bool isPasswordHaveError;
+  final Password password;
   final bool keepIn;
   final bool inProcess;
 
   _SignInViewModelState({
     Email? email,
-    this.password = '',
-    this.passwordErrorMessage,
-    this.isPasswordHaveError = false,
+    Password? password,
     this.keepIn = false,
     this.inProcess = false,
-  }) : email = email ?? Email();
+  })  : email = email ?? Email(),
+        password = password ?? Password();
 
   ButtonState get buttonState {
     if (inProcess) {
       return ButtonState.inProcess;
-    } else if (!email.hasError && !isPasswordHaveError) {
+    } else if (!email.hasError && !password.hasError) {
       return ButtonState.canSubmit;
     } else {
       return ButtonState.disable;
@@ -38,17 +35,13 @@ class _SignInViewModelState {
 
   _SignInViewModelState copyWith({
     Email? email,
-    String? password,
-    String? passwordErrorMessage,
-    bool? isPasswordHaveError,
+    Password? password,
     bool? keepIn,
     bool? inProcess,
   }) {
     return _SignInViewModelState(
       email: email ?? this.email,
       password: password ?? this.password,
-      passwordErrorMessage: passwordErrorMessage ?? this.passwordErrorMessage,
-      isPasswordHaveError: isPasswordHaveError ?? this.isPasswordHaveError,
       keepIn: keepIn ?? this.keepIn,
       inProcess: inProcess ?? this.inProcess,
     );
@@ -61,27 +54,19 @@ class SignInViewModel extends ChangeNotifier {
   _SignInViewModelState get state => _state;
 
   void changeEmail(String value) {
-    final newEmail = Email(
-      value: value,
-      isDirty: true, // Помечаем как "грязный" при изменении
-    );
+    final newEmail = Email(value: value, isDirty: true);
     _state = _state.copyWith(email: newEmail);
     notifyListeners();
   }
 
   void changePassword(String value) {
-    final passwordError = AuthValidator.validatePassword(value);
-    _state = _state.copyWith(
-      password: value.trim(),
-      isPasswordHaveError: !passwordError.isValid,
-      passwordErrorMessage: passwordError.errorMessage,
-    );
+    final newPassword = Password(value: value, isDirty: true);
+    _state = _state.copyWith(password: newPassword);
     notifyListeners();
   }
 
   void toggleKeepIn() {
-    bool change = !_state.keepIn;
-    _state = _state.copyWith(keepIn: change);
+    _state = _state.copyWith(keepIn: !_state.keepIn);
     notifyListeners();
   }
 
@@ -96,35 +81,27 @@ class SignInViewModel extends ChangeNotifier {
   }
 
   Future<void> onAuthButtonPressed(BuildContext context) async {
-    if (_state.email.hasError || _state.isPasswordHaveError) return;
-    if (_state.email.value.isEmpty || _state.password.isEmpty) return;
+    if (_state.email.hasError || _state.password.hasError) return;
+    if (_state.email.value.isEmpty || _state.password.value.isEmpty) return;
 
-    _state = _state.copyWith(
-      email: Email(value: _state.email.value), // Reset email validation
-      passwordErrorMessage: null,
-      isPasswordHaveError: false,
-      inProcess: true,
-    );
+    _state = _state.copyWith(inProcess: true);
     notifyListeners();
 
     try {
-      await _authService.signIn(_state.email.value, _state.password);
+      await _authService.signIn(_state.email.value, _state.password.value);
       _state = _state.copyWith(inProcess: false);
     } on AuthApiProviderIncorrectEmailDataError {
       _state = _state.copyWith(
-        email: Email(value: _state.email.value), // This will revalidate email
+        email: Email(value: _state.email.value, isDirty: true),
         inProcess: false,
       );
     } catch (e) {
-      // В случае неизвестной ошибки создаем новый Email с тем же значением
-      final errorEmail = Email(value: _state.email.value);
       _state = _state.copyWith(
-        email: errorEmail,
+        email: Email(value: _state.email.value, isDirty: true),
         inProcess: false,
       );
       debugPrint('$e');
-    } finally {
-      notifyListeners();
     }
+    notifyListeners();
   }
 }

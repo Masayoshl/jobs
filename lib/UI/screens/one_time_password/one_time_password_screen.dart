@@ -39,11 +39,11 @@ class CodeFormWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final model = context.read<OneTimePasswordViewModel>();
     final errorText = context.select(
-        (OneTimePasswordViewModel value) => value.state.codeErrorMessage);
+        (OneTimePasswordViewModel value) => value.state.password.errorMessage);
     final isHaveError = context.select(
-        (OneTimePasswordViewModel value) => value.state.isCodeHaveError);
+        (OneTimePasswordViewModel value) => value.state.password.hasError);
     return OTPTextField(
-      onChanged: model.onChangeCode,
+      onChanged: model.onChangePassword,
       isHaveError: isHaveError,
       errorText: errorText,
     );

@@ -80,9 +80,9 @@ class PasswordWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final model = context.read<SignInViewModel>();
     final errorText = context
-        .select((SignInViewModel value) => value.state.passwordErrorMessage);
+        .select((SignInViewModel value) => value.state.password.errorMessage);
     final hasError = context
-        .select((SignInViewModel value) => value.state.isPasswordHaveError);
+        .select((SignInViewModel value) => value.state.password.hasError);
 
     return PasswordTextField(
       hintText: 'Password',

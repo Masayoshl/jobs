@@ -76,9 +76,9 @@ class _EmailWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final model = context.read<ForgotPasswordViewModel>();
     final errorText = context.select(
-        (ForgotPasswordViewModel value) => value.state.emailErrorMessage);
-    final isHaveEmailError = context.select(
-        (ForgotPasswordViewModel value) => value.state.isEmailHaveError);
+        (ForgotPasswordViewModel value) => value.state.email.errorMessage);
+    final isHaveEmailError = context
+        .select((ForgotPasswordViewModel value) => value.state.email.hasError);
     return Padding(
       padding: const EdgeInsets.only(bottom: 74, top: 34),
       child: CustomTextField(

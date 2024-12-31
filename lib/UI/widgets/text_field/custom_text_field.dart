@@ -27,7 +27,7 @@ class CustomTextField extends BaseTextField {
 class _CustomTextFieldState extends BaseTextFieldState<CustomTextField> {
   @override
   InputDecoration buildInputDecoration(PrefixIcon prefixIcon) {
-    return InputDecoration(
+    final decoration = InputDecoration(
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(128),
         borderSide: const BorderSide(color: Colors.white),
@@ -43,6 +43,8 @@ class _CustomTextFieldState extends BaseTextFieldState<CustomTextField> {
       hintText: widget.hintText,
       prefixIcon: prefixIcon,
     );
+
+    return decoration;
   }
 
   @override

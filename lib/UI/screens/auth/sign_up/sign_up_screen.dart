@@ -48,10 +48,10 @@ class _NameWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final model = context.read<SignUpViewModel>();
-    final errorText =
-        context.select((SignUpViewModel value) => value.state.nameErrorMessage);
+    final errorText = context
+        .select((SignUpViewModel value) => value.state.name.errorMessage);
     final isHavePasswordError =
-        context.select((SignUpViewModel value) => value.state.isNameHaveError);
+        context.select((SignUpViewModel value) => value.state.name.hasError);
     return CustomTextField(
       hintText: 'Name',
       prefixIcon: Assets.icons.mailIcon,
@@ -69,9 +69,9 @@ class _EmailWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final model = context.read<SignUpViewModel>();
     final errorText = context
-        .select((SignUpViewModel value) => value.state.emailErrorMessage);
+        .select((SignUpViewModel value) => value.state.email.errorMessage);
     final isEmailHaveError =
-        context.select((SignUpViewModel value) => value.state.isEmailHaveError);
+        context.select((SignUpViewModel value) => value.state.email.hasError);
     return CustomTextField(
       hintText: 'Email',
       prefixIcon: Assets.icons.mailIcon,
@@ -89,9 +89,9 @@ class _PasswordWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final model = context.read<SignUpViewModel>();
     final errorText = context
-        .select((SignUpViewModel value) => value.state.passwordErrorMessage);
+        .select((SignUpViewModel value) => value.state.password.errorMessage);
     final isPasswordHaveError = context
-        .select((SignUpViewModel value) => value.state.isPasswordHaveError);
+        .select((SignUpViewModel value) => value.state.password.hasError);
     return PasswordTextField(
       hintText: 'Password',
       prefixIcon: Assets.icons.unlockIcon,
