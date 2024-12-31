@@ -32,7 +32,20 @@ class Email {
     this.isDirty = false,
   });
 
-  factory Email({String value = '', bool isDirty = false}) {
+  factory Email({
+    String value = '',
+    bool isDirty = false,
+    String? externalErrorMessage,
+  }) {
+    if (externalErrorMessage != null) {
+      return Email._(
+        value: value.trim(),
+        errorMessage: externalErrorMessage,
+        hasError: true,
+        isDirty: true,
+      );
+    }
+
     final validationResult = Email._validate(value);
 
     return Email._(

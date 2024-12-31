@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:jobs/UI/theme/theme.dart';
 import 'package:jobs/UI/widgets/text_field/prefix_icon.dart';
 
@@ -186,10 +187,14 @@ class _ErrorWidget extends StatelessWidget {
         return Opacity(
           opacity: value,
           child: Container(
+            constraints: const BoxConstraints(maxWidth: 350),
             height: value * 20, // Регулируем высоту контейнера
-            padding: const EdgeInsets.only(left: 32),
+            padding: const EdgeInsets.only(
+              left: 22,
+            ),
             child: Text(
               errorText ?? '',
+              overflow: TextOverflow.ellipsis,
               style: AppTextStyles.textM.copyWith(color: errorColor700),
             ),
           ),

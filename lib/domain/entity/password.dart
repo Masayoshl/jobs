@@ -41,7 +41,16 @@ class Password {
     String value = '',
     String? confirmValue,
     bool isDirty = false,
+    String? externalErrorMessage,
   }) {
+    if (externalErrorMessage != null) {
+      return Password._(
+        value: value.trim(),
+        errorMessage: externalErrorMessage,
+        hasError: true,
+        isDirty: true,
+      );
+    }
     final validationResult = Password._validatePassword(value);
     final confirmResult = confirmValue != null
         ? Password._validateConfirmPassword(value, confirmValue)

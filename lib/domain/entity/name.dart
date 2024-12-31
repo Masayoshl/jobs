@@ -31,7 +31,19 @@ class Name {
     this.isDirty = false,
   });
 
-  factory Name({String value = '', bool isDirty = false}) {
+  factory Name({
+    String value = '',
+    bool isDirty = false,
+    String? externalErrorMessage,
+  }) {
+    if (externalErrorMessage != null) {
+      return Name._(
+        value: value.trim(),
+        errorMessage: externalErrorMessage,
+        hasError: true,
+        isDirty: true,
+      );
+    }
     final validationResult = Name._validate(value);
 
     return Name._(

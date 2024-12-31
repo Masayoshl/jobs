@@ -92,12 +92,19 @@ class SignInViewModel extends ChangeNotifier {
       _state = _state.copyWith(inProcess: false);
     } on AuthApiProviderIncorrectEmailDataError {
       _state = _state.copyWith(
-        email: Email(value: _state.email.value, isDirty: true),
+        email: Email(
+            value: _state.email.value,
+            externalErrorMessage:
+                'The email you entered isn’t connected to an account.',
+            isDirty: true),
         inProcess: false,
       );
     } catch (e) {
       _state = _state.copyWith(
-        email: Email(value: _state.email.value, isDirty: true),
+        email: Email(
+            value: _state.email.value,
+            externalErrorMessage: 'Unknown error, try later',
+            isDirty: true),
         inProcess: false,
       );
       debugPrint('$e');

@@ -54,9 +54,10 @@ class NewPasswordForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 36, left: 16, right: 16),
+      padding: const EdgeInsets.only(top: 36),
       width: 400,
       child: const Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CreatePasswordTextWdget(),
           PasswordWidget(),
@@ -76,7 +77,7 @@ class CreatePasswordTextWdget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 28, left: 16, right: 116),
+      margin: const EdgeInsets.only(bottom: 28, left: 16),
       child: Text('Create Your New Password',
           style: AppTextStyles.textXXLMedium.copyWith(
             color: grayColor100,
@@ -95,11 +96,14 @@ class CheckBoxWidget extends StatelessWidget {
     final model = context.read<NewPasswordViewModel>();
     final isChecked =
         context.select((NewPasswordViewModel value) => value.state.keepIn);
-    return CustomCheckbox(
-      left: 16,
-      text: 'Remember me',
-      isChecked: isChecked,
-      onTap: model.toggleKeepIn,
+    return Padding(
+      padding: const EdgeInsets.only(top: 4),
+      child: CustomCheckbox(
+        text: 'Remember me',
+        isChecked: isChecked,
+        onTap: model.toggleKeepIn,
+        left: 32,
+      ),
     );
   }
 }
@@ -122,8 +126,8 @@ class ConfirmPasswordWidget extends StatelessWidget {
       onChanged: model.changeConfirmPassword,
       errorText: errorText,
       error: isHavePasswordError,
-      left: 0,
-      right: 0,
+      left: 16,
+      right: 16,
     );
   }
 }
@@ -146,8 +150,8 @@ class PasswordWidget extends StatelessWidget {
       onChanged: model.changePassword,
       errorText: errorText,
       error: isHavePasswordError,
-      left: 0,
-      right: 0,
+      left: 16,
+      right: 16,
     );
   }
 }
