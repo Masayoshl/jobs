@@ -31,7 +31,9 @@ class TypeSelector<T extends TypeSelectorEnum> extends StatelessWidget {
                 subTitle: type.subtitle,
                 isSelected: selectedType == type,
                 icon: type.icon,
-                onTap: () => onSelected(type),
+                onTap: () {
+                  onSelected(type);
+                },
               ))
           .toList(),
     );

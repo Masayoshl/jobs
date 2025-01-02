@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:jobs/UI/screens/profile_setup/account_type/widgets/type_selector.dart';
 import 'package:jobs/domain/data_providers/session_data_provider.dart';
 import 'package:jobs/domain/servi%D1%81es/profile_service.dart';
@@ -65,7 +66,9 @@ class AccountTypeViewModel extends ChangeNotifier {
 
   void changeType(AccountType type) {
     if (_state.accountType == type) return;
+    SystemSound.play(SystemSoundType.click);
     _state = _state.copyWith(accountType: type);
+
     notifyListeners();
   }
 

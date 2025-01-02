@@ -44,7 +44,7 @@ class AccountTypeBody extends StatelessWidget {
             style: AppTextStyles.displayTextSemibold,
           ),
         ),
-        SelectTypeWidget(),
+        const SelectTypeWidget(),
       ],
     );
   }
@@ -58,8 +58,10 @@ class SelectTypeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final model = context.read<AccountTypeViewModel>();
+    final selectedType =
+        context.select((AccountTypeViewModel value) => value.state.accountType);
     return TypeSelector<AccountType>(
-      selectedType: model.state.accountType,
+      selectedType: selectedType,
       onSelected: model.changeType,
       values: AccountType.values,
     );
