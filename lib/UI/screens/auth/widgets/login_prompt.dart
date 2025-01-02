@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:jobs/UI/theme/theme.dart';
 
@@ -15,22 +16,22 @@ class LoginPrompt extends StatelessWidget {
   final TextStyle? navigationTextStyle;
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          promptText,
-          style: AppTextStyles.textXXLRegular.copyWith(color: grayColor25),
-        ),
-        GestureDetector(
-          onTap: onTap,
-          child: Text(
-            navigationText,
+    return RichText(
+      textAlign: TextAlign.center,
+      text: TextSpan(
+        children: [
+          TextSpan(
+            text: promptText,
+            style: AppTextStyles.textXXLRegular.copyWith(color: grayColor25),
+          ),
+          TextSpan(
+            text: navigationText,
             style: navigationTextStyle ??
                 AppTextStyles.textXXLSemibold.copyWith(color: primaryColor),
+            recognizer: TapGestureRecognizer()..onTap = () => onTap(),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

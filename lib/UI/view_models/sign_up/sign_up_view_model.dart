@@ -8,7 +8,7 @@ import 'package:jobs/domain/entity/name.dart';
 import 'package:jobs/domain/entity/password.dart';
 import 'package:jobs/domain/servi%D1%81es/auth_service.dart';
 
-enum ButtonState { canSubmit, inProcess, disable }
+enum ButtonState { enabled, inProcess, disable }
 
 class _SignUpViewModelState {
   final Email email;
@@ -31,7 +31,7 @@ class _SignUpViewModelState {
     if (inProcess) {
       return ButtonState.inProcess;
     } else if (!email.hasError && !password.hasError && !name.hasError) {
-      return ButtonState.canSubmit;
+      return ButtonState.enabled;
     } else {
       return ButtonState.disable;
     }

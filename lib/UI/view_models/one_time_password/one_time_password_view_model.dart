@@ -7,7 +7,7 @@ import 'package:jobs/domain/entity/one_time_password.dart';
 
 import 'package:jobs/domain/servi%D1%81es/otp_service.dart';
 
-enum ButtonState { canSubmit, inProcess, disable }
+enum ButtonState { enabled, inProcess, disable }
 
 class _OneTimePasswordViewModelState {
   final OneTimePassword password;
@@ -19,7 +19,7 @@ class _OneTimePasswordViewModelState {
     if (inProcess) {
       return ButtonState.inProcess;
     } else if (!password.hasError) {
-      return ButtonState.canSubmit;
+      return ButtonState.enabled;
     } else {
       return ButtonState.disable;
     }

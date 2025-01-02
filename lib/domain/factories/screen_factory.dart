@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:jobs/UI/screens/auth/sign_in/sign_in_screen.dart';
 import 'package:jobs/UI/screens/auth/sign_up/sign_up_screen.dart';
+import 'package:jobs/UI/screens/profile_setup/account_type/account_type_screen.dart';
+import 'package:jobs/UI/screens/profile_setup/account_type/account_type_view_model.dart';
+import 'package:jobs/UI/screens/profile_setup/profile_setup_screen.dart';
+import 'package:jobs/UI/screens/profile_setup/profile_setup_view_model.dart';
 import 'package:jobs/UI/view_models/sign_in/sign_in_view_model.dart';
 import 'package:jobs/UI/view_models/sign_up/sign_up_view_model.dart';
 import 'package:jobs/UI/screens/forgot_password/forgot_password_screen.dart';
@@ -54,6 +58,20 @@ class ScreenFactory {
     return ChangeNotifierProvider(
       create: (_) => NewPasswordViewModel(),
       child: const NewPasswordScreen(),
+    );
+  }
+
+  Widget makeProfileSetup() {
+    return Provider(
+      create: (_) => ProfileSetupViewModel(),
+      child: const ProfileSetupScreen(),
+    );
+  }
+
+  Widget makeAccountType() {
+    return ChangeNotifierProvider(
+      create: (_) => AccountTypeViewModel(),
+      child: const AccountTypeScreen(),
     );
   }
 }

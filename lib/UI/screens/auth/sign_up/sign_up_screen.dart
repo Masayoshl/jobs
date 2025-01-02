@@ -126,7 +126,7 @@ class _RegistrationButton extends StatelessWidget {
     final model = context.read<SignUpViewModel>();
     final authButtonState =
         context.select((SignUpViewModel value) => value.state.buttonState);
-    final onPressed = authButtonState == ButtonState.canSubmit
+    final onPressed = authButtonState == ButtonState.enabled
         ? model.onAuthButtonPressed
         : null;
     final indicator = authButtonState == ButtonState.inProcess

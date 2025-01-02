@@ -271,6 +271,14 @@ class $AssetsIconsGen {
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/AccountTypeCompanyType.svg
+  String get accountTypeCompanyType =>
+      'assets/images/AccountTypeCompanyType.svg';
+
+  /// File path: assets/images/AccountTypeEmployeeType.svg
+  String get accountTypeEmployeeType =>
+      'assets/images/AccountTypeEmployeeType.svg';
+
   /// File path: assets/images/CreatePasswordCongratImage.svg
   String get createPasswordCongratImage =>
       'assets/images/CreatePasswordCongratImage.svg';
@@ -278,24 +286,20 @@ class $AssetsImagesGen {
   /// File path: assets/images/CreatePasswordImage.svg
   String get createPasswordImage => 'assets/images/CreatePasswordImage.svg';
 
-  /// File path: assets/images/ForgotPasswordChatImage.svg
-  String get forgotPasswordChatImage =>
-      'assets/images/ForgotPasswordChatImage.svg';
-
   /// File path: assets/images/ForgotPasswordImage.svg
   String get forgotPasswordImage => 'assets/images/ForgotPasswordImage.svg';
 
-  /// File path: assets/images/ForgotPasswordMailImage.svg
-  String get forgotPasswordMailImage =>
-      'assets/images/ForgotPasswordMailImage.svg';
+  /// File path: assets/images/ProfileSetupImage.svg
+  String get profileSetupImage => 'assets/images/ProfileSetupImage.svg';
 
   /// List of all assets
   List<String> get values => [
+        accountTypeCompanyType,
+        accountTypeEmployeeType,
         createPasswordCongratImage,
         createPasswordImage,
-        forgotPasswordChatImage,
         forgotPasswordImage,
-        forgotPasswordMailImage
+        profileSetupImage
       ];
 }
 

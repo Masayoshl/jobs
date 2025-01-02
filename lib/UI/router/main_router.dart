@@ -9,12 +9,15 @@ abstract class MainRouterNames {
   static const oneTimePassword = '/sign_in/forgot_password/one_time_password';
   static const createPassword =
       '/sign_in/forgot_password/one_time_password/create_password';
+  static const profileSetup = '/sign_in/sign_up/profile_setup';
+  static const accountType = '/sign_in/sign_up/profile_setup/account_type';
 }
 
 class MainRouter {
   static final _screenFactory = ScreenFactory();
 
-  //! Юзать если нужно поверсатать один екран => final home = _screenFactory.makeSignIn();
+  //! Юзать если нужно поверсатать один екран =>
+  final home = _screenFactory.makeProfileSetup();
 
   Route<Object> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -43,6 +46,14 @@ class MainRouter {
       case MainRouterNames.createPassword:
         return MaterialPageRoute(
           builder: (_) => _screenFactory.makeNewPassword(),
+        );
+      case MainRouterNames.profileSetup:
+        return MaterialPageRoute(
+          builder: (_) => _screenFactory.makeProfileSetup(),
+        );
+      case MainRouterNames.accountType:
+        return MaterialPageRoute(
+          builder: (_) => _screenFactory.makeAccountType(),
         );
       default:
         const widget = Text('Navigation Error!!!');

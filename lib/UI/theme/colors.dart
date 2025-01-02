@@ -10,6 +10,8 @@ const grayColor700 = Color(0xff323539); //* Text&Icons/Light/Base  Main
 
 const neutralColor200 = Color(0xffF9F9F9);
 const neutralColor300 = Color(0xffF7F7F8);
+const neutralColor400 = Color(0xffF5F5F5);
+const neutralColor500 = Color(0xffEFEFF1);
 
 const purple400 = Color(0xff736CFB);
 const purple700 = Color(0xff463EE3);

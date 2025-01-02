@@ -6,7 +6,7 @@ import 'package:jobs/domain/data_providers/auth_api_provider.dart';
 import 'package:jobs/domain/entity/email.dart';
 import 'package:jobs/domain/servi%D1%81es/auth_service.dart';
 
-enum ButtonState { canSubmit, inProcess, disable }
+enum ButtonState { enabled, inProcess, disable }
 
 class _ForgotPasswordViewModelState {
   final Email email;
@@ -17,7 +17,7 @@ class _ForgotPasswordViewModelState {
     if (inProcess) {
       return ButtonState.inProcess;
     } else if (!email.hasError) {
-      return ButtonState.canSubmit;
+      return ButtonState.enabled;
     } else {
       return ButtonState.disable;
     }

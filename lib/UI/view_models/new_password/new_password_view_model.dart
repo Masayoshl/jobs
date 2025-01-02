@@ -5,7 +5,7 @@ import 'package:jobs/domain/entity/password.dart';
 
 import 'package:jobs/domain/servi%D1%81es/new_password_service.dart';
 
-enum ButtonState { canSubmit, inProcess, disable }
+enum ButtonState { enabled, inProcess, disable }
 
 class _NewPasswordViewModelState {
   final Password password;
@@ -16,7 +16,7 @@ class _NewPasswordViewModelState {
     if (inProcess) {
       return ButtonState.inProcess;
     } else if (!password.hasError && !password.hasConfirmError) {
-      return ButtonState.canSubmit;
+      return ButtonState.enabled;
     } else {
       return ButtonState.disable;
     }
