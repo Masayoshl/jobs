@@ -86,12 +86,15 @@ class AccountTypeViewModel extends ChangeNotifier {
         errorMessage: 'Invalid Session Key',
         inProcess: false,
       );
+      debugPrint(_state.errorMessage);
     } catch (e) {
       _state = _state.copyWith(
         errorMessage: 'Unknown error, please try again',
         inProcess: false,
       );
+    } finally {
+      notifyListeners();
+      debugPrint(_state.errorMessage);
     }
-    notifyListeners();
   }
 }
