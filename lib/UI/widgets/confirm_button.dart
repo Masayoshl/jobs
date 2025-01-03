@@ -1,38 +1,48 @@
 import 'package:flutter/material.dart';
+import 'package:jobs/UI/common/button_state.dart';
 import 'package:jobs/UI/theme/theme.dart';
 
 class ConfirmButton extends StatelessWidget {
   const ConfirmButton({
     required this.onPressed,
     required this.text,
+    this.state,
     this.bottom,
     this.top,
     this.left,
     this.right,
     this.width,
     this.height,
-    this.buttonColor,
-    this.indicator,
+    this.backgroundColor,
     super.key,
   });
+
   final String text;
-  final VoidCallback onPressed;
+  final Function(BuildContext) onPressed;
+  final ButtonStateBase? state;
   final double? bottom;
   final double? top;
   final double? left;
   final double? right;
   final double? width;
   final double? height;
-  final Color? buttonColor;
-  final Widget? indicator;
+  final Color? backgroundColor;
+
   @override
   Widget build(BuildContext context) {
-    final child = indicator ??
-        Text(
-          text,
-          style: AppTextStyles.textXLSemibold.copyWith(color: Colors.white),
-        );
-    final color = buttonColor ?? primaryColor;
+    final isEnabled = state?.isEnabled ?? true;
+    final child = state?.isInProcess ?? false
+        ? const CircularProgressIndicator(
+            color: Colors.white,
+            strokeWidth: 2,
+          )
+        : Text(
+            text,
+            style: AppTextStyles.textXLSemibold.copyWith(color: Colors.white),
+          );
+
+    final color = backgroundColor ?? primaryColor;
+
     return Container(
       margin: EdgeInsets.only(
           left: left ?? 18,
@@ -42,7 +52,6 @@ class ConfirmButton extends StatelessWidget {
       width: width ?? 360,
       height: height ?? 60,
       decoration: BoxDecoration(
-        //color: color ?? primarycolor,
         borderRadius: BorderRadius.circular(128),
         boxShadow: [
           BoxShadow(
@@ -56,7 +65,7 @@ class ConfirmButton extends StatelessWidget {
       child: FilledButton(
           style: ButtonStyle(
               backgroundColor: WidgetStateProperty.all<Color>(color)),
-          onPressed: onPressed,
+          onPressed: isEnabled ? () => onPressed(context) : null,
           child: child),
     );
   }

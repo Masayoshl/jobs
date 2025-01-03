@@ -1,9 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:jobs/UI/common/button_state.dart';
 import 'package:jobs/UI/screens/profile_setup/account_type/widgets/type_selector.dart';
-import 'package:jobs/domain/data_providers/session_data_provider.dart';
 import 'package:jobs/domain/servi%D1%81es/profile_service.dart';
 import 'package:jobs/gen/assets.gen.dart';
 
@@ -27,8 +26,6 @@ enum AccountType implements TypeSelectorEnum {
         AccountType.employee => Assets.images.accountTypeEmployeeType,
       };
 }
-
-enum ButtonState { enabled, inProcess, disabled }
 
 class _AccountTypeViewModelState {
   final AccountType accountType;
@@ -66,7 +63,6 @@ class AccountTypeViewModel extends ChangeNotifier {
 
   void changeType(AccountType type) {
     if (_state.accountType == type) return;
-    SystemSound.play(SystemSoundType.click);
     _state = _state.copyWith(accountType: type);
 
     notifyListeners();
@@ -81,20 +77,20 @@ class AccountTypeViewModel extends ChangeNotifier {
     try {
       await _profileService.setAccountType();
       _state = _state.copyWith(inProcess: false);
-    } on SessionDataProviderInvalidKeyError {
+    } on ProfileServiceError catch (e) {
       _state = _state.copyWith(
-        errorMessage: 'Invalid Session Key',
+        errorMessage: e.message,
         inProcess: false,
       );
       debugPrint(_state.errorMessage);
     } catch (e) {
       _state = _state.copyWith(
-        errorMessage: 'Unknown error, please try again',
+        errorMessage: e.toString(),
         inProcess: false,
       );
     } finally {
       notifyListeners();
-      debugPrint(_state.errorMessage);
+      //debugPrint(_state.errorMessage);
     }
   }
 }

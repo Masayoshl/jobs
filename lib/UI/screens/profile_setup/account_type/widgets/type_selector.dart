@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:jobs/UI/theme/theme.dart';
 
@@ -58,53 +57,54 @@ class TypeSelectorItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final borderRadius = BorderRadius.circular(30);
     final decoration = BoxDecoration(
-        borderRadius: BorderRadius.circular(30),
-        color: Colors.white,
-        border: isSelected
-            ? Border.all(color: purple400, width: 1)
-            : Border.all(color: grayColor50, width: 1),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            spreadRadius: 2,
-            blurRadius: 5,
-            offset: const Offset(0, 0),
-          )
-        ]);
+      borderRadius: borderRadius,
+      color: Colors.white,
+      border: isSelected
+          ? Border.all(color: purple400, width: 1.3)
+          : Border.all(color: grayColor50, width: 1.3),
+    );
 
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
+    return Material(
+      borderOnForeground: true,
+      borderRadius: borderRadius,
+      color: Colors.transparent,
+      elevation: 4.0,
+      child: Ink(
         width: 173,
         height: 269,
         decoration: decoration,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Container(
-              margin: const EdgeInsets.only(top: 60, bottom: 8),
-              child: SvgPicture.asset(
-                icon,
-                width: 100,
-                height: 100,
+        child: InkWell(
+          borderRadius: borderRadius,
+          onTap: onTap,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                margin: const EdgeInsets.only(top: 60, bottom: 8),
+                child: SvgPicture.asset(
+                  icon,
+                  width: 100,
+                  height: 100,
+                ),
               ),
-            ),
-            Text(
-              title,
-              style: AppTextStyles.textXXLSemibold,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 8, right: 8),
-              child: Text(
-                subTitle,
-                textAlign: TextAlign.center,
-                style: AppTextStyles.textM
-                    .copyWith(color: grayColor25, fontWeight: FontWeight.w400),
+              Text(
+                title,
+                style: AppTextStyles.textXXLSemibold,
               ),
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.only(left: 16, right: 16),
+                child: Text(
+                  subTitle,
+                  textAlign: TextAlign.center,
+                  style: AppTextStyles.textM.copyWith(
+                      color: grayColor25, fontWeight: FontWeight.w400),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

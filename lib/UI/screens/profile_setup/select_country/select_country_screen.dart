@@ -40,7 +40,7 @@ class SelectCountryBottom extends StatelessWidget {
     return ConfirmButton(
       // indicator: indicator,
       text: 'Continue',
-      onPressed: () {},
+      onPressed: (_) {},
       bottom: 0,
       left: 32,
       right: 32,

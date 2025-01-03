@@ -124,21 +124,13 @@ class _RegistrationButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final model = context.read<SignUpViewModel>();
-    final authButtonState =
+    final buttonState =
         context.select((SignUpViewModel value) => value.state.buttonState);
-    final onPressed = authButtonState == ButtonState.enabled
-        ? model.onAuthButtonPressed
-        : null;
-    final indicator = authButtonState == ButtonState.inProcess
-        ? const CircularProgressIndicator(
-            color: Colors.white,
-            strokeWidth: 2,
-          )
-        : null;
+
     return ConfirmButton(
-      indicator: indicator,
+      state: buttonState,
       text: 'Sign Up',
-      onPressed: onPressed == null ? () {} : () => onPressed.call(context),
+      onPressed: (context) => model.onAuthButtonPressed(context),
     );
   }
 }

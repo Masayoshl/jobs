@@ -1,12 +1,15 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 abstract class SessionDataProviderKeys {
-  static const _apiKey = 'api_key'; //? Ключ в SharedPreferences
+  static const _apiKey = 'api_key';
 }
 
 abstract class SessionDataProviderError {}
 
-class SessionDataProviderInvalidKeyError {}
+class SessionDataProviderInvalidKeyError extends Error {
+  final String message;
+  SessionDataProviderInvalidKeyError([this.message = 'Invalid key']);
+}
 
 class SessionDataProvider {
   final _storage = FlutterSecureStorage();
@@ -14,7 +17,7 @@ class SessionDataProvider {
   Future<String?> getApiKey() async {
     final apiKey = await _storage.read(key: SessionDataProviderKeys._apiKey);
     if (apiKey == null) {
-      throw SessionDataProviderInvalidKeyError;
+      throw SessionDataProviderInvalidKeyError();
     } else {
       return apiKey;
     }

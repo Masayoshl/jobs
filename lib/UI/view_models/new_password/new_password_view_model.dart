@@ -5,7 +5,7 @@ import 'package:jobs/domain/entity/password.dart';
 
 import 'package:jobs/domain/servi%D1%81es/new_password_service.dart';
 
-enum ButtonState { enabled, inProcess, disable }
+import '../../common/button_state.dart';
 
 class _NewPasswordViewModelState {
   final Password password;

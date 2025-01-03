@@ -1,13 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:jobs/UI/common/button_state.dart';
 import 'package:jobs/UI/router/main_router.dart';
 import 'package:jobs/domain/data_providers/auth_api_provider.dart';
 import 'package:jobs/domain/entity/email.dart';
 import 'package:jobs/domain/entity/password.dart';
 import 'package:jobs/domain/serviсes/auth_service.dart';
-
-enum ButtonState { enabled, inProcess, disable }
 
 class _SignInViewModelState {
   final Email email;

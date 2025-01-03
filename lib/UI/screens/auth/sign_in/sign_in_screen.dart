@@ -121,21 +121,13 @@ class AuthButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final model = context.read<SignInViewModel>();
-    final authButtonState =
+    final buttonState =
         context.select((SignInViewModel value) => value.state.buttonState);
-    final onPressed = authButtonState == ButtonState.enabled
-        ? model.onAuthButtonPressed
-        : null;
-    final indicator = authButtonState == ButtonState.inProcess
-        ? const CircularProgressIndicator(
-            color: Colors.white,
-            strokeWidth: 2,
-          )
-        : null;
+
     return ConfirmButton(
-      indicator: indicator,
+      state: buttonState,
       text: 'Sign In',
-      onPressed: onPressed == null ? () {} : () => onPressed.call(context),
+      onPressed: (_) => model.onAuthButtonPressed(context),
     );
   }
 }

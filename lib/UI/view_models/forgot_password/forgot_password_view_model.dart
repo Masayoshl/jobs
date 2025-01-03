@@ -2,11 +2,12 @@
 import 'package:flutter/material.dart';
 
 import 'package:jobs/UI/router/main_router.dart';
+
 import 'package:jobs/domain/data_providers/auth_api_provider.dart';
 import 'package:jobs/domain/entity/email.dart';
 import 'package:jobs/domain/servi%D1%81es/auth_service.dart';
 
-enum ButtonState { enabled, inProcess, disable }
+import '../../common/button_state.dart';
 
 class _ForgotPasswordViewModelState {
   final Email email;

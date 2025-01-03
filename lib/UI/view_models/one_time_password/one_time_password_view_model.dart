@@ -7,7 +7,7 @@ import 'package:jobs/domain/entity/one_time_password.dart';
 
 import 'package:jobs/domain/servi%D1%81es/otp_service.dart';
 
-enum ButtonState { enabled, inProcess, disable }
+import '../../common/button_state.dart';
 
 class _OneTimePasswordViewModelState {
   final OneTimePassword password;

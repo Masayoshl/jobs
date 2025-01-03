@@ -59,9 +59,8 @@ class ProfileSetupBottom extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         ConfirmButton(
-          // indicator: indicator,
           text: 'Continue',
-          onPressed: () => model.navToAccountTypeScreeen(context),
+          onPressed: (_) => model.navToAccountTypeScreeen(context),
           bottom: 32,
           left: 32,
           right: 32,

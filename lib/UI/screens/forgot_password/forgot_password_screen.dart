@@ -102,18 +102,11 @@ class ButtonWidget extends StatelessWidget {
     final model = context.read<ForgotPasswordViewModel>();
     final buttonState = context
         .select((ForgotPasswordViewModel value) => value.state.buttonState);
-    final onPressed =
-        buttonState == ButtonState.enabled ? model.onButtonPressed : null;
-    final indicator = buttonState == ButtonState.inProcess
-        ? const CircularProgressIndicator(
-            color: Colors.white,
-            strokeWidth: 2,
-          )
-        : null;
+
     return ConfirmButton(
-      indicator: indicator,
+      state: buttonState,
       text: 'Continue',
-      onPressed: onPressed == null ? () {} : () => onPressed.call(context),
+      onPressed: (context) => model.onButtonPressed(context),
       bottom: 0,
     );
   }

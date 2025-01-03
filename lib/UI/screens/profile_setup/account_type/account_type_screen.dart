@@ -74,10 +74,12 @@ class AccountTypeBottom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final model = context.read<AccountTypeViewModel>();
+    final buttonState =
+        context.select((AccountTypeViewModel value) => value.state.buttonState);
     return ConfirmButton(
-      // indicator: indicator,
       text: 'Continue',
-      onPressed: () => model.onButtonPressed(),
+      onPressed: (_) => model.onButtonPressed(),
+      state: buttonState,
       bottom: 0,
       left: 32,
       right: 32,

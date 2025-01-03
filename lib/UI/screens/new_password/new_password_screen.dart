@@ -219,14 +219,15 @@ class _CongratOverlayState extends State<CongratOverlay> {
                         style: AppTextStyles.textXLMedium
                             .copyWith(color: grayColor100)),
                     ConfirmButton(
-                      buttonColor: purple400,
+                      backgroundColor: purple400,
                       width: 260,
                       height: 60,
                       left: 55,
                       right: 55,
                       top: 24,
                       bottom: 50,
-                      onPressed: () => model.navToAboutUserScreen(context),
+                      onPressed: (context) =>
+                          model.navToAboutUserScreen(context),
                       text: 'Continue',
                     )
                   ]),
@@ -250,19 +251,14 @@ class ButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final model = context.read<NewPasswordViewModel>();
-    final authButtonState =
+    final buttonState =
         context.select((NewPasswordViewModel value) => value.state.buttonState);
-    final indicator = authButtonState == ButtonState.inProcess
-        ? const CircularProgressIndicator(
-            color: Colors.white,
-            strokeWidth: 2,
-          )
-        : null;
+
     return ConfirmButton(
+      state: buttonState,
       bottom: 0,
-      indicator: indicator,
       text: 'Continue',
-      onPressed: () => model.onButtonPressed(_controller),
+      onPressed: (_) => model.onButtonPressed(_controller),
     );
   }
 }
