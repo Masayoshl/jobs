@@ -21,7 +21,7 @@ class SignInScreen extends StatelessWidget {
     final model = context.read<SignInViewModel>();
 
     return ScreenBuilder(
-      bodyWidget: Column(
+      content: Column(
         children: [
           const ScreenTitle(text: 'Sign in'),
           const SignInForm(),
@@ -29,7 +29,7 @@ class SignInScreen extends StatelessWidget {
           const SocialLoginButtons(),
         ],
       ),
-      bottomWidget: const NavTextWidget(),
+      footer: const NavTextWidget(),
     );
   }
 }

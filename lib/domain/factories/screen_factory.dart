@@ -5,6 +5,7 @@ import 'package:jobs/UI/screens/profile_setup/account_type/account_type_screen.d
 import 'package:jobs/UI/screens/profile_setup/account_type/account_type_view_model.dart';
 import 'package:jobs/UI/screens/profile_setup/profile_setup_screen.dart';
 import 'package:jobs/UI/screens/profile_setup/profile_setup_view_model.dart';
+import 'package:jobs/UI/screens/profile_setup/select_country/select_country_screen.dart';
 import 'package:jobs/UI/view_models/sign_in/sign_in_view_model.dart';
 import 'package:jobs/UI/view_models/sign_up/sign_up_view_model.dart';
 import 'package:jobs/UI/screens/forgot_password/forgot_password_screen.dart';
@@ -72,6 +73,13 @@ class ScreenFactory {
     return ChangeNotifierProvider(
       create: (_) => AccountTypeViewModel(),
       child: const AccountTypeScreen(),
+    );
+  }
+
+  Widget makeSelectCountry() {
+    return ChangeNotifierProvider(
+      create: (_) => AccountTypeViewModel(),
+      child: const SelectCountryScreen(),
     );
   }
 }

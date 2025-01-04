@@ -1,73 +1,71 @@
 import 'package:flutter/material.dart';
 
 class ScreenBuilder extends StatelessWidget {
-  final Widget? appBarWidget;
-  final Widget bodyWidget;
-  final Widget? bottomWidget;
+  final Widget? header;
+  final Widget content;
+  final Widget? footer;
+  final bool useSliverContent;
+  final ScrollPhysics? overridePhysics;
+  final Widget? searchField;
+
   const ScreenBuilder({
     super.key,
-    this.appBarWidget,
-    required this.bodyWidget,
-    required this.bottomWidget,
+    this.header,
+    required this.content,
+    this.footer,
+    this.useSliverContent = false,
+    this.overridePhysics,
+    this.searchField,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: LayoutBuilder(builder: (context, constraints) {
-        final physics = constraints.maxHeight < 600
-            ? const AlwaysScrollableScrollPhysics()
-            : const NeverScrollableScrollPhysics();
+    final Widget sliverContent =
+        useSliverContent ? content : SliverToBoxAdapter(child: content);
 
-        return GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          child: CustomScrollView(
-            physics: physics,
-            slivers: [
-              SliverAppBar(
-                automaticallyImplyLeading: false,
-                title: Padding(
-                  padding: const EdgeInsets.only(top: 10.0),
-                  child: appBarWidget,
+    final Widget? footerSection = footer != null
+        ? SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 10.0),
+              child: footer,
+            ),
+          )
+        : null;
+
+    final PreferredSizeWidget? searchSection = searchField != null
+        ? PreferredSize(
+            preferredSize: const Size.fromHeight(70.0),
+            child: searchField!,
+          )
+        : null;
+
+    return Scaffold(
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final physics = overridePhysics ??
+              (constraints.maxHeight < 600
+                  ? const AlwaysScrollableScrollPhysics()
+                  : const NeverScrollableScrollPhysics());
+
+          return GestureDetector(
+            onTap: () => FocusScope.of(context).unfocus(),
+            child: CustomScrollView(
+              physics: physics,
+              slivers: [
+                SliverAppBar(
+                  surfaceTintColor: Colors.white,
+                  pinned: true,
+                  automaticallyImplyLeading: false,
+                  title: header,
+                  bottom: searchSection,
                 ),
-              ),
-              SliverToBoxAdapter(child: bodyWidget),
-            ],
-          ),
-        );
-      }),
-      bottomNavigationBar: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 10.0),
-          child: bottomWidget,
-        ),
+                sliverContent,
+              ],
+            ),
+          );
+        },
       ),
-      extendBody: true,
-      //extendBodyBehindAppBar: true,
+      bottomNavigationBar: footerSection,
     );
   }
 }
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //     //resizeToAvoidBottomInset: true,
-  //     appBar: AppBar(
-  //       automaticallyImplyLeading: false,
-  //       scrolledUnderElevation: 0,
-  //       backgroundColor: Colors.white,
-  //       title: appBarWidget,
-  //     ),
-  //     bottomNavigationBar: SafeArea(
-  //       child: Padding(
-  //         padding: const EdgeInsets.only(bottom: 10.0),
-  //         child: bottomWidget,
-  //       ),
-  //     ),
-  //     body: SingleChildScrollView(
-  //       padding:
-  //           EdgeInsets.only(top: MediaQuery.of(context).viewPadding.top + 20),
-  //       child: bodyWidget,
-  //     ),
-  //   );
-  // }
-// }

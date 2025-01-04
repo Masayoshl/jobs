@@ -16,9 +16,9 @@ class ProfileSetupScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const ScreenBuilder(
-      appBarWidget: CustomHeader(text: 'Setup Your Profile'),
-      bodyWidget: ProfileSetupBody(),
-      bottomWidget: ProfileSetupBottom(),
+      header: CustomHeader(text: 'Setup Your Profile'),
+      content: ProfileSetupBody(),
+      footer: ProfileSetupBottom(),
     );
   }
 }

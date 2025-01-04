@@ -22,13 +22,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return const ScreenBuilder(
-      appBarWidget: CustomHeader(text: 'Forgot Password'),
-      bodyWidget: Column(children: [
+      header: CustomHeader(text: 'Forgot Password'),
+      content: Column(children: [
         _ImageWidget(),
         AccountRestoreTextWidget(),
         _EmailWidget(),
       ]),
-      bottomWidget: ButtonWidget(),
+      footer: ButtonWidget(),
     );
   }
 }

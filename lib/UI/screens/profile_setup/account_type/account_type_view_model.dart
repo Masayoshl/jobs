@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:jobs/UI/common/button_state.dart';
+import 'package:jobs/UI/router/main_router.dart';
 import 'package:jobs/UI/screens/profile_setup/account_type/widgets/type_selector.dart';
 import 'package:jobs/domain/servi%D1%81es/profile_service.dart';
 import 'package:jobs/gen/assets.gen.dart';
@@ -68,7 +69,11 @@ class AccountTypeViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> onButtonPressed() async {
+  void navToSelectCountryScreeen(BuildContext context) {
+    Navigator.of(context).pushNamed(MainRouterNames.selectCountry);
+  }
+
+  Future<void> onButtonPressed(BuildContext context) async {
     // if (_state.accountType == null) return;
 
     _state = _state.copyWith(inProcess: true);
@@ -77,6 +82,7 @@ class AccountTypeViewModel extends ChangeNotifier {
     try {
       await _profileService.setAccountType();
       _state = _state.copyWith(inProcess: false);
+      navToSelectCountryScreeen(context);
     } on ProfileServiceError catch (e) {
       _state = _state.copyWith(
         errorMessage: e.message,

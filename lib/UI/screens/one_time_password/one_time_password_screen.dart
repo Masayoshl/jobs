@@ -16,9 +16,8 @@ class OneTimePasswordScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const ScreenBuilder(
-      appBarWidget: CustomHeader(text: 'Forgot Password'),
-      bodyWidget:
-          Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+      header: CustomHeader(text: 'Forgot Password'),
+      content: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
         DigitCodeTextWidget(),
         DescriptiveTextWidget(),
         ContactValueTextWidget(),
@@ -26,7 +25,7 @@ class OneTimePasswordScreen extends StatelessWidget {
         OTPTimer(),
         ChangeContactWidget(),
       ]),
-      bottomWidget: ButtonWidget(),
+      footer: ButtonWidget(),
     );
   }
 }

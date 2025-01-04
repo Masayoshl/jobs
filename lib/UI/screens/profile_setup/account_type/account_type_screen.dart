@@ -13,9 +13,9 @@ class AccountTypeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const ScreenBuilder(
-      appBarWidget: CustomHeader(text: 'Setup Account Type'),
-      bodyWidget: AccountTypeBody(),
-      bottomWidget: AccountTypeBottom(),
+      header: CustomHeader(text: 'Setup Account Type'),
+      content: AccountTypeBody(),
+      footer: AccountTypeBottom(),
     );
   }
 }
@@ -78,7 +78,7 @@ class AccountTypeBottom extends StatelessWidget {
         context.select((AccountTypeViewModel value) => value.state.buttonState);
     return ConfirmButton(
       text: 'Continue',
-      onPressed: (_) => model.onButtonPressed(),
+      onPressed: (_) => model.onButtonPressed(context),
       state: buttonState,
       bottom: 0,
       left: 32,

@@ -11,13 +11,15 @@ abstract class MainRouterNames {
       '/sign_in/forgot_password/one_time_password/create_password';
   static const profileSetup = '/sign_in/sign_up/profile_setup';
   static const accountType = '/sign_in/sign_up/profile_setup/account_type';
+  static const selectCountry =
+      '/sign_in/sign_up/profile_setup/account_type/select_country';
 }
 
 class MainRouter {
   static final _screenFactory = ScreenFactory();
 
   //! Юзать если нужно поверсатать один екран =>
-  final home = _screenFactory.makeProfileSetup();
+  final home = _screenFactory.makeSelectCountry();
 
   Route<Object> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -54,6 +56,10 @@ class MainRouter {
       case MainRouterNames.accountType:
         return MaterialPageRoute(
           builder: (_) => _screenFactory.makeAccountType(),
+        );
+      case MainRouterNames.selectCountry:
+        return MaterialPageRoute(
+          builder: (_) => _screenFactory.makeSelectCountry(),
         );
       default:
         const widget = Text('Navigation Error!!!');

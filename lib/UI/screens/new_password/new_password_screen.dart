@@ -17,16 +17,16 @@ class NewPasswordScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const ScreenBuilder(
-        appBarWidget: CustomHeader(
+        header: CustomHeader(
           text: 'Create Password',
         ),
-        bodyWidget: Column(
+        content: Column(
           children: [
             ImageWidget(),
             NewPasswordForm(),
           ],
         ),
-        bottomWidget: CongratOverlay());
+        footer: CongratOverlay());
   }
 }
 

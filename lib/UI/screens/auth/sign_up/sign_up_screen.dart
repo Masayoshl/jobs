@@ -13,7 +13,7 @@ class SignUpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const ScreenBuilder(
-      bodyWidget: Column(
+      content: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ScreenTitle(text: 'Sign up'),
@@ -22,7 +22,7 @@ class SignUpScreen extends StatelessWidget {
           SocialLoginButtons(),
         ],
       ),
-      bottomWidget: _NavTextWidget(),
+      footer: _NavTextWidget(),
     );
   }
 }
