@@ -24,8 +24,8 @@ class Password {
   final String? confirmErrorMessage;
   final bool hasConfirmError;
 
-  static const String _passwordRegex =
-      r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$';
+  // static const String _passwordRegex =
+  //     r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$';
 
   const Password._({
     required this.value,
@@ -79,11 +79,11 @@ class Password {
           'Password must be at least 8 characters long');
     }
 
-    final regex = RegExp(_passwordRegex);
-    if (!regex.hasMatch(value)) {
-      return const PasswordValidationResult.invalid(
-          'Password must contain uppercase, lowercase, number and special character');
-    }
+    // final regex = RegExp(_passwordRegex);
+    // if (!regex.hasMatch(value)) {
+    //   return const PasswordValidationResult.invalid(
+    //       'Password must contain uppercase, lowercase, number and special character');
+    // }
 
     return const PasswordValidationResult.valid();
   }

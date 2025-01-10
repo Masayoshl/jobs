@@ -7,12 +7,12 @@ abstract class ButtonStateBase {
 enum ButtonState implements ButtonStateBase {
   enabled,
   inProcess,
-  disable;
+  disabled;
 
   @override
   bool get isEnabled => this == ButtonState.enabled;
   @override
   bool get isInProcess => this == ButtonState.inProcess;
   @override
-  bool get isDisabled => this == ButtonState.disable;
+  bool get isDisabled => this == ButtonState.disabled;
 }

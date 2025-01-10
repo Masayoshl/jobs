@@ -190,12 +190,12 @@ class _ErrorWidget extends StatelessWidget {
             constraints: const BoxConstraints(maxWidth: 350),
             height: value * 20, // Регулируем высоту контейнера
             padding: const EdgeInsets.only(
-              left: 22,
+              left: 32,
             ),
             child: Text(
               errorText ?? '',
               overflow: TextOverflow.ellipsis,
-              style: AppTextStyles.textM.copyWith(color: errorColor700),
+              style: AppTextStyles.textL.copyWith(color: errorColor700),
             ),
           ),
         );

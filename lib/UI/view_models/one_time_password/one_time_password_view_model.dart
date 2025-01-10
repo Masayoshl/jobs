@@ -21,7 +21,7 @@ class _OneTimePasswordViewModelState {
     } else if (!password.hasError) {
       return ButtonState.enabled;
     } else {
-      return ButtonState.disable;
+      return ButtonState.disabled;
     }
   }
 

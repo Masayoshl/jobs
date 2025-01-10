@@ -1,26 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+
 import 'package:jobs/UI/theme/theme.dart';
+import 'package:jobs/domain/entity/country.dart';
 
 class CountryTile extends StatelessWidget {
-  final String countryId;
-  final String countryName;
-  final String flagAsset;
+  final Country country;
   final String? selectedCountryId;
-  final ValueChanged<String?>? onChanged;
+  final ValueChanged<Country>? onChanged;
 
   const CountryTile({
     super.key,
-    required this.countryId,
-    required this.countryName,
-    required this.flagAsset,
-    required this.selectedCountryId,
-    required this.onChanged,
+    required this.country,
+    this.selectedCountryId,
+    this.onChanged,
   });
 
   @override
   Widget build(BuildContext context) {
-    final bool isSelected = countryId == selectedCountryId;
+    final bool isSelected = country.code == selectedCountryId;
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
@@ -34,7 +32,7 @@ class CountryTile extends StatelessWidget {
       clipBehavior: Clip.hardEdge, // Важно для InkWell эффекта
       child: Ink(
         child: InkWell(
-          onTap: () => onChanged?.call(countryId),
+          onTap: () => onChanged?.call(country),
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
             child: Row(
@@ -43,7 +41,7 @@ class CountryTile extends StatelessWidget {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: SvgPicture.asset(
-                    flagAsset,
+                    country.flag4x3,
                     width: 46,
                     height: 46,
                     fit: BoxFit.contain,
@@ -52,20 +50,23 @@ class CountryTile extends StatelessWidget {
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    countryName,
+                    country.name,
                     style: AppTextStyles.textXLSemibold,
                   ),
                 ),
-                Radio<String>(
-                  value: countryId,
-                  groupValue: selectedCountryId,
-                  onChanged: onChanged,
-                  activeColor: primaryColor,
-                  fillColor: WidgetStateProperty.all<Color>(primaryColor),
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  visualDensity: const VisualDensity(
-                    horizontal: VisualDensity.minimumDensity,
-                    vertical: VisualDensity.minimumDensity,
+                IgnorePointer(
+                  ignoring: true,
+                  child: Radio<String>(
+                    value: country.code,
+                    groupValue: selectedCountryId,
+                    onChanged: (_) => onChanged,
+                    activeColor: primaryColor,
+                    fillColor: WidgetStateProperty.all<Color>(primaryColor),
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    visualDensity: const VisualDensity(
+                      horizontal: VisualDensity.minimumDensity,
+                      vertical: VisualDensity.minimumDensity,
+                    ),
                   ),
                 ),
                 const SizedBox(width: 16),

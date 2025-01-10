@@ -20,7 +20,7 @@ class _ForgotPasswordViewModelState {
     } else if (!email.hasError) {
       return ButtonState.enabled;
     } else {
-      return ButtonState.disable;
+      return ButtonState.disabled;
     }
   }
 

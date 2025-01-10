@@ -28,7 +28,7 @@ class _SignInViewModelState {
     } else if (!email.hasError && !password.hasError) {
       return ButtonState.enabled;
     } else {
-      return ButtonState.disable;
+      return ButtonState.disabled;
     }
   }
 

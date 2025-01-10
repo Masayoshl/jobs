@@ -64,7 +64,7 @@ class _CustomTextFieldState extends BaseTextFieldState<CustomTextField> {
       enabled: widget.isEnabled,
       decoration: buildInputDecoration(prefixIcon),
       onChanged: widget.onChanged,
-      textInputAction: TextInputAction.next,
+      textInputAction: TextInputAction.done,
     );
   }
 }

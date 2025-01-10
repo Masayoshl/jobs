@@ -18,7 +18,7 @@ class _NewPasswordViewModelState {
     } else if (!password.hasError && !password.hasConfirmError) {
       return ButtonState.enabled;
     } else {
-      return ButtonState.disable;
+      return ButtonState.disabled;
     }
   }
 

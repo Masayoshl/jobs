@@ -41,7 +41,8 @@ class ConfirmButton extends StatelessWidget {
             style: AppTextStyles.textXLSemibold.copyWith(color: Colors.white),
           );
 
-    final color = backgroundColor ?? primaryColor;
+    final color =
+        isEnabled ? (backgroundColor ?? primaryColor) : primaryColor300;
 
     return Container(
       margin: EdgeInsets.only(

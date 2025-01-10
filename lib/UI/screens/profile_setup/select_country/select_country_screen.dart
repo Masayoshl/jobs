@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:jobs/UI/screens/profile_setup/select_country/select_country_view_model.dart';
 import 'package:jobs/UI/screens/profile_setup/select_country/widgets/country_tile.dart';
 import 'package:jobs/UI/theme/theme.dart';
 
 import 'package:jobs/UI/widgets/confirm_button.dart';
 import 'package:jobs/UI/widgets/custom_header.dart';
 import 'package:jobs/UI/widgets/screen_builder/screen_builder.dart';
+import 'package:jobs/domain/entity/country.dart';
 import 'package:jobs/gen/assets.gen.dart';
+import 'package:provider/provider.dart';
 
 class SelectCountryScreen extends StatelessWidget {
   const SelectCountryScreen({super.key});
@@ -24,87 +27,97 @@ class SelectCountryScreen extends StatelessWidget {
   }
 }
 
-class SelectCountryBody extends StatefulWidget {
+class SelectCountryBody extends StatelessWidget {
   const SelectCountryBody({super.key});
 
   @override
-  State<SelectCountryBody> createState() => _SelectCountryBodyState();
-}
-
-class _SelectCountryBodyState extends State<SelectCountryBody> {
-  String? selectedCountryId;
-
-  void _onCountrySelected(String countryId) {
-    setState(() {
-      selectedCountryId = countryId;
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return CountryList(
-      groupValue: selectedCountryId,
-      onChanged: (countryId) => _onCountrySelected(countryId!),
-    );
-  }
-}
+    return Consumer<SelectCountryViewModel>(
+      builder: (context, viewModel, _) {
+        final state = viewModel.state;
 
-class CountryList extends StatelessWidget {
-  final String? groupValue;
-  final ValueChanged<String?>? onChanged;
-
-  const CountryList({
-    super.key,
-    this.groupValue,
-    this.onChanged,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return SliverList.builder(
-      itemCount: countries.length,
-      itemBuilder: (context, index) {
-        final country = countries[index];
-        return CountryTile(
-          countryId: country.id,
-          countryName: country.name,
-          flagAsset: country.flagAsset,
-          selectedCountryId: groupValue,
-          onChanged: onChanged,
+        if (state.isLoading) {
+          return const SliverFillRemaining(
+            child: Center(child: CircularProgressIndicator()),
+          );
+        }
+        if (state.errorMessage != null) {
+          return SliverFillRemaining(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(state.errorMessage!),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () => viewModel.loadCountries(),
+                    child: const Text('Retry'),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+        return SliverList.builder(
+          itemCount: state.filteredCountries.length,
+          itemBuilder: (context, index) {
+            final country = state.filteredCountries[index];
+            return CountryTile(
+              country: country,
+              selectedCountryId: state.selectedCountry?.code ?? null,
+              onChanged: (value) => viewModel.selectCountry(value),
+            );
+          },
         );
       },
     );
   }
 }
 
-// Модель данных для страны
-class Country {
-  final String id;
-  final String name;
-  final String flagAsset;
+// class _SelectCountryBodyState extends State<SelectCountryBody> {
+//   // @override
+//   // Widget build(BuildContext context) {
+//   //   final model = context.read<SelectCountryViewModel>();
+//   //   final state = model.state;
+//   //   if (model.state.isLoading) {
+//   //     return const SliverFillRemaining(
+//   //       child: Center(
+//   //           child: CircularProgressIndicator(
+//   //         strokeWidth: 3,
+//   //       )),
+//   //     );
+//   //   }
+//   //   return SliverList.builder(
+//   //     itemCount: state.allCountries.length,
+//   //     itemBuilder: (context, index) {
+//   //       final country = state.allCountries[index];
+//   //       return CountryTile(
+//   //         country: country,
+//   //         //selectedCountryId: state.selectedCountry!.code,
+//   //       );
+//   //     },
+//   //   );
+//   // }
 
-  const Country({
-    required this.id,
-    required this.name,
-    required this.flagAsset,
+// }
+
+class CountryList extends StatelessWidget {
+  final List<Country> countries;
+  final String? selectedValue;
+  final ValueChanged<Country>? onChanged;
+
+  const CountryList({
+    super.key,
+    required this.countries,
+    this.selectedValue,
+    this.onChanged,
   });
-}
 
-// Пример списка стран
-final countries = [
-  Country(
-    id: 'IN',
-    name: 'India',
-    flagAsset: Assets.images.india,
-  ),
-  Country(id: 'ID', name: ' Iceland', flagAsset: Assets.images.iceland),
-  Country(
-    id: 'IR',
-    name: 'Honduras',
-    flagAsset: Assets.images.honduras,
-  ),
-  // ... другие страны
-];
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox.shrink();
+  }
+}
 
 class SearchBar extends StatelessWidget {
   const SearchBar({super.key});
@@ -164,7 +177,7 @@ class SelectCountryBottom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ConfirmButton(
-      // indicator: indicator,
+      //state: ButtonState.disabled,
       text: 'Continue',
       onPressed: (_) {},
       bottom: 0,

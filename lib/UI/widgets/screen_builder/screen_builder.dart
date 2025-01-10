@@ -54,7 +54,9 @@ class ScreenBuilder extends StatelessWidget {
               slivers: [
                 SliverAppBar(
                   surfaceTintColor: Colors.white,
-                  pinned: true,
+                  //pinned: true,
+                  // floating: true,
+                  // snap: true,
                   automaticallyImplyLeading: false,
                   title: header,
                   bottom: searchSection,

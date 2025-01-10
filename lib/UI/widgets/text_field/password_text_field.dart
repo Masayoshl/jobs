@@ -84,7 +84,7 @@ class _PasswordTextFieldState extends BaseTextFieldState<PasswordTextField> {
       obscureText: _isObscured,
       decoration: buildInputDecoration(prefixIcon),
       onChanged: widget.onChanged,
-      textInputAction: TextInputAction.next,
+      textInputAction: TextInputAction.done,
     );
   }
 }

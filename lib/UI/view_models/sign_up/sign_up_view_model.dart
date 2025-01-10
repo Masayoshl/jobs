@@ -32,7 +32,7 @@ class _SignUpViewModelState {
     } else if (!email.hasError && !password.hasError && !name.hasError) {
       return ButtonState.enabled;
     } else {
-      return ButtonState.disable;
+      return ButtonState.disabled;
     }
   }
 
@@ -101,9 +101,12 @@ class SignUpViewModel extends ChangeNotifier {
       await _authService.signUp(
           _state.email.value, _state.password.value, _state.name.value);
       _state = _state.copyWith(inProcess: false);
+      Navigator.of(context).pushNamed(MainRouterNames.profileSetup);
     } on AuthApiProviderIncorrectEmailDataError {
       _state = _state.copyWith(
-        email: Email(value: _state.email.value, isDirty: true),
+        email: Email(
+            externalErrorMessage: 'The mail is already being used',
+            isDirty: true),
         inProcess: false,
       );
     } catch (e) {

@@ -289,15 +289,6 @@ class $AssetsImagesGen {
   /// File path: assets/images/ForgotPasswordImage.svg
   String get forgotPasswordImage => 'assets/images/ForgotPasswordImage.svg';
 
-  /// File path: assets/images/Honduras.svg
-  String get honduras => 'assets/images/Honduras.svg';
-
-  /// File path: assets/images/Iceland.svg
-  String get iceland => 'assets/images/Iceland.svg';
-
-  /// File path: assets/images/India.svg
-  String get india => 'assets/images/India.svg';
-
   /// File path: assets/images/ProfileSetupImage.svg
   String get profileSetupImage => 'assets/images/ProfileSetupImage.svg';
 
@@ -308,9 +299,6 @@ class $AssetsImagesGen {
         createPasswordCongratImage,
         createPasswordImage,
         forgotPasswordImage,
-        honduras,
-        iceland,
-        india,
         profileSetupImage
       ];
 }

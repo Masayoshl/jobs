@@ -16,6 +16,7 @@ dependencies:
   pinput: ^5.0.0
   provider: ^6.1.2
   flutter_secure_storage: ^9.2.2
+
   
 
 dev_dependencies:
@@ -34,6 +35,8 @@ flutter:
      - assets/icons/
      - assets/checkbox/
      - assets/images/
+     - assets/data/country.json
+     - assets/flags/4x3/
   fonts:
     - family: JosefinSans 
       fonts:
