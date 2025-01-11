@@ -25,7 +25,7 @@ class CountryTile extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
         border: Border.all(
-          color: isSelected ? primaryColor : neutralColor600,
+          color: isSelected ? primaryColor500 : neutralColor600,
           width: 1.5,
         ),
       ),
@@ -60,8 +60,8 @@ class CountryTile extends StatelessWidget {
                     value: country.code,
                     groupValue: selectedCountryId,
                     onChanged: (_) => onChanged,
-                    activeColor: primaryColor,
-                    fillColor: WidgetStateProperty.all<Color>(primaryColor),
+                    activeColor: primaryColor500,
+                    fillColor: WidgetStateProperty.all<Color>(primaryColor500),
                     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     visualDensity: const VisualDensity(
                       horizontal: VisualDensity.minimumDensity,

@@ -98,7 +98,7 @@ class ChangeContactWidget extends StatelessWidget {
           Navigator.of(context).pushNamed(MainRouterNames.forgotPassword),
       child: Text(
         'Change Email',
-        style: AppTextStyles.textXXLBold.copyWith(color: primaryColor),
+        style: AppTextStyles.textXXLBold.copyWith(color: primaryColor500),
       ),
     );
   }
@@ -115,7 +115,7 @@ class ContactValueTextWidget extends StatelessWidget {
     return Text(
       useremail,
       style: AppTextStyles.textXXLSemibold.copyWith(
-        color: primaryColor,
+        color: primaryColor500,
       ),
     );
   }
@@ -181,7 +181,7 @@ class _ResendButton extends StatelessWidget {
       child: Text(
         'Resend',
         style: AppTextStyles.textXXLSemibold.copyWith(
-          color: primaryColor,
+          color: primaryColor500,
         ),
       ),
     );
@@ -209,7 +209,7 @@ class _TimerText extends StatelessWidget {
           TextSpan(
             text: '${remainingTime}s',
             style: AppTextStyles.textXXLSemibold.copyWith(
-              color: primaryColor,
+              color: primaryColor500,
             ),
           ),
         ],

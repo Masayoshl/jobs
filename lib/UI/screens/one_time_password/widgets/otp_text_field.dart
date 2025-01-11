@@ -59,7 +59,7 @@ class OTPTextField extends StatelessWidget {
         fontSize: 22,
         letterSpacing: 0,
         height: 1.0,
-        color: primaryColor,
+        color: primaryColor500,
       ),
       width: 59,
       height: 62,

@@ -46,7 +46,7 @@ class CustomSearchBar extends StatelessWidget {
                 fit: BoxFit.none,
                 Assets.icons.microphoneIcon,
                 colorFilter:
-                    const ColorFilter.mode(primaryColor, BlendMode.srcIn),
+                    const ColorFilter.mode(primaryColor500, BlendMode.srcIn),
               ),
             ),
           ),

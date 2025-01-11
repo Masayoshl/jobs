@@ -11,8 +11,8 @@ class CustomAppTheme {
     useMaterial3: true,
     brightness: Brightness.light,
     fontFamily: 'JosefinSans',
-    primaryColor: primaryColor,
-    colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
+    primaryColor: primaryColor500,
+    colorScheme: ColorScheme.fromSeed(seedColor: primaryColor500),
     scaffoldBackgroundColor: Colors.white,
     inputDecorationTheme: CustomTextFieldTheme.lightInputDecorationTheme,
     filledButtonTheme: FilledButtonThemeData(
@@ -42,7 +42,7 @@ class CustomAppTheme {
       bodySmall: AppTextStyles.textS,
     ),
     progressIndicatorTheme: const ProgressIndicatorThemeData(
-      color: primaryColor,
+      color: primaryColor500,
     ),
     //textSelectionTheme: const TextSelectionThemeData(cursorColor: primaryColor),
     appBarTheme: const AppBarTheme(backgroundColor: Colors.white),
@@ -51,8 +51,8 @@ class CustomAppTheme {
   static ThemeData darkTheme = ThemeData(
     useMaterial3: true,
     fontFamily: 'JosefinSans',
-    primaryColor: primaryColor,
+    primaryColor: primaryColor500,
     brightness: Brightness.light,
-    colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
+    colorScheme: ColorScheme.fromSeed(seedColor: primaryColor500),
   );
 }

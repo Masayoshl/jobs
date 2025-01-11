@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:jobs/UI/common/button_state.dart';
 import 'package:jobs/domain/entity/country.dart';
+import 'package:jobs/domain/servi%D1%81es/speech_service.dart';
 
 class SelectCountryState {
   final List<Country> allCountries;
@@ -12,6 +13,8 @@ class SelectCountryState {
   final String searchQuery;
   final String? errorMessage;
   final bool isLoading;
+  final bool isListening;
+  final TextEditingController searchController;
 
   SelectCountryState({
     required this.allCountries,
@@ -20,7 +23,9 @@ class SelectCountryState {
     this.searchQuery = '',
     this.errorMessage,
     this.isLoading = false,
-  });
+    this.isListening = false,
+    TextEditingController? searchController,
+  }) : searchController = searchController ?? TextEditingController();
 
   ButtonState get buttonState {
     if (isLoading) return ButtonState.inProcess;
@@ -35,6 +40,8 @@ class SelectCountryState {
     String? searchQuery,
     String? errorMessage,
     bool? isLoading,
+    bool? isListening,
+    TextEditingController? searchController,
   }) {
     return SelectCountryState(
       allCountries: allCountries ?? this.allCountries,
@@ -43,6 +50,8 @@ class SelectCountryState {
       searchQuery: searchQuery ?? this.searchQuery,
       errorMessage: errorMessage ?? this.errorMessage,
       isLoading: isLoading ?? this.isLoading,
+      isListening: isListening ?? this.isListening,
+      searchController: searchController ?? this.searchController,
     );
   }
 }
@@ -50,6 +59,9 @@ class SelectCountryState {
 class SelectCountryViewModel extends ChangeNotifier {
   SelectCountryState _state;
   var _searchDebouncer = Timer(const Duration(milliseconds: 300), () {});
+  final SpeechService _speechService = SpeechService();
+  StreamSubscription? _speechSubscription;
+  StreamSubscription? _listeningStatusSubscription;
 
   SelectCountryViewModel()
       : _state = SelectCountryState(
@@ -58,9 +70,43 @@ class SelectCountryViewModel extends ChangeNotifier {
           isLoading: true,
         ) {
     _initializeCountries();
+    _initializeSpeechService();
   }
 
   SelectCountryState get state => _state;
+
+  Future<void> _initializeSpeechService() async {
+    await _speechService.initialize();
+
+    _speechSubscription = _speechService.textStream.listen((text) {
+      _state.searchController.text = text;
+
+      onSearchQueryChanged(text);
+    });
+
+    _listeningStatusSubscription =
+        _speechService.isListeningStream.listen((isListening) {
+      _updateState(isListening: isListening);
+    });
+  }
+
+  Future<void> toggleListening() async {
+    try {
+      if (_state.isListening) {
+        await _speechService.stopListening();
+      } else {
+        await _speechService.startListening();
+      }
+    } catch (e) {
+      _updateState(
+        errorMessage:
+            'Speech recognition is not available on this device. Please check your permissions and try again.',
+        isListening: false,
+      );
+      // Можно добавить показ snackbar или другого уведомления
+      print('Speech recognition error: $e');
+    }
+  }
 
   Future<void> _initializeCountries() async {
     try {
@@ -110,23 +156,6 @@ class SelectCountryViewModel extends ChangeNotifier {
     _updateState(selectedCountry: country);
   }
 
-  Future<void> onButtonPressed() async {
-    if (_state.buttonState != ButtonState.enabled) return;
-
-    _updateState(isLoading: true);
-    try {
-      // Здесь можно добавить логику сохранения выбранной страны
-      // await _repository.saveSelectedCountry(_state.selectedCountry!);
-
-      // Навигация к следующему экрану
-    } catch (e) {
-      _updateState(
-        errorMessage: 'Failed to save country: ${e.toString()}',
-        isLoading: false,
-      );
-    }
-  }
-
   void _updateState({
     List<Country>? allCountries,
     List<Country>? filteredCountries,
@@ -134,6 +163,7 @@ class SelectCountryViewModel extends ChangeNotifier {
     String? searchQuery,
     String? errorMessage,
     bool? isLoading,
+    bool? isListening,
   }) {
     _state = _state.copyWith(
       allCountries: allCountries,
@@ -142,6 +172,7 @@ class SelectCountryViewModel extends ChangeNotifier {
       searchQuery: searchQuery,
       errorMessage: errorMessage,
       isLoading: isLoading,
+      isListening: isListening,
     );
     notifyListeners();
   }
@@ -149,6 +180,10 @@ class SelectCountryViewModel extends ChangeNotifier {
   @override
   void dispose() {
     _searchDebouncer.cancel();
+    _speechSubscription?.cancel();
+    _listeningStatusSubscription?.cancel();
+    _speechService.dispose();
     super.dispose();
+    _state.searchController.dispose();
   }
 }

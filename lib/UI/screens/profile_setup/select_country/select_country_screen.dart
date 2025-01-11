@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:jobs/UI/screens/profile_setup/select_country/select_country_view_model.dart';
 import 'package:jobs/UI/screens/profile_setup/select_country/widgets/country_tile.dart';
-import 'package:jobs/UI/screens/profile_setup/select_country/widgets/search_bar.dart';
+
 import 'package:jobs/UI/theme/theme.dart';
 import 'package:jobs/UI/widgets/confirm_button.dart';
 import 'package:jobs/UI/widgets/custom_header.dart';
@@ -33,40 +33,49 @@ class Search extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final model = context.read<SelectCountryViewModel>();
-    // return CustomSearchBar(
-    //   onChanged: model.onSearchQueryChanged,
-    // );
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: SearchBar(
-        hintText: 'Search',
-        hintStyle: WidgetStatePropertyAll(
-            AppTextStyles.textXLRegular.copyWith(color: grayColor25)),
-        backgroundColor: const WidgetStatePropertyAll(Colors.white),
-        leading: SvgPicture.asset(
-          Assets.icons.searchIcon,
-          fit: BoxFit.none,
-        ),
-        shadowColor: const WidgetStatePropertyAll(Colors.black),
-        elevation: const WidgetStatePropertyAll(2.0),
-        shape: WidgetStatePropertyAll(
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
-        trailing: <Widget>[
-          Tooltip(
-            message: 'Seach by voice',
-            child: IconButton(
-              onPressed: () {},
-              icon: SvgPicture.asset(
-                fit: BoxFit.none,
-                Assets.icons.microphoneIcon,
-                colorFilter:
-                    const ColorFilter.mode(primaryColor, BlendMode.srcIn),
-              ),
+      child: Consumer<SelectCountryViewModel>(
+        builder: (context, model, _) {
+          return SearchBar(
+            controller: model.state.searchController, // Добавляем контроллер
+            hintText: 'Search',
+            hintStyle: WidgetStatePropertyAll(
+                AppTextStyles.textXLRegular.copyWith(color: grayColor25)),
+            backgroundColor: const WidgetStatePropertyAll(Colors.white),
+            leading: SvgPicture.asset(
+              Assets.icons.searchIcon,
+              fit: BoxFit.none,
             ),
-          )
-        ],
-        onChanged: model.onSearchQueryChanged,
+            shadowColor: const WidgetStatePropertyAll(Colors.black),
+            elevation: const WidgetStatePropertyAll(2.0),
+            shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16))),
+            trailing: <Widget>[
+              Tooltip(
+                message: 'Search by voice',
+                child: IconButton(
+                  onPressed: model.toggleListening,
+                  isSelected: model.state.isListening,
+                  icon: SvgPicture.asset(
+                    fit: BoxFit.none,
+                    Assets.icons.microphoneIcon,
+                    colorFilter: const ColorFilter.mode(
+                      primaryColor500,
+                      BlendMode.srcIn,
+                    ),
+                  ),
+                  selectedIcon: const Icon(
+                    color: errorColor500,
+                    Icons.stop_circle_rounded,
+                    size: 32,
+                  ),
+                ),
+              )
+            ],
+            onChanged: model.onSearchQueryChanged,
+          );
+        },
       ),
     );
   }
@@ -109,7 +118,7 @@ class SelectCountryBody extends StatelessWidget {
             final country = state.filteredCountries[index];
             return CountryTile(
               country: country,
-              selectedCountryId: state.selectedCountry?.code ?? null,
+              selectedCountryId: state.selectedCountry?.code,
               onChanged: (value) => model.selectCountry(value),
             );
           },
@@ -124,9 +133,10 @@ class SelectCountryBottom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //final model = context.read<SelectCountryViewModel>();
+    final buttonState = context
+        .select((SelectCountryViewModel value) => value.state.buttonState);
     return ConfirmButton(
-      //state: model.state.buttonState,
+      state: buttonState,
       text: 'Continue',
       onPressed: (_) {},
       bottom: 0,

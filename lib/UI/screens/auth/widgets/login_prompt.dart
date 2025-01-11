@@ -27,7 +27,7 @@ class LoginPrompt extends StatelessWidget {
           TextSpan(
             text: navigationText,
             style: navigationTextStyle ??
-                AppTextStyles.textXXLSemibold.copyWith(color: primaryColor),
+                AppTextStyles.textXXLSemibold.copyWith(color: primaryColor500),
             recognizer: TapGestureRecognizer()..onTap = () => onTap(),
           ),
         ],

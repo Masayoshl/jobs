@@ -198,6 +198,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  dash_flags:
+    dependency: "direct main"
+    description:
+      name: dash_flags
+      sha256: bcd173faf4ace26bbd161c4f38b55ad92b31d29fa85d6f430f7a785831bd6760
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.1"
   fake_async:
     dependency: transitive
     description:

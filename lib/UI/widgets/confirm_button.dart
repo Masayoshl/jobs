@@ -42,7 +42,7 @@ class ConfirmButton extends StatelessWidget {
           );
 
     final color =
-        isEnabled ? (backgroundColor ?? primaryColor) : primaryColor300;
+        isEnabled ? (backgroundColor ?? primaryColor500) : primaryColor300;
 
     return Container(
       margin: EdgeInsets.only(
