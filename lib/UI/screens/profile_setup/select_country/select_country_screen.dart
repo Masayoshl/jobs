@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:jobs/UI/screens/profile_setup/select_country/select_country_view_model.dart';
 import 'package:jobs/UI/screens/profile_setup/select_country/widgets/country_tile.dart';
+import 'package:jobs/UI/screens/profile_setup/select_country/widgets/search_bar.dart';
 import 'package:jobs/UI/theme/theme.dart';
-
 import 'package:jobs/UI/widgets/confirm_button.dart';
 import 'package:jobs/UI/widgets/custom_header.dart';
 import 'package:jobs/UI/widgets/screen_builder/screen_builder.dart';
-import 'package:jobs/domain/entity/country.dart';
 import 'package:jobs/gen/assets.gen.dart';
 import 'package:provider/provider.dart';
 
@@ -20,9 +19,55 @@ class SelectCountryScreen extends StatelessWidget {
       useSliverContent: true,
       overridePhysics: AlwaysScrollableScrollPhysics(),
       header: CustomHeader(text: 'Select Your Country'),
-      searchField: SearchBar(),
+      searchField: Search(),
       content: SelectCountryBody(),
       footer: SelectCountryBottom(),
+    );
+  }
+}
+
+class Search extends StatelessWidget {
+  const Search({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final model = context.read<SelectCountryViewModel>();
+    // return CustomSearchBar(
+    //   onChanged: model.onSearchQueryChanged,
+    // );
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: SearchBar(
+        hintText: 'Search',
+        hintStyle: WidgetStatePropertyAll(
+            AppTextStyles.textXLRegular.copyWith(color: grayColor25)),
+        backgroundColor: const WidgetStatePropertyAll(Colors.white),
+        leading: SvgPicture.asset(
+          Assets.icons.searchIcon,
+          fit: BoxFit.none,
+        ),
+        shadowColor: const WidgetStatePropertyAll(Colors.black),
+        elevation: const WidgetStatePropertyAll(2.0),
+        shape: WidgetStatePropertyAll(
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
+        trailing: <Widget>[
+          Tooltip(
+            message: 'Seach by voice',
+            child: IconButton(
+              onPressed: () {},
+              icon: SvgPicture.asset(
+                fit: BoxFit.none,
+                Assets.icons.microphoneIcon,
+                colorFilter:
+                    const ColorFilter.mode(primaryColor, BlendMode.srcIn),
+              ),
+            ),
+          )
+        ],
+        onChanged: model.onSearchQueryChanged,
+      ),
     );
   }
 }
@@ -33,8 +78,8 @@ class SelectCountryBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<SelectCountryViewModel>(
-      builder: (context, viewModel, _) {
-        final state = viewModel.state;
+      builder: (context, model, _) {
+        final state = model.state;
 
         if (state.isLoading) {
           return const SliverFillRemaining(
@@ -50,7 +95,7 @@ class SelectCountryBody extends StatelessWidget {
                   Text(state.errorMessage!),
                   const SizedBox(height: 16),
                   ElevatedButton(
-                    onPressed: () => viewModel.loadCountries(),
+                    onPressed: () => model.loadCountries(),
                     child: const Text('Retry'),
                   ),
                 ],
@@ -65,108 +110,11 @@ class SelectCountryBody extends StatelessWidget {
             return CountryTile(
               country: country,
               selectedCountryId: state.selectedCountry?.code ?? null,
-              onChanged: (value) => viewModel.selectCountry(value),
+              onChanged: (value) => model.selectCountry(value),
             );
           },
         );
       },
-    );
-  }
-}
-
-// class _SelectCountryBodyState extends State<SelectCountryBody> {
-//   // @override
-//   // Widget build(BuildContext context) {
-//   //   final model = context.read<SelectCountryViewModel>();
-//   //   final state = model.state;
-//   //   if (model.state.isLoading) {
-//   //     return const SliverFillRemaining(
-//   //       child: Center(
-//   //           child: CircularProgressIndicator(
-//   //         strokeWidth: 3,
-//   //       )),
-//   //     );
-//   //   }
-//   //   return SliverList.builder(
-//   //     itemCount: state.allCountries.length,
-//   //     itemBuilder: (context, index) {
-//   //       final country = state.allCountries[index];
-//   //       return CountryTile(
-//   //         country: country,
-//   //         //selectedCountryId: state.selectedCountry!.code,
-//   //       );
-//   //     },
-//   //   );
-//   // }
-
-// }
-
-class CountryList extends StatelessWidget {
-  final List<Country> countries;
-  final String? selectedValue;
-  final ValueChanged<Country>? onChanged;
-
-  const CountryList({
-    super.key,
-    required this.countries,
-    this.selectedValue,
-    this.onChanged,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox.shrink();
-  }
-}
-
-class SearchBar extends StatelessWidget {
-  const SearchBar({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final borderRadius = BorderRadius.circular(15);
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Material(
-        elevation: 2.0,
-        borderRadius: borderRadius,
-        child: TextField(
-          decoration: InputDecoration(
-            constraints: const BoxConstraints(
-                minHeight: 65, maxHeight: 65, maxWidth: 400, minWidth: 400),
-            border: OutlineInputBorder(
-              borderRadius: borderRadius,
-              borderSide: const BorderSide(color: Colors.white),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: borderRadius,
-              borderSide: const BorderSide(color: Colors.white),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: borderRadius,
-              borderSide: const BorderSide(color: Colors.white),
-            ),
-            hintText: 'Search',
-            hintStyle: AppTextStyles.textXLRegular.copyWith(color: grayColor25),
-            prefixIcon: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: SvgPicture.asset(
-                Assets.icons.searchIcon,
-                fit: BoxFit.none,
-              ),
-            ),
-            suffixIcon: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: SvgPicture.asset(
-                fit: BoxFit.none,
-                Assets.icons.microphoneIcon,
-                colorFilter:
-                    const ColorFilter.mode(primaryColor, BlendMode.srcIn),
-              ),
-            ),
-          ),
-        ),
-      ),
     );
   }
 }
@@ -176,8 +124,9 @@ class SelectCountryBottom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //final model = context.read<SelectCountryViewModel>();
     return ConfirmButton(
-      //state: ButtonState.disabled,
+      //state: model.state.buttonState,
       text: 'Continue',
       onPressed: (_) {},
       bottom: 0,

@@ -102,8 +102,7 @@ class SelectCountryViewModel extends ChangeNotifier {
 
     final lowercaseQuery = query.toLowerCase();
     return _state.allCountries.where((country) {
-      return country.name.toLowerCase().contains(lowercaseQuery) ||
-          country.code.toLowerCase().contains(lowercaseQuery);
+      return country.name.toLowerCase().contains(lowercaseQuery);
     }).toList();
   }
 

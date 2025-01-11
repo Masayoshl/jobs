@@ -36,15 +36,12 @@ class _PasswordTextFieldState extends BaseTextFieldState<PasswordTextField> {
 
   @override
   InputDecoration buildInputDecoration(PrefixIcon prefixIcon) {
-    final suffixIcon = GestureDetector(
-      onTap: _togglePasswordVisibility,
-      child: _SuffixIcon(
-        iconPath: _isObscured
-            ? Icons.visibility_off_outlined
-            : Icons.visibility_outlined,
-        iconColor: _isObscured ? grayColor25 : super.iconColor,
-      ),
+    final suffixIcon = _SuffixIcon(
+      isSelected: !_isObscured,
+      iconColor: _isObscured ? grayColor25 : super.iconColor,
+      onPressed: _togglePasswordVisibility,
     );
+
     final decoration = InputDecoration(
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(128),
@@ -90,32 +87,33 @@ class _PasswordTextFieldState extends BaseTextFieldState<PasswordTextField> {
 }
 
 class _SuffixIcon extends StatelessWidget {
-  final IconData iconPath;
+  final bool isSelected;
   final Color iconColor;
+  final VoidCallback onPressed;
 
   const _SuffixIcon({
-    required this.iconPath,
+    required this.isSelected,
     required this.iconColor,
+    required this.onPressed,
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right: 30).copyWith(left: 16),
-      child: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 100),
-        transitionBuilder: (Widget child, Animation<double> animation) {
-          return FadeTransition(
-            opacity: animation,
-            child: child,
-          );
-        },
-        child: Icon(
-          key: ValueKey<IconData>(iconPath),
+      padding: const EdgeInsets.only(right: 20),
+      child: IconButton(
+        icon: Icon(
+          Icons.visibility_off_outlined,
           size: 32,
-          iconPath,
           color: iconColor,
         ),
+        selectedIcon: Icon(
+          Icons.visibility_outlined,
+          size: 32,
+          color: iconColor,
+        ),
+        isSelected: isSelected,
+        onPressed: onPressed,
       ),
     );
   }
