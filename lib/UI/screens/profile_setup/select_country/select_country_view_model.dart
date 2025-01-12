@@ -59,7 +59,7 @@ class SelectCountryState {
 class SelectCountryViewModel extends ChangeNotifier {
   SelectCountryState _state;
   var _searchDebouncer = Timer(const Duration(milliseconds: 300), () {});
-  final SpeechService _speechService = SpeechService();
+  final SpeechService _speechService = SpeechService(); // Добавляем сервис
   StreamSubscription? _speechSubscription;
   StreamSubscription? _listeningStatusSubscription;
 
@@ -78,18 +78,22 @@ class SelectCountryViewModel extends ChangeNotifier {
   Future<void> _initializeSpeechService() async {
     await _speechService.initialize();
 
+    // Подписываемся на результаты распознавания
     _speechSubscription = _speechService.textStream.listen((text) {
+      // Обновляем текст в контроллере
       _state.searchController.text = text;
-
+      // Вызываем поиск
       onSearchQueryChanged(text);
     });
 
+    // Подписываемся на статус прослушивания
     _listeningStatusSubscription =
         _speechService.isListeningStream.listen((isListening) {
       _updateState(isListening: isListening);
     });
   }
 
+  // Обработка нажатия на кнопку микрофона
   Future<void> toggleListening() async {
     try {
       if (_state.isListening) {
@@ -183,7 +187,7 @@ class SelectCountryViewModel extends ChangeNotifier {
     _speechSubscription?.cancel();
     _listeningStatusSubscription?.cancel();
     _speechService.dispose();
-    super.dispose();
     _state.searchController.dispose();
+    super.dispose();
   }
 }

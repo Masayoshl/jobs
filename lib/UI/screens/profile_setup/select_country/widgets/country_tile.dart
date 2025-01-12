@@ -38,13 +38,18 @@ class CountryTile extends StatelessWidget {
             child: Row(
               children: [
                 const SizedBox(width: 16),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: SvgPicture.asset(
-                    country.flag4x3,
-                    width: 46,
-                    height: 46,
-                    fit: BoxFit.contain,
+                Container(
+                  decoration: BoxDecoration(
+                      border: Border.all(width: 0.2),
+                      borderRadius: BorderRadius.circular(10)),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: SvgPicture.asset(
+                      country.flag4x3,
+                      width: 46,
+                      height: 46,
+                      fit: BoxFit.contain,
+                    ),
                   ),
                 ),
                 const SizedBox(width: 12),

@@ -38,7 +38,7 @@ class Search extends StatelessWidget {
       child: Consumer<SelectCountryViewModel>(
         builder: (context, model, _) {
           return SearchBar(
-            controller: model.state.searchController, // Добавляем контроллер
+            controller: model.state.searchController,
             hintText: 'Search',
             hintStyle: WidgetStatePropertyAll(
                 AppTextStyles.textXLRegular.copyWith(color: grayColor25)),
@@ -97,18 +97,22 @@ class SelectCountryBody extends StatelessWidget {
         }
         if (state.errorMessage != null) {
           return SliverFillRemaining(
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(state.errorMessage!),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: () => model.loadCountries(),
-                    child: const Text('Retry'),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Text(
+                    state.errorMessage!,
+                    textAlign: TextAlign.center,
+                    style: AppTextStyles.textXLSemibold,
                   ),
-                ],
-              ),
+                ),
+                ElevatedButton(
+                  onPressed: () => model.loadCountries(),
+                  child: const Text('Retry'),
+                ),
+              ],
             ),
           );
         }
@@ -118,7 +122,7 @@ class SelectCountryBody extends StatelessWidget {
             final country = state.filteredCountries[index];
             return CountryTile(
               country: country,
-              selectedCountryId: state.selectedCountry?.code,
+              selectedCountryId: state.selectedCountry?.code ?? null,
               onChanged: (value) => model.selectCountry(value),
             );
           },
