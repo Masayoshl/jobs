@@ -3,6 +3,8 @@ import 'package:jobs/UI/screens/auth/sign_in/sign_in_screen.dart';
 import 'package:jobs/UI/screens/auth/sign_up/sign_up_screen.dart';
 import 'package:jobs/UI/screens/profile_setup/account_type/account_type_screen.dart';
 import 'package:jobs/UI/screens/profile_setup/account_type/account_type_view_model.dart';
+import 'package:jobs/UI/screens/profile_setup/personal_info/personal_info_screen.dart';
+import 'package:jobs/UI/screens/profile_setup/personal_info/personal_info_view_model.dart';
 import 'package:jobs/UI/screens/profile_setup/profile_setup_screen.dart';
 import 'package:jobs/UI/screens/profile_setup/profile_setup_view_model.dart';
 import 'package:jobs/UI/screens/profile_setup/select_country/select_country_screen.dart';
@@ -81,6 +83,13 @@ class ScreenFactory {
     return ChangeNotifierProvider(
       create: (_) => SelectCountryViewModel(),
       child: const SelectCountryScreen(),
+    );
+  }
+
+  Widget makePersonalInfo(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (BuildContext context) => PersonalInfoViewModel(),
+      child: const PersonalInfoScreen(),
     );
   }
 }

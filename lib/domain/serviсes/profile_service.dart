@@ -26,4 +26,10 @@ class ProfileService {
     final token = await sessionToken;
     await _profileApiProvider.setAccountType(token);
   }
+
+  Future<void> setAccountCountry() async {
+    _sessionDataProvider.saveApiKey('665523');
+    final token = await sessionToken;
+    await _profileApiProvider.setAccountType(token);
+  }
 }

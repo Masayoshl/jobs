@@ -109,7 +109,7 @@ class SelectCountryBody extends StatelessWidget {
                   ),
                 ),
                 ElevatedButton(
-                  onPressed: () => model.loadCountries(),
+                  onPressed: () => model.setCountries(),
                   child: const Text('Retry'),
                 ),
               ],
@@ -137,12 +137,13 @@ class SelectCountryBottom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final model = context.read<SelectCountryViewModel>();
     final buttonState = context
         .select((SelectCountryViewModel value) => value.state.buttonState);
     return ConfirmButton(
       state: buttonState,
       text: 'Continue',
-      onPressed: (_) {},
+      onPressed: (context) => model.onButtonPressed(context),
       bottom: 0,
       left: 32,
       right: 32,

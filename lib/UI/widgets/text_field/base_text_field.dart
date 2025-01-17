@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+
 import 'package:jobs/UI/theme/theme.dart';
 import 'package:jobs/UI/widgets/text_field/prefix_icon.dart';
 
@@ -50,7 +50,7 @@ abstract class _TextFieldColor {
 
 abstract class BaseTextField extends StatefulWidget {
   final String hintText;
-  final String prefixIcon;
+  final String? prefixIcon;
   final double? bottom;
   final double? top;
   final double? left;

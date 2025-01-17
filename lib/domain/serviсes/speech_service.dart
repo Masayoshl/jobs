@@ -5,17 +5,14 @@ class SpeechService {
   final stt.SpeechToText _speech = stt.SpeechToText();
   bool _isInitialized = false;
 
-  // Stream controller для передачи результатов распознавания
   final StreamController<String> _textStreamController =
       StreamController<String>.broadcast();
   Stream<String> get textStream => _textStreamController.stream;
 
-  // Stream controller для статуса прослушивания
   final StreamController<bool> _isListeningStreamController =
       StreamController<bool>.broadcast();
   Stream<bool> get isListeningStream => _isListeningStreamController.stream;
 
-  // Инициализация сервиса
   Future<bool> initialize() async {
     if (_isInitialized) return true;
 
@@ -37,7 +34,6 @@ class SpeechService {
         debugLogging: true,
       );
 
-      // Проверяем разрешения после инициализации
       final hasPermission = await _speech.hasPermission;
       if (!hasPermission) {
         print('Speech recognition permission denied');
@@ -53,7 +49,6 @@ class SpeechService {
     }
   }
 
-  // Начало прослушивания
   Future<void> startListening({String? selectedLocaleId}) async {
     if (!_isInitialized) {
       final initialized = await initialize();

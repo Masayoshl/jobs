@@ -8,18 +8,20 @@ class PrefixIcon extends StatelessWidget {
     required Color iconColor,
   }) : _iconColor = iconColor;
 
-  final String iconPath;
+  final String? iconPath;
   final Color _iconColor;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 30).copyWith(right: 16),
-      child: SvgPicture.asset(
-        iconPath,
-        colorFilter: ColorFilter.mode(_iconColor, BlendMode.srcIn),
-        fit: BoxFit.none,
-      ),
+      child: iconPath == null
+          ? const SizedBox.shrink()
+          : SvgPicture.asset(
+              iconPath!,
+              colorFilter: ColorFilter.mode(_iconColor, BlendMode.srcIn),
+              fit: BoxFit.none,
+            ),
     );
   }
 }

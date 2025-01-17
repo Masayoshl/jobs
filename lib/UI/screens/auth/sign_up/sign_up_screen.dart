@@ -54,7 +54,7 @@ class _NameWidget extends StatelessWidget {
         context.select((SignUpViewModel value) => value.state.name.hasError);
     return CustomTextField(
       hintText: 'Name',
-      prefixIcon: Assets.icons.mailIcon,
+      prefixIcon: Assets.icons.userSignIcon,
       onChanged: model.changeName,
       errorText: errorText,
       error: isHavePasswordError,

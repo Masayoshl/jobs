@@ -13,6 +13,8 @@ abstract class MainRouterNames {
   static const accountType = '/sign_in/sign_up/profile_setup/account_type';
   static const selectCountry =
       '/sign_in/sign_up/profile_setup/account_type/select_country';
+  static const personalInfo =
+      '/sign_in/sign_up/profile_setup/account_type/select_country/personal_info';
 }
 
 class MainRouter {
@@ -61,6 +63,11 @@ class MainRouter {
         return MaterialPageRoute(
           builder: (_) => _screenFactory.makeSelectCountry(),
         );
+      case MainRouterNames.personalInfo:
+        return MaterialPageRoute(
+            builder: (BuildContext context) =>
+                _screenFactory.makePersonalInfo(context),
+            settings: settings);
       default:
         const widget = Text('Navigation Error!!!');
         return MaterialPageRoute(builder: (context) => widget);
