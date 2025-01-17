@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:jobs/UI/screens/profile_setup/personal_info/personal_info_view_model.dart';
 import 'package:jobs/UI/screens/profile_setup/personal_info/widgets/date_picker_field.dart';
 import 'package:jobs/UI/screens/profile_setup/personal_info/widgets/gender_selector_field.dart';
 import 'package:jobs/UI/screens/profile_setup/personal_info/widgets/phone_text_field.dart';
@@ -10,6 +11,7 @@ import 'package:jobs/UI/widgets/custom_header.dart';
 import 'package:jobs/UI/widgets/screen_builder/screen_builder.dart';
 import 'package:jobs/UI/widgets/text_field/custom_text_field.dart';
 import 'package:jobs/gen/assets.gen.dart';
+import 'package:provider/provider.dart';
 
 class PersonalInfoScreen extends StatelessWidget {
   const PersonalInfoScreen({super.key});
@@ -19,7 +21,8 @@ class PersonalInfoScreen extends StatelessWidget {
     final args =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
     final countryCode = (args?['countryCode'] as String).toUpperCase();
-
+    //todo перепиши эту хуйню
+    context.read<PersonalInfoViewModel>().setCountryCode(countryCode);
     return ScreenBuilder(
       useSliverContent: true,
       overridePhysics: const AlwaysScrollableScrollPhysics(),
@@ -67,14 +70,7 @@ class PersonalInfoBody extends StatelessWidget {
             prefixIcon: Assets.icons.userSignIcon,
             error: false,
           ),
-          PhoneTextField(
-            initialCountryCode: countryCode,
-            hintText: 'Phone Number',
-            error: false,
-            onChanged: (phoneNumber) {},
-            onCountryChanged: (countryCode) {},
-            onCompleted: (value) {},
-          ),
+          PhoneWidget(),
           DatePickerField(
             error: false,
             hintText: 'Date of Birth',
@@ -115,6 +111,28 @@ class PersonalInfoBody extends StatelessWidget {
           ),
         ]),
       ),
+    );
+  }
+}
+
+class PhoneWidget extends StatelessWidget {
+  const PhoneWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final model = context.read<PersonalInfoViewModel>();
+    return PhoneTextField(
+      initialCountryCode: model.state.countryCode,
+      hintText: 'Phone Number',
+      // errorText: 'Invalid Number',
+      error: false,
+      maxLength: model.state.maxLength,
+      showCounter: true,
+      onChanged: (phoneNumber) {},
+      onCountryChanged: (countryCode) {},
+      onCompleted: (value) {},
     );
   }
 }

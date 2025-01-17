@@ -26,6 +26,8 @@ class PhoneTextField extends BaseTextField {
     super.isEnabled = true,
     this.onCountryChanged,
     this.onCompleted,
+    super.maxLength,
+    super.showCounter,
   });
 
   @override
@@ -33,6 +35,44 @@ class PhoneTextField extends BaseTextField {
 }
 
 class _PhoneTextFieldState extends BaseTextFieldState<PhoneTextField> {
+  final TextEditingController _controller = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    // Добавляем слушатель изменений текста
+    _controller.addListener(_onTextChanged);
+  }
+
+  void _onTextChanged() {
+    // Обновляем UI при каждом изменении текста
+    setState(() {});
+
+    // Если есть ограничение по длине и текст превышает его
+    if (widget.maxLength != null &&
+        _controller.text.length > widget.maxLength!) {
+      // Обрезаем текст до максимальной длины
+      _controller.text = _controller.text.substring(0, widget.maxLength);
+      // Возвращаем курсор в конец текста
+      _controller.selection = TextSelection.fromPosition(
+        TextPosition(offset: _controller.text.length),
+      );
+    }
+
+    // Вызываем callback onChanged если он задан
+    widget.onChanged?.call(_controller.text);
+  }
+
+  @override
+  void dispose() {
+    _controller.removeListener(_onTextChanged);
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  int? getCurrentLength() => _controller.text.length;
+
   @override
   InputDecoration buildInputDecoration(PrefixIcon prefixIcon) {
     return InputDecoration(
@@ -67,9 +107,11 @@ class _PhoneTextFieldState extends BaseTextFieldState<PhoneTextField> {
     return Padding(
       padding: const EdgeInsets.only(left: 24.0),
       child: IntlPhoneField(
+        controller: _controller,
         initialCountryCode: widget.initialCountryCode,
         focusNode: focusNode,
         enabled: widget.isEnabled,
+        dropdownTextStyle: AppTextStyles.textXLSemibold,
         disableLengthCheck: true,
         showDropdownIcon: false,
         style: AppTextStyles.textXLSemibold,

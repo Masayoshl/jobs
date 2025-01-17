@@ -61,6 +61,8 @@ abstract class BaseTextField extends StatefulWidget {
   final double? width;
   final double? height;
   final bool isEnabled;
+  final int? maxLength; // максимальная длина
+  final bool? showCounter; // показывать ли счетчик
 
   const BaseTextField({
     super.key,
@@ -76,6 +78,8 @@ abstract class BaseTextField extends StatefulWidget {
     this.width = 360,
     this.height = 74,
     this.isEnabled = true,
+    this.maxLength,
+    this.showCounter,
   });
 }
 
@@ -84,7 +88,7 @@ abstract class BaseTextFieldState<T extends BaseTextField> extends State<T> {
   late Color _iconColor;
   FocusNode get focusNode => _focusNode;
   Color get iconColor => _iconColor;
-
+  int? getCurrentLength() => null; // Переопределяется в наследниках
   @override
   void initState() {
     super.initState();
@@ -133,6 +137,7 @@ abstract class BaseTextFieldState<T extends BaseTextField> extends State<T> {
         selectionHandleColor: _iconColor,
       ),
     );
+
     return Theme(
       data: themeData,
       child: Column(
@@ -144,7 +149,9 @@ abstract class BaseTextFieldState<T extends BaseTextField> extends State<T> {
             margin: EdgeInsets.only(
               left: widget.left ?? 18,
               right: widget.right ?? 18,
-              bottom: widget.error ? widget.bottom ?? 4 : 20,
+              bottom: (widget.error || widget.showCounter == true)
+                  ? widget.bottom ?? 4
+                  : 20,
             ),
             width: widget.width,
             height: widget.height,
@@ -153,13 +160,24 @@ abstract class BaseTextFieldState<T extends BaseTextField> extends State<T> {
               child: buildTextField(prefixIcon),
             ),
           ),
-          _ErrorWidget(
-            isError: widget.error,
-            errorText: widget.errorText,
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Expanded(
+                child: _ErrorWidget(
+                  isError: widget.error,
+                  errorText: widget.errorText,
+                ),
+              ),
+              if (widget.showCounter == true)
+                _SymbolCounter(
+                  currentLength: getCurrentLength(),
+                  maxLength: widget.maxLength,
+                  show: widget.showCounter ?? false,
+                ),
+            ],
           ),
-          const SizedBox(
-            height: 4,
-          )
+          const SizedBox(height: 4),
         ],
       ),
     );
@@ -196,6 +214,44 @@ class _ErrorWidget extends StatelessWidget {
               errorText ?? '',
               overflow: TextOverflow.ellipsis,
               style: AppTextStyles.textL.copyWith(color: errorColor700),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _SymbolCounter extends StatelessWidget {
+  final int? currentLength;
+  final int? maxLength;
+  final bool show;
+
+  const _SymbolCounter({
+    this.currentLength,
+    this.maxLength,
+    this.show = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TweenAnimationBuilder<double>(
+      duration: const Duration(milliseconds: 200),
+      curve: Curves.easeOut,
+      tween: Tween<double>(
+        begin: 0.0,
+        end: (show && maxLength != null) ? 1.0 : 0.0,
+      ),
+      builder: (context, value, child) {
+        return Opacity(
+          opacity: value,
+          child: Container(
+            height: value * 20,
+            padding: const EdgeInsets.only(right: 32),
+            alignment: Alignment.centerRight,
+            child: Text(
+              '${currentLength ?? 0}/${maxLength ?? 0}',
+              style: AppTextStyles.textS.copyWith(color: grayColor25),
             ),
           ),
         );
