@@ -44,6 +44,7 @@ class _PhoneTextFieldState extends BaseTextFieldState<PhoneTextField> {
   }
 
   void _onTextChanged() {
+    setState(() {});
     // Если есть ограничение по длине и текст превышает его
     if (widget.maxLength != null &&
         _controller.text.length > widget.maxLength!) {
@@ -111,7 +112,7 @@ class _PhoneTextFieldState extends BaseTextFieldState<PhoneTextField> {
         dropdownTextStyle: AppTextStyles.textXLSemibold,
         onChanged: (phone) {
           if (widget.onChanged != null) {
-            widget.onChanged!(phone.completeNumber);
+            widget.onChanged!(phone.number);
           }
         },
         onCountryChanged: (country) {

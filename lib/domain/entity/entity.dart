@@ -1,6 +1,7 @@
 export 'country.dart';
 export 'date.dart';
 export 'email.dart';
+export 'gender.dart';
 export 'name.dart';
 export 'one_time_password.dart';
 export 'password.dart';

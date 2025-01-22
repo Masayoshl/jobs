@@ -24,7 +24,7 @@ class PhoneNumber {
   final bool isDirty;
   final int maxLength;
   final int minLength;
-
+  String get completeNumber => '+$dialCode$value';
   const PhoneNumber._({
     required this.value,
     required this.countryCode,
@@ -58,10 +58,8 @@ class PhoneNumber {
       );
     }
 
-    final adjustedMaxLength = maxLength + dialCode.length;
-    final adjustedMinLength = minLength + dialCode.length;
     final validationResult = PhoneNumber._validatePhone(
-        value, adjustedMaxLength, adjustedMinLength, dialCode.length);
+        value, maxLength, minLength, dialCode.length);
 
     return PhoneNumber._(
       value: value.trim(),
@@ -81,17 +79,14 @@ class PhoneNumber {
       return const PhoneValidationResult.invalid(
           'Phone number cannot be empty');
     }
-
     if (value.length < minLength) {
       return PhoneValidationResult.invalid(
-          'Phone number must be at least ${minLength - dialCodeLength} digits');
+          'Phone number must be at least $minLength digits');
     }
-
     if (value.length > maxLength) {
       return PhoneValidationResult.invalid(
-          'Phone number cannot be longer than ${maxLength - dialCodeLength} digits');
+          'Phone number cannot be longer than $maxLength digits');
     }
-
     return const PhoneValidationResult.valid();
   }
 

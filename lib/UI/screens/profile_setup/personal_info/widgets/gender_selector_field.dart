@@ -2,15 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jobs/UI/theme/theme.dart';
 import 'package:jobs/UI/widgets/text_field/base_text_field.dart';
 import 'package:jobs/UI/widgets/text_field/prefix_icon.dart';
-
-enum Gender {
-  Male('Male'),
-  Female('Female'),
-  Secret('Prefer not to answer');
-
-  const Gender(this.label);
-  final String label;
-}
+import 'package:jobs/domain/entity/gender.dart';
 
 class GenderSelector extends BaseTextField {
   const GenderSelector({
@@ -28,7 +20,8 @@ class GenderSelector extends BaseTextField {
 }
 
 class _GenderSelectorState extends BaseTextFieldState<GenderSelector> {
-  Gender? selectedGender;
+  String? selectedValue;
+  final TextEditingController _controller = TextEditingController();
 
   void _showGenderPicker(BuildContext context) {
     showModalBottomSheet(
@@ -53,16 +46,14 @@ class _GenderSelectorState extends BaseTextFieldState<GenderSelector> {
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
-              ...Gender.values.map((Gender gender) {
-                final isSelected = gender == selectedGender;
+              ...GenderType.values.map((GenderType gender) {
+                final isSelected = gender.label == selectedValue;
                 return InkWell(
                   onTap: () {
                     setState(() {
-                      selectedGender = gender;
+                      selectedValue = gender.label;
+                      _controller.text = gender.label;
                     });
-                    if (widget.onChanged != null) {
-                      widget.onChanged!(gender.label);
-                    }
                     Navigator.pop(context);
                   },
                   child: Container(
@@ -95,14 +86,34 @@ class _GenderSelectorState extends BaseTextFieldState<GenderSelector> {
           ),
         );
       },
-    );
+    ).whenComplete(() async {
+      if (widget.onChanged != null) {
+        widget.onChanged!(_controller.text);
+
+        focusNode.unfocus();
+      }
+    });
   }
 
   @override
   InputDecoration buildInputDecoration(PrefixIcon prefixIcon) {
-    return const InputDecoration(
+    return InputDecoration(
       border: InputBorder.none,
-      contentPadding: EdgeInsets.zero,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+      prefixIcon: prefixIcon,
+      hintText: widget.hintText,
+      suffixIcon: Padding(
+        padding: const EdgeInsets.only(right: 16),
+        child: IconButton(
+          onPressed: () => _showGenderPicker(context),
+          icon: const Icon(
+            Icons.keyboard_arrow_down_rounded,
+            color: grayColor25,
+            size: 32,
+          ),
+        ),
+      ),
+      hintStyle: AppTextStyles.textXLSemibold.copyWith(color: grayColor25),
     );
   }
 
@@ -117,30 +128,14 @@ class _GenderSelectorState extends BaseTextFieldState<GenderSelector> {
 
   @override
   Widget buildTextField(PrefixIcon prefixIcon) {
-    return InkWell(
-      onTap: widget.isEnabled ? () => _showGenderPicker(context) : null,
-      child: Container(
-        padding: const EdgeInsets.only(right: 16),
-        child: Row(
-          children: [
-            prefixIcon,
-            const SizedBox(width: 12),
-            Expanded(
-              child: Text(
-                selectedGender?.label ?? widget.hintText,
-                style: AppTextStyles.textXLSemibold.copyWith(
-                  color: selectedGender != null ? Colors.black : grayColor25,
-                ),
-              ),
-            ),
-            const Icon(
-              Icons.keyboard_arrow_down_rounded,
-              color: grayColor25,
-              size: 32,
-            ),
-          ],
-        ),
-      ),
+    return TextFormField(
+      focusNode: focusNode,
+      controller: _controller,
+      style: AppTextStyles.textXLSemibold,
+      enabled: widget.isEnabled,
+      readOnly: true,
+      decoration: buildInputDecoration(prefixIcon),
+      onTap: () => _showGenderPicker(context),
     );
   }
 }

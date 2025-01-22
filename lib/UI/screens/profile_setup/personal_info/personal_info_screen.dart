@@ -55,11 +55,7 @@ class PersonalInfoBody extends StatelessWidget {
           const NameWidget(),
           const PhoneWidget(),
           const DateofBirthWidget(),
-          GenderSelector(
-            prefixIcon: Assets.icons.genderIcon,
-            hintText: 'Gender',
-            error: false,
-          ),
+          GenderWidget(),
           const DashedLineText(
             title: 'Address',
           ),
@@ -83,6 +79,28 @@ class PersonalInfoBody extends StatelessWidget {
           ),
         ]),
       ),
+    );
+  }
+}
+
+class GenderWidget extends StatelessWidget {
+  const GenderWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final model = context.read<PersonalInfoViewModel>();
+    final errorMessage = context.select(
+        (PersonalInfoViewModel value) => value.state.gender.errorMessage);
+    final hasError = context
+        .select((PersonalInfoViewModel value) => value.state.gender.hasError);
+    return GenderSelector(
+      prefixIcon: Assets.icons.genderIcon,
+      hintText: 'Gender',
+      onChanged: model.changeGender,
+      error: hasError,
+      errorText: errorMessage,
     );
   }
 }
@@ -141,6 +159,7 @@ class PhoneWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final model = context.read<PersonalInfoViewModel>();
+    // ignore: unused_local_variable
     final countryCode = context.select(
       (PersonalInfoViewModel value) => value.state.phoneNumber.countryCode,
     );
