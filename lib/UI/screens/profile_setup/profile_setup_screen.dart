@@ -1,7 +1,7 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:jobs/UI/screens/profile_setup/profile_setup_view_model.dart';
+import 'package:jobs/UI/screens/profile_setup/widgets/skip_text_button.dart';
 
 import 'package:jobs/UI/theme/theme.dart';
 import 'package:jobs/UI/widgets/confirm_button.dart';
@@ -61,22 +61,12 @@ class ProfileSetupBottom extends StatelessWidget {
         ConfirmButton(
           text: 'Continue',
           onPressed: (_) => model.navToAccountTypeScreeen(context),
-          bottom: 32,
+          top: 10,
+          bottom: 16,
           left: 32,
           right: 32,
         ),
-        RichText(
-          text: TextSpan(
-            children: [
-              TextSpan(
-                text: 'Skip For Now',
-                style: AppTextStyles.textXXLSemibold.copyWith(color: purple400),
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () => model.navToMainScreen(context),
-              ),
-            ],
-          ),
-        ),
+        SkipTextButton(onPressed: () {}),
         const SizedBox(
           height: 22,
         ),

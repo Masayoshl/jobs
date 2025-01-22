@@ -30,7 +30,7 @@ class DatePickerField extends BaseTextField {
 
 class _DatePickerFieldState extends BaseTextFieldState<DatePickerField> {
   DateTime? selectedDate;
-  final TextEditingController dateController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
 
   void _showDatePicker() async {
     if (!widget.isEnabled) return;
@@ -59,16 +59,14 @@ class _DatePickerFieldState extends BaseTextFieldState<DatePickerField> {
       },
     );
 
-    if (picked != null) {
-      setState(() {
-        selectedDate = picked;
-        dateController.text = _formatDate(picked);
-        focusNode.unfocus();
-      });
+    setState(() {
+      selectedDate = picked;
+      _dateController.text = picked != null ? _formatDate(picked) : '';
+      focusNode.unfocus();
+    });
 
-      if (widget.onChanged != null) {
-        widget.onChanged!(_formatDate(picked));
-      }
+    if (widget.onChanged != null) {
+      widget.onChanged!(picked != null ? _formatDate(picked) : '');
     }
   }
 
@@ -81,7 +79,7 @@ class _DatePickerFieldState extends BaseTextFieldState<DatePickerField> {
 
   @override
   void dispose() {
-    dateController.dispose();
+    _dateController.dispose();
     super.dispose();
   }
 
@@ -108,7 +106,7 @@ class _DatePickerFieldState extends BaseTextFieldState<DatePickerField> {
   @override
   Widget buildTextField(PrefixIcon prefixIcon) {
     return TextFormField(
-      controller: dateController,
+      controller: _dateController,
       focusNode: focusNode,
       style: AppTextStyles.textXLSemibold,
       enabled: widget.isEnabled,

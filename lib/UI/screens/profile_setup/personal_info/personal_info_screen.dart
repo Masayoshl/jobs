@@ -1,28 +1,40 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:jobs/UI/screens/profile_setup/personal_info/personal_info_view_model.dart';
-import 'package:jobs/UI/screens/profile_setup/personal_info/widgets/date_picker_field.dart';
-import 'package:jobs/UI/screens/profile_setup/personal_info/widgets/gender_selector_field.dart';
-import 'package:jobs/UI/screens/profile_setup/personal_info/widgets/phone_text_field.dart';
+import 'package:jobs/UI/screens/profile_setup/personal_info/widgets/widgets.dart';
 import 'package:jobs/UI/screens/profile_setup/widgets/dashed_line_text.dart';
+import 'package:jobs/UI/screens/profile_setup/widgets/skip_text_button.dart';
 import 'package:jobs/UI/theme/theme.dart';
-import 'package:jobs/UI/widgets/confirm_button.dart';
-import 'package:jobs/UI/widgets/custom_header.dart';
 import 'package:jobs/UI/widgets/screen_builder/screen_builder.dart';
-import 'package:jobs/UI/widgets/text_field/custom_text_field.dart';
+import 'package:jobs/UI/widgets/widgets.dart';
+
 import 'package:jobs/gen/assets.gen.dart';
 import 'package:provider/provider.dart';
 
-class PersonalInfoScreen extends StatelessWidget {
+class PersonalInfoScreen extends StatefulWidget {
   const PersonalInfoScreen({super.key});
+
+  @override
+  State<PersonalInfoScreen> createState() => _PersonalInfoScreenState();
+}
+
+class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final args =
+          ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+      final countryCode = (args?['countryCode'] as String).toUpperCase();
+      context.read<PersonalInfoViewModel>().setCountryCode(countryCode);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
     final countryCode = (args?['countryCode'] as String).toUpperCase();
-    //todo перепиши эту хуйню
-    context.read<PersonalInfoViewModel>().setCountryCode(countryCode);
+
     return ScreenBuilder(
       useSliverContent: true,
       overridePhysics: const AlwaysScrollableScrollPhysics(),
@@ -70,19 +82,8 @@ class PersonalInfoBody extends StatelessWidget {
             prefixIcon: Assets.icons.userSignIcon,
             error: false,
           ),
-          PhoneWidget(),
-          DatePickerField(
-            error: false,
-            hintText: 'Date of Birth',
-            prefixIcon: Assets.icons.calendarIcon,
-            firstDate: DateTime(1900),
-            lastDate: DateTime.now(),
-            initialDate: DateTime(2000),
-            selectedDateFormat: 'dd.MM.yyyy',
-            onChanged: (String date) {
-              // Обработка выбранной даты
-            },
-          ),
+          const PhoneWidget(),
+          DateofBirthWidget(),
           GenderSelector(
             prefixIcon: Assets.icons.genderIcon,
             hintText: 'Gender',
@@ -115,6 +116,30 @@ class PersonalInfoBody extends StatelessWidget {
   }
 }
 
+class DateofBirthWidget extends StatelessWidget {
+  const DateofBirthWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final model = context.read<PersonalInfoViewModel>();
+    final errorMessage = context.select(
+        (PersonalInfoViewModel value) => value.state.dateOfBirth.errorMessage);
+    return DatePickerField(
+      error: model.state.dateOfBirth.hasError,
+      errorText: errorMessage,
+      hintText: 'Date of Birth',
+      prefixIcon: Assets.icons.calendarIcon,
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+      initialDate: DateTime(2000),
+      selectedDateFormat: 'dd.MM.yyyy',
+      onChanged: model.changeDateOfBirth,
+    );
+  }
+}
+
 class PhoneWidget extends StatelessWidget {
   const PhoneWidget({
     super.key,
@@ -123,15 +148,18 @@ class PhoneWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final model = context.read<PersonalInfoViewModel>();
+    final maxLength = context.select(
+      (PersonalInfoViewModel value) => value.state.maxLength,
+    );
     return PhoneTextField(
       initialCountryCode: model.state.countryCode,
       hintText: 'Phone Number',
       // errorText: 'Invalid Number',
       error: false,
-      maxLength: model.state.maxLength,
+      maxLength: maxLength,
       showCounter: true,
       onChanged: (phoneNumber) {},
-      onCountryChanged: (countryCode) {},
+      onCountryChanged: (countryCode) => model.setCountryCode(countryCode),
       onCompleted: (value) {},
     );
   }
@@ -149,23 +177,12 @@ class PersonalInfoBottom extends StatelessWidget {
           text: 'Save & Continue',
           onPressed: (_) {},
           top: 10,
-          bottom: 32,
+          bottom: 16,
           left: 32,
           right: 32,
         ),
-        RichText(
-          text: TextSpan(
-            children: [
-              TextSpan(
-                text: 'Skip For Now',
-                style: AppTextStyles.textXXLSemibold.copyWith(color: purple400),
-                recognizer: TapGestureRecognizer()..onTap = () {},
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(
-          height: 22,
+        SkipTextButton(
+          onPressed: () {},
         ),
       ],
     );
