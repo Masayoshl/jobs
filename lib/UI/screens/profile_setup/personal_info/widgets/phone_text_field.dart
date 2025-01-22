@@ -40,14 +40,10 @@ class _PhoneTextFieldState extends BaseTextFieldState<PhoneTextField> {
   @override
   void initState() {
     super.initState();
-    // Добавляем слушатель изменений текста
     _controller.addListener(_onTextChanged);
   }
 
   void _onTextChanged() {
-    // Обновляем UI при каждом изменении текста
-    setState(() {});
-
     // Если есть ограничение по длине и текст превышает его
     if (widget.maxLength != null &&
         _controller.text.length > widget.maxLength!) {
@@ -58,9 +54,6 @@ class _PhoneTextFieldState extends BaseTextFieldState<PhoneTextField> {
         TextPosition(offset: _controller.text.length),
       );
     }
-
-    // Вызываем callback onChanged если он задан
-    widget.onChanged?.call(_controller.text);
   }
 
   @override
@@ -105,17 +98,17 @@ class _PhoneTextFieldState extends BaseTextFieldState<PhoneTextField> {
   @override
   Widget buildTextField(PrefixIcon prefixIcon) {
     return Padding(
-      padding: const EdgeInsets.only(left: 24.0),
+      padding: const EdgeInsets.only(left: 28.0),
       child: IntlPhoneField(
         controller: _controller,
-        initialCountryCode: widget.initialCountryCode,
         focusNode: focusNode,
-        enabled: widget.isEnabled,
-        dropdownTextStyle: AppTextStyles.textXLSemibold,
         disableLengthCheck: true,
         showDropdownIcon: false,
-        style: AppTextStyles.textXLSemibold,
         decoration: buildInputDecoration(prefixIcon),
+        enabled: widget.isEnabled,
+        initialCountryCode: widget.initialCountryCode,
+        style: AppTextStyles.textXLSemibold,
+        dropdownTextStyle: AppTextStyles.textXLSemibold,
         onChanged: (phone) {
           if (widget.onChanged != null) {
             widget.onChanged!(phone.completeNumber);

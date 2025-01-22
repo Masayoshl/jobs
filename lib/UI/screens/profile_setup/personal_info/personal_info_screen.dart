@@ -10,48 +10,23 @@ import 'package:jobs/UI/widgets/widgets.dart';
 import 'package:jobs/gen/assets.gen.dart';
 import 'package:provider/provider.dart';
 
-class PersonalInfoScreen extends StatefulWidget {
+class PersonalInfoScreen extends StatelessWidget {
   const PersonalInfoScreen({super.key});
 
   @override
-  State<PersonalInfoScreen> createState() => _PersonalInfoScreenState();
-}
-
-class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final args =
-          ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
-      final countryCode = (args?['countryCode'] as String).toUpperCase();
-      context.read<PersonalInfoViewModel>().setCountryCode(countryCode);
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final args =
-        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
-    final countryCode = (args?['countryCode'] as String).toUpperCase();
-
-    return ScreenBuilder(
+    return const ScreenBuilder(
       useSliverContent: true,
-      overridePhysics: const AlwaysScrollableScrollPhysics(),
-      header: const CustomHeader(text: 'Setup your Profile'),
-      content: PersonalInfoBody(
-        countryCode: countryCode,
-      ),
-      footer: const PersonalInfoBottom(),
+      overridePhysics: AlwaysScrollableScrollPhysics(),
+      header: CustomHeader(text: 'Setup your Profile'),
+      content: PersonalInfoBody(),
+      footer: PersonalInfoBottom(),
     );
   }
 }
 
 class PersonalInfoBody extends StatelessWidget {
-  final String countryCode;
-
   const PersonalInfoBody({
-    required this.countryCode,
     super.key,
   });
 
@@ -77,13 +52,9 @@ class PersonalInfoBody extends StatelessWidget {
           const SizedBox(
             height: 16,
           ),
-          CustomTextField(
-            hintText: 'Name',
-            prefixIcon: Assets.icons.userSignIcon,
-            error: false,
-          ),
+          const NameWidget(),
           const PhoneWidget(),
-          DateofBirthWidget(),
+          const DateofBirthWidget(),
           GenderSelector(
             prefixIcon: Assets.icons.genderIcon,
             hintText: 'Gender',
@@ -112,6 +83,28 @@ class PersonalInfoBody extends StatelessWidget {
           ),
         ]),
       ),
+    );
+  }
+}
+
+class NameWidget extends StatelessWidget {
+  const NameWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final model = context.read<PersonalInfoViewModel>();
+    final errorMessage = context.select(
+        (PersonalInfoViewModel value) => value.state.fullName.errorMessage);
+    final hasError = context
+        .select((PersonalInfoViewModel value) => value.state.fullName.hasError);
+    return CustomTextField(
+      hintText: 'Name',
+      prefixIcon: Assets.icons.userSignIcon,
+      error: hasError,
+      errorText: errorMessage,
+      onChanged: model.changeName,
     );
   }
 }
@@ -148,19 +141,22 @@ class PhoneWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final model = context.read<PersonalInfoViewModel>();
-    final maxLength = context.select(
-      (PersonalInfoViewModel value) => value.state.maxLength,
+    final countryCode = context.select(
+      (PersonalInfoViewModel value) => value.state.phoneNumber.countryCode,
     );
+    final errorMessage = context.select(
+        (PersonalInfoViewModel value) => value.state.phoneNumber.errorMessage);
+    final hasError = context.select(
+        (PersonalInfoViewModel value) => value.state.phoneNumber.hasError);
     return PhoneTextField(
-      initialCountryCode: model.state.countryCode,
+      initialCountryCode: model.state.phoneNumber.countryCode,
       hintText: 'Phone Number',
-      // errorText: 'Invalid Number',
-      error: false,
-      maxLength: maxLength,
+      error: hasError,
+      errorText: errorMessage,
+      maxLength: model.state.phoneNumber.maxLength,
       showCounter: true,
-      onChanged: (phoneNumber) {},
-      onCountryChanged: (countryCode) => model.setCountryCode(countryCode),
-      onCompleted: (value) {},
+      onChanged: (phoneNumber) => model.changePhone(phoneNumber),
+      onCountryChanged: (countryCode) => model.setNewCountryCode(countryCode),
     );
   }
 }

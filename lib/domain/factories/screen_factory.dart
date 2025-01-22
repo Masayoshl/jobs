@@ -86,9 +86,9 @@ class ScreenFactory {
     );
   }
 
-  Widget makePersonalInfo(BuildContext context) {
+  Widget makePersonalInfo(String initialCountryCode) {
     return ChangeNotifierProvider(
-      create: (BuildContext context) => PersonalInfoViewModel(),
+      create: (_) => PersonalInfoViewModel(initialCountryCode.toUpperCase()),
       child: const PersonalInfoScreen(),
     );
   }

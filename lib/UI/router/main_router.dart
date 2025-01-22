@@ -64,10 +64,11 @@ class MainRouter {
           builder: (_) => _screenFactory.makeSelectCountry(),
         );
       case MainRouterNames.personalInfo:
+        final initialCountryCode =
+            (settings.arguments as Map<String, dynamic>)['countryCode'];
         return MaterialPageRoute(
-            builder: (BuildContext context) =>
-                _screenFactory.makePersonalInfo(context),
-            settings: settings);
+          builder: (_) => _screenFactory.makePersonalInfo(initialCountryCode),
+        );
       default:
         const widget = Text('Navigation Error!!!');
         return MaterialPageRoute(builder: (context) => widget);
