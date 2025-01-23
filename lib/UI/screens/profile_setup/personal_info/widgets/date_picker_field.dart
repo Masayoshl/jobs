@@ -40,12 +40,9 @@ class _DatePickerFieldState extends BaseTextFieldState<DatePickerField> {
     final DateTime firstDate = widget.firstDate ?? DateTime(1900);
     final DateTime lastDate = widget.lastDate ?? DateTime(2100);
 
-    final DateTime? picked = await showDatePicker(
+    final DateTime? picked = await showGeneralDialog(
       context: context,
-      initialDate: selectedDate ?? initialDate,
-      firstDate: firstDate,
-      lastDate: lastDate,
-      builder: (context, child) {
+      pageBuilder: (context, animation, secondaryAnimation) {
         return Theme(
           data: Theme.of(context).copyWith(
             colorScheme: const ColorScheme.light(
@@ -54,9 +51,32 @@ class _DatePickerFieldState extends BaseTextFieldState<DatePickerField> {
               onSurface: Colors.black,
             ),
           ),
-          child: child!,
+          child: DatePickerDialog(
+            initialDate: selectedDate ?? initialDate,
+            firstDate: firstDate,
+            lastDate: lastDate,
+          ),
         );
       },
+      transitionBuilder: (context, animation, secondaryAnimation, child) {
+        return FadeTransition(
+          opacity: CurvedAnimation(
+            parent: animation,
+            curve: Curves.easeOut,
+          ),
+          child: ScaleTransition(
+            scale: CurvedAnimation(
+              parent: animation,
+              curve: Curves.easeOut,
+            ),
+            child: child,
+          ),
+        );
+      },
+      transitionDuration: const Duration(milliseconds: 300),
+      barrierDismissible: true,
+      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+      barrierColor: Colors.black54,
     );
 
     setState(() {
