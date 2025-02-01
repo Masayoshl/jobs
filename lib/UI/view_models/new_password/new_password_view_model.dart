@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:jobs/UI/router/main_router.dart';
-import 'package:jobs/domain/entity/password.dart';
+import 'package:jobs/domain/entity/fields/password.dart';
 
 import 'package:jobs/domain/servi%D1%81es/new_password_service.dart';
 

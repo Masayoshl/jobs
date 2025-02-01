@@ -7,9 +7,11 @@ import '../theme/theme.dart';
 class CustomHeader extends StatelessWidget {
   const CustomHeader({
     required this.text,
+    this.onPressed,
     super.key,
   });
   final String text;
+  final void Function(BuildContext)? onPressed;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -21,7 +23,11 @@ class CustomHeader extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
-              Navigator.pop(context);
+              if (onPressed != null) {
+                onPressed!(context);
+              } else {
+                Navigator.of(context).pop();
+              }
             },
             child: SvgPicture.asset(
               Assets.icons.arrowLeftMDIcon,
@@ -40,14 +46,4 @@ class CustomHeader extends StatelessWidget {
       ),
     );
   }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Container(
-  //       margin: const EdgeInsets.only(left: 16),
-  //       child: Text(
-  //         text,
-  //         style: AppTextStyles.headlineXLMobileNavHeader,
-  //       ));
-  // }
 }

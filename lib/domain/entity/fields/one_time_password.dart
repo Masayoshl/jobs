@@ -1,20 +1,4 @@
-class OneTimePasswordValidationResult {
-  final bool isValid;
-  final String? errorMessage;
-
-  const OneTimePasswordValidationResult({
-    required this.isValid,
-    this.errorMessage,
-  });
-
-  const OneTimePasswordValidationResult.valid()
-      : isValid = true,
-        errorMessage = null;
-
-  const OneTimePasswordValidationResult.invalid(String message)
-      : isValid = false,
-        errorMessage = message;
-}
+import 'package:jobs/domain/entity/fields/validoation_result.dart';
 
 class OneTimePassword {
   final String value;
@@ -45,18 +29,16 @@ class OneTimePassword {
     );
   }
 
-  static OneTimePasswordValidationResult _validate(String value,
-      {bool? isIncorrectCode}) {
+  static ValidationResult _validate(String value, {bool? isIncorrectCode}) {
     if (value.isEmpty) {
-      return const OneTimePasswordValidationResult.invalid(
-          'Code cannot be empty');
+      return const ValidationResult.invalid('Code cannot be empty');
     }
 
     if (isIncorrectCode == true) {
-      return const OneTimePasswordValidationResult.invalid('Incorrect code');
+      return const ValidationResult.invalid('Incorrect code');
     }
 
-    return const OneTimePasswordValidationResult.valid();
+    return const ValidationResult.valid();
   }
 
   OneTimePassword copyWith({String? value}) {

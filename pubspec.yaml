@@ -38,7 +38,8 @@ flutter:
      - assets/icons/
      - assets/checkbox/
      - assets/images/
-     - assets/data/country.json
+     - assets/data/countries.json
+     - assets/data/industries.json
      - assets/flags/4x3/
   fonts:
     - family: JosefinSans 

@@ -15,13 +15,17 @@ abstract class MainRouterNames {
       '/sign_in/sign_up/profile_setup/account_type/select_country';
   static const personalInfo =
       '/sign_in/sign_up/profile_setup/account_type/select_country/personal_info';
+  static const companyInfo =
+      '/sign_in/sign_up/profile_setup/account_type/select_country/company_info';
+  static const industry =
+      '/sign_in/sign_up/profile_setup/account_type/select_country/company_info/industry';
 }
 
 class MainRouter {
   static final _screenFactory = ScreenFactory();
 
   //! Юзать если нужно поверсатать один екран =>
-  final home = _screenFactory.makeSelectCountry();
+  final home = _screenFactory.makeAccountType();
 
   Route<Object> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -68,6 +72,19 @@ class MainRouter {
             (settings.arguments as Map<String, dynamic>)['countryCode'];
         return MaterialPageRoute(
           builder: (_) => _screenFactory.makePersonalInfo(initialCountryCode),
+        );
+      case MainRouterNames.companyInfo:
+        final initialCountryCode =
+            (settings.arguments as Map<String, dynamic>)['countryCode'];
+        return MaterialPageRoute(
+          builder: (_) => _screenFactory.makeCompanyInfo(initialCountryCode),
+        );
+      case MainRouterNames.industry:
+        final selectedIndustry =
+            (settings.arguments as Map<String, dynamic>)['selectedIndustry'];
+        return MaterialPageRoute(
+          builder: (_) => _screenFactory.makeIndustry(selectedIndustry),
+          fullscreenDialog: true,
         );
       default:
         const widget = Text('Navigation Error!!!');

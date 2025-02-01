@@ -1,19 +1,4 @@
-class PhoneValidationResult {
-  final bool isValid;
-  final String? errorMessage;
-
-  const PhoneValidationResult({
-    required this.isValid,
-    this.errorMessage,
-  });
-
-  const PhoneValidationResult.valid()
-      : isValid = true,
-        errorMessage = null;
-  const PhoneValidationResult.invalid(String message)
-      : isValid = false,
-        errorMessage = message;
-}
+import 'package:jobs/domain/entity/fields/validoation_result.dart';
 
 class PhoneNumber {
   final String value;
@@ -73,21 +58,20 @@ class PhoneNumber {
     );
   }
 
-  static PhoneValidationResult _validatePhone(
+  static ValidationResult _validatePhone(
       String value, int maxLength, int minLength, int dialCodeLength) {
     if (value.isEmpty) {
-      return const PhoneValidationResult.invalid(
-          'Phone number cannot be empty');
+      return const ValidationResult.invalid('Phone number cannot be empty');
     }
     if (value.length < minLength) {
-      return PhoneValidationResult.invalid(
+      return ValidationResult.invalid(
           'Phone number must be at least $minLength digits');
     }
     if (value.length > maxLength) {
-      return PhoneValidationResult.invalid(
+      return ValidationResult.invalid(
           'Phone number cannot be longer than $maxLength digits');
     }
-    return const PhoneValidationResult.valid();
+    return const ValidationResult.valid();
   }
 
   PhoneNumber copyWith({

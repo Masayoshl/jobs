@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:jobs/UI/screens/profile_setup/select_country/select_country_view_model.dart';
-import 'package:jobs/UI/screens/profile_setup/select_country/widgets/country_tile.dart';
+import 'package:jobs/UI/screens/profile_setup/industry/industry_view_model.dart';
+import 'package:jobs/UI/screens/profile_setup/industry/widgets/industry_tile.dart';
 import 'package:jobs/UI/screens/profile_setup/select_country/widgets/search_by_voice_bar.dart';
 import 'package:jobs/UI/theme/theme.dart';
 import 'package:jobs/UI/widgets/screen_builder/screen_builder.dart';
-
+import 'package:jobs/UI/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
-import '../../../widgets/widgets.dart';
-
-class SelectCountryScreen extends StatelessWidget {
-  const SelectCountryScreen({super.key});
+class IndustryScreen extends StatelessWidget {
+  const IndustryScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const ScreenBuilder(
       useSliverContent: true,
       overridePhysics: AlwaysScrollableScrollPhysics(),
-      header: CustomHeader(text: 'Select Your Country'),
+      header: CustomHeader(
+        text: 'Industry',
+      ),
       searchField: Search(),
-      content: SelectCountryBody(),
-      footer: SelectCountryBottom(),
+      content: IndustryBody(),
+      footer: IndustryBottom(),
     );
   }
 }
@@ -32,7 +32,7 @@ class Search extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<SelectCountryViewModel>(
+    return Consumer<IndustryViewModel>(
       builder: (context, model, _) {
         return SearchByVoiceField(
           searchController: model.state.searchController,
@@ -43,12 +43,12 @@ class Search extends StatelessWidget {
   }
 }
 
-class SelectCountryBody extends StatelessWidget {
-  const SelectCountryBody({super.key});
+class IndustryBody extends StatelessWidget {
+  const IndustryBody({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<SelectCountryViewModel>(
+    return Consumer<IndustryViewModel>(
       builder: (context, model, _) {
         final state = model.state;
         if (state.isLoading) {
@@ -56,11 +56,7 @@ class SelectCountryBody extends StatelessWidget {
             child: Center(child: CircularProgressIndicator()),
           );
         }
-        if (state.filteredCountries.isEmpty) {
-          return const SliverFillRemaining(
-            child: EmptySearchState(),
-          );
-        }
+
         if (state.errorMessage != null) {
           return SliverFillRemaining(
             child: Column(
@@ -75,21 +71,27 @@ class SelectCountryBody extends StatelessWidget {
                   ),
                 ),
                 ElevatedButton(
-                  onPressed: () => model.setCountries(),
+                  onPressed: () => model.setIndustries(),
                   child: const Text('Retry'),
                 ),
               ],
             ),
           );
         }
+        if (state.filteredIndustries.isEmpty) {
+          return const SliverFillRemaining(
+            child: EmptySearchState(),
+          );
+        }
         return SliverList.builder(
-          itemCount: state.filteredCountries.length,
+          itemCount: state.filteredIndustries.length,
           itemBuilder: (context, index) {
-            final country = state.filteredCountries[index];
-            return CountryTile(
-              country: country,
-              selectedCountryId: state.selectedCountry?.code ?? null,
-              onChanged: (value) => model.selectCountry(value),
+            final industry = state.filteredIndustries[index];
+            final selectedIndustry = state.selectedIndustry?.id.toString();
+            return IndustryTile(
+              industry: industry,
+              selectedIndustryId: selectedIndustry,
+              onChanged: ((value) => model.selectedIndustry(value)),
             );
           },
         );
@@ -98,17 +100,17 @@ class SelectCountryBody extends StatelessWidget {
   }
 }
 
-class SelectCountryBottom extends StatelessWidget {
-  const SelectCountryBottom({super.key});
+class IndustryBottom extends StatelessWidget {
+  const IndustryBottom({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final model = context.read<SelectCountryViewModel>();
-    final buttonState = context
-        .select((SelectCountryViewModel value) => value.state.buttonState);
+    final model = context.read<IndustryViewModel>();
+    final buttonState =
+        context.select((IndustryViewModel value) => value.state.buttonState);
     return ConfirmButton(
       state: buttonState,
-      text: 'Continue',
+      text: 'Save',
       onPressed: (context) => model.onButtonPressed(context),
       bottom: 0,
       left: 32,

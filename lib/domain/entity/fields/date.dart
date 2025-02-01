@@ -1,20 +1,4 @@
-class DateValidationResult {
-  final bool isValid;
-  final String? errorMessage;
-
-  const DateValidationResult({
-    required this.isValid,
-    this.errorMessage,
-  });
-
-  const DateValidationResult.valid()
-      : isValid = true,
-        errorMessage = null;
-
-  const DateValidationResult.invalid(String message)
-      : isValid = false,
-        errorMessage = message;
-}
+import 'package:jobs/domain/entity/fields/validoation_result.dart';
 
 class Date {
   final String? value;
@@ -52,11 +36,11 @@ class Date {
     );
   }
 
-  static DateValidationResult _validate(String? value) {
+  static ValidationResult _validate(String? value) {
     if (value == null || value.isEmpty) {
-      return const DateValidationResult.invalid('Field cannot be empty');
+      return const ValidationResult.invalid('Field cannot be empty');
     }
-    return const DateValidationResult.valid();
+    return const ValidationResult.valid();
   }
 
   Date copyWith({String? value}) {

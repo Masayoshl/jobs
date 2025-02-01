@@ -3,30 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:jobs/UI/common/button_state.dart';
 import 'package:jobs/UI/router/main_router.dart';
-import 'package:jobs/UI/screens/profile_setup/account_type/widgets/type_selector.dart';
+
+import 'package:jobs/UI/screens/profile_setup/common/account_type_enum.dart';
 import 'package:jobs/domain/servi%D1%81es/profile_service.dart';
-import 'package:jobs/gen/assets.gen.dart';
-
-enum AccountType implements TypeSelectorEnum {
-  company,
-  employee;
-
-  @override
-  String get title => switch (this) {
-        AccountType.company => 'Company',
-        AccountType.employee => 'Employee'
-      };
-  @override
-  String get subtitle => switch (this) {
-        AccountType.company => 'for an employee search',
-        AccountType.employee => 'for a job search'
-      };
-  @override
-  String get icon => switch (this) {
-        AccountType.company => Assets.images.accountTypeCompanyType,
-        AccountType.employee => Assets.images.accountTypeEmployeeType,
-      };
-}
 
 class _AccountTypeViewModelState {
   final AccountType accountType;
@@ -40,7 +19,7 @@ class _AccountTypeViewModelState {
   }
 
   const _AccountTypeViewModelState({
-    this.accountType = AccountType.company,
+    this.accountType = AccountType.employee,
     this.errorMessage,
     this.inProcess = false,
   });
@@ -80,7 +59,7 @@ class AccountTypeViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      await _profileService.setAccountType();
+      await _profileService.setAccountType(state.accountType.title);
       _state = _state.copyWith(inProcess: false);
       navToSelectCountryScreeen(context);
     } on ProfileServiceError catch (e) {

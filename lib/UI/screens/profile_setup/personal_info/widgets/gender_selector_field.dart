@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jobs/UI/theme/theme.dart';
 import 'package:jobs/UI/widgets/text_field/base_text_field.dart';
 import 'package:jobs/UI/widgets/text_field/prefix_icon.dart';
-import 'package:jobs/domain/entity/gender.dart';
+import 'package:jobs/domain/entity/fields/gender.dart';
 
 class GenderSelector extends BaseTextField {
   const GenderSelector({
@@ -96,7 +96,7 @@ class _GenderSelectorState extends BaseTextFieldState<GenderSelector> {
   }
 
   @override
-  InputDecoration buildInputDecoration(PrefixIcon prefixIcon) {
+  InputDecoration buildInputDecoration(PrefixIcon? prefixIcon) {
     return InputDecoration(
       border: InputBorder.none,
       contentPadding: const EdgeInsets.symmetric(horizontal: 16),
@@ -127,7 +127,7 @@ class _GenderSelectorState extends BaseTextFieldState<GenderSelector> {
   }
 
   @override
-  Widget buildTextField(PrefixIcon prefixIcon) {
+  Widget buildTextField(PrefixIcon? prefixIcon) {
     return TextFormField(
       focusNode: focusNode,
       controller: _controller,

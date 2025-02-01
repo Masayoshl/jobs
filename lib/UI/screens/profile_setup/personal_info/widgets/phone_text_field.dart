@@ -12,7 +12,6 @@ class PhoneTextField extends BaseTextField {
   const PhoneTextField({
     super.key,
     required super.hintText,
-    super.prefixIcon,
     required super.error,
     this.initialCountryCode = '',
     super.bottom,
@@ -68,7 +67,7 @@ class _PhoneTextFieldState extends BaseTextFieldState<PhoneTextField> {
   int? getCurrentLength() => _controller.text.length;
 
   @override
-  InputDecoration buildInputDecoration(PrefixIcon prefixIcon) {
+  InputDecoration buildInputDecoration(PrefixIcon? prefixIcon) {
     return InputDecoration(
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(128),
@@ -97,7 +96,7 @@ class _PhoneTextFieldState extends BaseTextFieldState<PhoneTextField> {
   }
 
   @override
-  Widget buildTextField(PrefixIcon prefixIcon) {
+  Widget buildTextField(PrefixIcon? prefixIcon) {
     return Padding(
       padding: const EdgeInsets.only(left: 28.0),
       child: IntlPhoneField(

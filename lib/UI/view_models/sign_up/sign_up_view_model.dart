@@ -4,9 +4,9 @@ import 'package:flutter/services.dart';
 import 'package:jobs/UI/common/button_state.dart';
 import 'package:jobs/UI/router/main_router.dart';
 import 'package:jobs/domain/data_providers/auth_api_provider.dart';
-import 'package:jobs/domain/entity/email.dart';
-import 'package:jobs/domain/entity/name.dart';
-import 'package:jobs/domain/entity/password.dart';
+import 'package:jobs/domain/entity/fields/email.dart';
+import 'package:jobs/domain/entity/fields/name.dart';
+import 'package:jobs/domain/entity/fields/password.dart';
 import 'package:jobs/domain/servi%D1%81es/auth_service.dart';
 
 class _SignUpViewModelState {

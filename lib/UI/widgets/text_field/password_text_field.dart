@@ -35,7 +35,7 @@ class _PasswordTextFieldState extends BaseTextFieldState<PasswordTextField> {
   }
 
   @override
-  InputDecoration buildInputDecoration(PrefixIcon prefixIcon) {
+  InputDecoration buildInputDecoration(PrefixIcon? prefixIcon) {
     final suffixIcon = _SuffixIcon(
       isSelected: !_isObscured,
       iconColor: _isObscured ? grayColor25 : super.iconColor,
@@ -72,7 +72,7 @@ class _PasswordTextFieldState extends BaseTextFieldState<PasswordTextField> {
   }
 
   @override
-  Widget buildTextField(PrefixIcon prefixIcon) {
+  Widget buildTextField(PrefixIcon? prefixIcon) {
     return TextField(
       style: AppTextStyles.textXLSemibold,
       focusNode: focusNode,

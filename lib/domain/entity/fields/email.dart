@@ -1,52 +1,38 @@
-class NameValidationResult {
-  final bool isValid;
-  final String? errorMessage;
+import 'package:jobs/domain/entity/fields/validoation_result.dart';
 
-  const NameValidationResult({
-    required this.isValid,
-    this.errorMessage,
-  });
-
-  const NameValidationResult.valid()
-      : isValid = true,
-        errorMessage = null;
-
-  const NameValidationResult.invalid(String message)
-      : isValid = false,
-        errorMessage = message;
-}
-
-class Name {
+class Email {
   final String value;
   final String? errorMessage;
   final bool hasError;
   final bool isDirty;
 
-  static const int _minLength = 4;
+  static const String _emailRegexPattern =
+      r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
 
-  const Name._({
+  const Email._({
     required this.value,
     this.errorMessage,
     this.hasError = false,
     this.isDirty = false,
   });
 
-  factory Name({
+  factory Email({
     String value = '',
     bool isDirty = false,
     String? externalErrorMessage,
   }) {
     if (externalErrorMessage != null) {
-      return Name._(
+      return Email._(
         value: value.trim(),
         errorMessage: externalErrorMessage,
         hasError: true,
         isDirty: true,
       );
     }
-    final validationResult = Name._validate(value);
 
-    return Name._(
+    final validationResult = Email._validate(value);
+
+    return Email._(
       value: value.trim(),
       errorMessage: isDirty ? validationResult.errorMessage : null,
       hasError: isDirty ? !validationResult.isValid : false,
@@ -54,22 +40,22 @@ class Name {
     );
   }
 
-  static NameValidationResult _validate(String value) {
+  static ValidationResult _validate(String value) {
     if (value.isEmpty) {
-      return const NameValidationResult.invalid('Name cannot be empty');
+      return const ValidationResult.invalid('Email cannot be empty');
     }
 
-    if (value.length < _minLength) {
-      return const NameValidationResult.invalid(
-          'Name must be at least 4 characters long');
+    final emailRegex = RegExp(_emailRegexPattern);
+    if (!emailRegex.hasMatch(value)) {
+      return const ValidationResult.invalid('Invalid email format');
     }
 
-    return const NameValidationResult.valid();
+    return const ValidationResult.valid();
   }
 
-  Name copyWith({String? value}) {
+  Email copyWith({String? value}) {
     if (value == null) return this;
-    return Name(
+    return Email(
       value: value,
       isDirty: true,
     );
@@ -79,12 +65,12 @@ class Name {
 
   @override
   String toString() =>
-      'Name(value: $value, isValid: $isValid, error: $errorMessage, isDirty: $isDirty)';
+      'Email(value: $value, isValid: $isValid, error: $errorMessage, isDirty: $isDirty)';
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    return other is Name &&
+    return other is Email &&
         other.value == value &&
         other.errorMessage == errorMessage &&
         other.hasError == hasError &&

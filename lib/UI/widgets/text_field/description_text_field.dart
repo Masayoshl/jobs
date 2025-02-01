@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:jobs/UI/theme/theme.dart';
 import 'package:jobs/UI/widgets/text_field/base_text_field.dart';
-import 'prefix_icon.dart';
+import 'package:jobs/UI/widgets/text_field/prefix_icon.dart';
 
-class CustomTextField extends BaseTextField {
-  const CustomTextField({
+class DescriptionTextField extends BaseTextField {
+  const DescriptionTextField({
     super.key,
     required super.hintText,
-    required super.prefixIcon,
+    super.prefixIcon,
     required super.error,
     super.bottom,
     super.top,
@@ -16,28 +16,30 @@ class CustomTextField extends BaseTextField {
     super.onChanged,
     super.errorText,
     super.width,
-    super.height,
+    super.height = 124,
     super.isEnabled,
+    super.isCentered = false,
   });
 
   @override
-  State<CustomTextField> createState() => _CustomTextFieldState();
+  State<DescriptionTextField> createState() => _CustomTextFieldState();
 }
 
-class _CustomTextFieldState extends BaseTextFieldState<CustomTextField> {
+class _CustomTextFieldState extends BaseTextFieldState<DescriptionTextField> {
   @override
   InputDecoration buildInputDecoration(PrefixIcon? prefixIcon) {
     final decoration = InputDecoration(
+      contentPadding: const EdgeInsets.all(16),
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(128),
+        borderRadius: BorderRadius.circular(30),
         borderSide: const BorderSide(color: Colors.white),
       ),
       enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(128),
+        borderRadius: BorderRadius.circular(30),
         borderSide: const BorderSide(color: Colors.white),
       ),
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(128),
+        borderRadius: BorderRadius.circular(30),
         borderSide: const BorderSide(color: Colors.white),
       ),
       hintText: widget.hintText,
@@ -51,7 +53,7 @@ class _CustomTextFieldState extends BaseTextFieldState<CustomTextField> {
   BoxDecoration buildBoxDecoration(List<BoxShadow> borderColor) {
     return BoxDecoration(
       color: Colors.white,
-      borderRadius: BorderRadius.circular(128),
+      borderRadius: BorderRadius.circular(30),
       boxShadow: borderColor,
     );
   }
@@ -62,6 +64,8 @@ class _CustomTextFieldState extends BaseTextFieldState<CustomTextField> {
       style: AppTextStyles.textXLSemibold,
       focusNode: focusNode,
       enabled: widget.isEnabled,
+      maxLines: 30,
+      minLines: 1,
       decoration: buildInputDecoration(prefixIcon),
       onChanged: widget.onChanged,
       textInputAction: TextInputAction.done,

@@ -104,7 +104,7 @@ class _DatePickerFieldState extends BaseTextFieldState<DatePickerField> {
   }
 
   @override
-  InputDecoration buildInputDecoration(PrefixIcon prefixIcon) {
+  InputDecoration buildInputDecoration(PrefixIcon? prefixIcon) {
     return InputDecoration(
       border: InputBorder.none,
       contentPadding: const EdgeInsets.symmetric(horizontal: 16),
@@ -124,7 +124,7 @@ class _DatePickerFieldState extends BaseTextFieldState<DatePickerField> {
   }
 
   @override
-  Widget buildTextField(PrefixIcon prefixIcon) {
+  Widget buildTextField(PrefixIcon? prefixIcon) {
     return TextFormField(
       controller: _dateController,
       focusNode: focusNode,

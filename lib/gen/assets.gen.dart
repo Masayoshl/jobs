@@ -289,6 +289,9 @@ class $AssetsImagesGen {
   /// File path: assets/images/ForgotPasswordImage.svg
   String get forgotPasswordImage => 'assets/images/ForgotPasswordImage.svg';
 
+  /// File path: assets/images/NotFoundImage.svg
+  String get notFoundImage => 'assets/images/NotFoundImage.svg';
+
   /// File path: assets/images/ProfileSetupImage.svg
   String get profileSetupImage => 'assets/images/ProfileSetupImage.svg';
 
@@ -299,6 +302,7 @@ class $AssetsImagesGen {
         createPasswordCongratImage,
         createPasswordImage,
         forgotPasswordImage,
+        notFoundImage,
         profileSetupImage
       ];
 }

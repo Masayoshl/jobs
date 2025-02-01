@@ -61,13 +61,14 @@ abstract class BaseTextField extends StatefulWidget {
   final double? width;
   final double? height;
   final bool isEnabled;
-  final int? maxLength; // максимальная длина
-  final bool? showCounter; // показывать ли счетчик
+  final int? maxLength;
+  final bool? showCounter;
+  final bool isCentered;
 
   const BaseTextField({
     super.key,
     required this.hintText,
-    required this.prefixIcon,
+    this.prefixIcon,
     required this.error,
     this.bottom,
     this.top,
@@ -80,6 +81,7 @@ abstract class BaseTextField extends StatefulWidget {
     this.isEnabled = true,
     this.maxLength,
     this.showCounter,
+    this.isCentered = true,
   });
 }
 
@@ -88,7 +90,8 @@ abstract class BaseTextFieldState<T extends BaseTextField> extends State<T> {
   late Color _iconColor;
   FocusNode get focusNode => _focusNode;
   Color get iconColor => _iconColor;
-  int? getCurrentLength() => null; // Переопределяется в наследниках
+  int? getCurrentLength() => null;
+
   @override
   void initState() {
     super.initState();
@@ -120,7 +123,7 @@ abstract class BaseTextFieldState<T extends BaseTextField> extends State<T> {
     super.dispose();
   }
 
-  InputDecoration buildInputDecoration(PrefixIcon prefixIcon);
+  InputDecoration buildInputDecoration(PrefixIcon? prefixIcon);
 
   BoxDecoration buildBoxDecoration(List<BoxShadow> borderColor);
 
@@ -128,8 +131,9 @@ abstract class BaseTextFieldState<T extends BaseTextField> extends State<T> {
   Widget build(BuildContext context) {
     final borderColor =
         _TextFieldColor.getBorderColor(widget.error, _focusNode);
-    final prefixIcon =
-        PrefixIcon(iconPath: widget.prefixIcon, iconColor: _iconColor);
+    final prefixIcon = widget.prefixIcon != null
+        ? PrefixIcon(iconPath: widget.prefixIcon!, iconColor: _iconColor)
+        : null;
     final themeData = Theme.of(context).copyWith(
       textSelectionTheme: TextSelectionThemeData(
         cursorColor: _iconColor,
@@ -137,10 +141,15 @@ abstract class BaseTextFieldState<T extends BaseTextField> extends State<T> {
         selectionHandleColor: _iconColor,
       ),
     );
+    final textField = widget.isCentered
+        ? Center(child: buildTextField(prefixIcon))
+        : buildTextField(prefixIcon);
 
     return Theme(
       data: themeData,
       child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           AnimatedContainer(
@@ -156,9 +165,7 @@ abstract class BaseTextFieldState<T extends BaseTextField> extends State<T> {
             width: widget.width,
             height: widget.height,
             decoration: buildBoxDecoration(borderColor),
-            child: Center(
-              child: buildTextField(prefixIcon),
-            ),
+            child: textField,
           ),
           Row(
             mainAxisSize: MainAxisSize.min,
@@ -183,7 +190,7 @@ abstract class BaseTextFieldState<T extends BaseTextField> extends State<T> {
     );
   }
 
-  Widget buildTextField(PrefixIcon prefixIcon);
+  Widget buildTextField(PrefixIcon? prefixIcon);
 }
 
 class _ErrorWidget extends StatelessWidget {

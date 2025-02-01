@@ -1,6 +1,9 @@
+import 'package:jobs/domain/entity/fields/validoation_result.dart';
+
 enum GenderType {
   male('Male'),
   female('Female'),
+  other('Other'),
   secret('Prefer not to answer');
 
   const GenderType(this.label);
@@ -13,24 +16,6 @@ enum GenderType {
       orElse: () => throw ArgumentError('Invalid gender label: $label'),
     );
   }
-}
-
-class GenderValidationResult {
-  final bool isValid;
-  final String? errorMessage;
-
-  const GenderValidationResult({
-    required this.isValid,
-    this.errorMessage,
-  });
-
-  const GenderValidationResult.valid()
-      : isValid = true,
-        errorMessage = null;
-
-  const GenderValidationResult.invalid(String message)
-      : isValid = false,
-        errorMessage = message;
 }
 
 class Gender {
@@ -70,16 +55,16 @@ class Gender {
     );
   }
 
-  static GenderValidationResult _validate(String? value) {
+  static ValidationResult _validate(String? value) {
     if (value == null) {
-      return const GenderValidationResult.invalid('Gender must be selected');
+      return const ValidationResult.invalid('Gender must be selected');
     }
 
     try {
       GenderType.fromLabel(value);
-      return const GenderValidationResult.valid();
+      return const ValidationResult.valid();
     } catch (e) {
-      return const GenderValidationResult.invalid('Invalid gender value');
+      return const ValidationResult.invalid('Invalid gender value');
     }
   }
 

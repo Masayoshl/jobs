@@ -1,19 +1,4 @@
-class PasswordValidationResult {
-  final bool isValid;
-  final String? errorMessage;
-
-  const PasswordValidationResult({
-    required this.isValid,
-    this.errorMessage,
-  });
-
-  const PasswordValidationResult.valid()
-      : isValid = true,
-        errorMessage = null;
-  const PasswordValidationResult.invalid(String message)
-      : isValid = false,
-        errorMessage = message;
-}
+import 'package:jobs/domain/entity/fields/validoation_result.dart';
 
 class Password {
   final String value;
@@ -69,13 +54,13 @@ class Password {
     );
   }
 
-  static PasswordValidationResult _validatePassword(String value) {
+  static ValidationResult _validatePassword(String value) {
     if (value.isEmpty) {
-      return const PasswordValidationResult.invalid('Password cannot be empty');
+      return const ValidationResult.invalid('Password cannot be empty');
     }
 
     if (value.length < 8) {
-      return const PasswordValidationResult.invalid(
+      return const ValidationResult.invalid(
           'Password must be at least 8 characters long');
     }
 
@@ -85,21 +70,20 @@ class Password {
     //       'Password must contain uppercase, lowercase, number and special character');
     // }
 
-    return const PasswordValidationResult.valid();
+    return const ValidationResult.valid();
   }
 
-  static PasswordValidationResult _validateConfirmPassword(
+  static ValidationResult _validateConfirmPassword(
       String password, String confirmPassword) {
     if (confirmPassword.isEmpty) {
-      return const PasswordValidationResult.invalid(
-          'Confirm password cannot be empty');
+      return const ValidationResult.invalid('Confirm password cannot be empty');
     }
 
     if (password != confirmPassword) {
-      return const PasswordValidationResult.invalid('Passwords do not match');
+      return const ValidationResult.invalid('Passwords do not match');
     }
 
-    return const PasswordValidationResult.valid();
+    return const ValidationResult.valid();
   }
 
   Password copyWith({

@@ -3,6 +3,10 @@ import 'package:jobs/UI/screens/auth/sign_in/sign_in_screen.dart';
 import 'package:jobs/UI/screens/auth/sign_up/sign_up_screen.dart';
 import 'package:jobs/UI/screens/profile_setup/account_type/account_type_screen.dart';
 import 'package:jobs/UI/screens/profile_setup/account_type/account_type_view_model.dart';
+import 'package:jobs/UI/screens/profile_setup/company_info/company_info_screen.dart';
+import 'package:jobs/UI/screens/profile_setup/company_info/company_info_view_model.dart';
+import 'package:jobs/UI/screens/profile_setup/industry/industry_screen.dart';
+import 'package:jobs/UI/screens/profile_setup/industry/industry_view_model.dart';
 import 'package:jobs/UI/screens/profile_setup/personal_info/personal_info_screen.dart';
 import 'package:jobs/UI/screens/profile_setup/personal_info/personal_info_view_model.dart';
 import 'package:jobs/UI/screens/profile_setup/profile_setup_screen.dart';
@@ -19,6 +23,7 @@ import 'package:jobs/UI/screens/loader/loader_screen.dart';
 import 'package:jobs/UI/view_models/loader/loader_view_model.dart';
 import 'package:jobs/UI/screens/new_password/new_password_screen.dart';
 import 'package:jobs/UI/view_models/new_password/new_password_view_model.dart';
+import 'package:jobs/domain/entity/industry.dart';
 import 'package:provider/provider.dart';
 
 class ScreenFactory {
@@ -90,6 +95,20 @@ class ScreenFactory {
     return ChangeNotifierProvider(
       create: (_) => PersonalInfoViewModel(initialCountryCode.toUpperCase()),
       child: const PersonalInfoScreen(),
+    );
+  }
+
+  Widget makeCompanyInfo(String initialCountryCode) {
+    return ChangeNotifierProvider(
+      create: (_) => CompanyInfoViewModel(initialCountryCode.toUpperCase()),
+      child: const CompanyInfoScreen(),
+    );
+  }
+
+  Widget makeIndustry(Industry? selectedIndustry) {
+    return ChangeNotifierProvider(
+      create: (_) => IndustryViewModel(selectedIndustry),
+      child: const IndustryScreen(),
     );
   }
 }

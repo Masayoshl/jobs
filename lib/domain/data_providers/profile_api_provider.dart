@@ -10,4 +10,9 @@ class ProfileApiProvider {
     await Future.delayed(const Duration(seconds: 1));
     debugPrint('Success set country. token:$sessionToken');
   }
+
+  Future<void> setAccountInfo(String sessionToken) async {
+    await Future.delayed(const Duration(seconds: 1));
+    debugPrint('Success set info. token:$sessionToken');
+  }
 }

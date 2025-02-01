@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:jobs/UI/router/main_router.dart';
 import 'package:jobs/domain/data_providers/otp_api_provider.dart';
-import 'package:jobs/domain/entity/one_time_password.dart';
+import 'package:jobs/domain/entity/fields/one_time_password.dart';
 
 import 'package:jobs/domain/servi%D1%81es/otp_service.dart';
 

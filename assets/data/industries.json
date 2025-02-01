@@ -1,0 +1,58 @@
+[
+    {
+      "id": 1,
+      "title": "Accounting & Finance"
+    },
+    {
+      "id": 2, 
+      "title": "Architecture"
+    },
+    {
+      "id": 3,
+      "title": "Advertising Service"
+    },
+    {
+      "id": 4,
+      "title": "Hospital & Healthcare"
+    },
+    {
+      "id": 5,
+      "title": "Information Technology"
+    },
+    {
+      "id": 6,
+      "title": "Food Services"
+    },
+    {
+      "id": 7,
+      "title": "Fitness Services"
+    },
+    {
+      "id": 8,
+      "title": "Education"
+    },
+    {
+      "id": 9,
+      "title": "Legal Services"
+    },
+    {
+      "id": 10,
+      "title": "Manufacturing"
+    },
+    {
+      "id": 11,
+      "title": "Media & Communications"
+    },
+    {
+      "id": 12,
+      "title": "Real Estate"
+    },
+    {
+      "id": 13,
+      "title": "Retail"
+    },
+    {
+      "id": 14,
+      "title": "Transportation"
+    }
+   ]

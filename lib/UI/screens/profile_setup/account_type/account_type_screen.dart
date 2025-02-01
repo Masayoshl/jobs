@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jobs/UI/screens/profile_setup/account_type/account_type_view_model.dart';
 import 'package:jobs/UI/screens/profile_setup/account_type/widgets/type_selector.dart';
+import 'package:jobs/UI/screens/profile_setup/common/account_type_enum.dart';
 import 'package:jobs/UI/theme/theme.dart';
 import 'package:jobs/UI/widgets/confirm_button.dart';
 import 'package:jobs/UI/widgets/custom_header.dart';

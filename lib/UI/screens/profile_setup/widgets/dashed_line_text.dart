@@ -31,6 +31,9 @@ class DashedLineText extends StatelessWidget {
             painter: DashedLinePainter(),
           ),
         ),
+        const SizedBox(
+          height: 16,
+        ),
       ],
     );
   }
