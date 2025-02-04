@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:jobs/UI/common/button_state.dart';
 import 'package:jobs/UI/router/main_router.dart';
 import 'package:jobs/UI/screens/profile_setup/common/account_type_enum.dart';
+
+import 'package:jobs/domain/controllers/voice_search_controller.dart';
 import 'package:jobs/domain/entity/country.dart';
 import 'package:jobs/domain/servi%D1%81es/profile_service.dart';
 
@@ -59,12 +61,19 @@ class SelectCountryViewModel extends ChangeNotifier {
   SelectCountryState _state;
   var _searchDebouncer = Timer(const Duration(milliseconds: 500), () {});
   final _profileService = ProfileService();
+
+  late final VoiceSearchController voiceSearchController;
   SelectCountryViewModel()
       : _state = SelectCountryState(
           allCountries: [],
           filteredCountries: [],
           isLoading: true,
         ) {
+    voiceSearchController = VoiceSearchController(
+      searchController: _state.searchController,
+      onSearchQueryChanged: onSearchQueryChanged,
+      onStateChanged: notifyListeners,
+    );
     setCountries();
     _initializeAccountType();
   }
@@ -107,7 +116,7 @@ class SelectCountryViewModel extends ChangeNotifier {
 
   void onSearchQueryChanged(String query) {
     _searchDebouncer.cancel();
-    _searchDebouncer = Timer(const Duration(milliseconds: 300), () {
+    _searchDebouncer = Timer(const Duration(milliseconds: 500), () {
       _updateState(
         searchQuery: query,
         filteredCountries: _filterCountries(query),
@@ -190,10 +199,10 @@ class SelectCountryViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  @override
   void dispose() {
     _searchDebouncer.cancel();
     _state.searchController.dispose();
+    voiceSearchController.dispose();
     super.dispose();
   }
 }

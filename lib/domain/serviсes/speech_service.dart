@@ -4,6 +4,7 @@ import 'package:speech_to_text/speech_to_text.dart' as stt;
 class SpeechService {
   final stt.SpeechToText _speech = stt.SpeechToText();
   bool _isInitialized = false;
+  bool _isListening = false;
 
   final StreamController<String> _textStreamController =
       StreamController<String>.broadcast();
@@ -23,11 +24,14 @@ class SpeechService {
           if (errorNotification.permanent) {
             _isInitialized = false;
           }
+          _updateListeningState(false);
         },
         onStatus: (status) {
           print('Speech recognition status: $status');
-          if (status == 'done') {
-            _isListeningStreamController.add(false);
+          if (status == 'done' || status == 'notListening') {
+            _updateListeningState(false);
+          } else if (status == 'listening') {
+            _updateListeningState(true);
           }
         },
         finalTimeout: const Duration(milliseconds: 2000),
@@ -49,18 +53,31 @@ class SpeechService {
     }
   }
 
+  void _updateListeningState(bool listening) {
+    if (_isListening != listening) {
+      _isListening = listening;
+      _isListeningStreamController.add(_isListening);
+    }
+  }
+
   Future<void> startListening({String? selectedLocaleId}) async {
     if (!_isInitialized) {
       final initialized = await initialize();
       if (!initialized) {
+        print('Failed to initialize speech recognition');
         throw Exception('Speech recognition failed to initialize');
       }
     }
 
     await _speech.listen(
       onResult: (result) {
+        print('Speech result received: ${result.recognizedWords}');
+        print('Is final result: ${result.finalResult}');
+
         if (result.finalResult) {
+          print('Sending final result to stream: ${result.recognizedWords}');
           _textStreamController.add(result.recognizedWords);
+          _updateListeningState(false);
         }
       },
       localeId: selectedLocaleId,
@@ -69,22 +86,20 @@ class SpeechService {
       partialResults: false,
     );
 
-    _isListeningStreamController.add(true);
+    print('Started listening');
+    _updateListeningState(true);
   }
 
-  // Остановка прослушивания
   Future<void> stopListening() async {
     await _speech.stop();
-    _isListeningStreamController.add(false);
+    _updateListeningState(false);
   }
 
-  // Отмена прослушивания
   Future<void> cancelListening() async {
     await _speech.cancel();
-    _isListeningStreamController.add(false);
+    _updateListeningState(false);
   }
 
-  // Получение списка доступных языков
   Future<List<stt.LocaleName>> getAvailableLocales() async {
     if (!_isInitialized) {
       final initialized = await initialize();
@@ -95,13 +110,10 @@ class SpeechService {
     return await _speech.locales();
   }
 
-  // Проверка, доступно ли распознавание речи
   bool get isAvailable => _speech.isAvailable;
 
-  // Проверка, идет ли прослушивание
-  bool get isListening => _speech.isListening;
+  bool get isListening => _isListening;
 
-  // Освобождение ресурсов
   void dispose() {
     _textStreamController.close();
     _isListeningStreamController.close();

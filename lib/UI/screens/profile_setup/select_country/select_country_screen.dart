@@ -32,13 +32,14 @@ class Search extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<SelectCountryViewModel>(
-      builder: (context, model, _) {
-        return SearchByVoiceField(
-          searchController: model.state.searchController,
-          onSearchQueryChanged: model.onSearchQueryChanged,
-        );
-      },
+    final model = context.read<SelectCountryViewModel>();
+    // ignore: unused_local_variable
+    final isListening = context.select((SelectCountryViewModel model) =>
+        model.voiceSearchController.isListening);
+    return SearchByVoiceField(
+      voiceController: model.voiceSearchController,
+      searchController: model.state.searchController,
+      onSearchQueryChanged: model.onSearchQueryChanged,
     );
   }
 }

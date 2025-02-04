@@ -201,6 +201,24 @@ class _ErrorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const leftPading = 24.0;
+    // Создаем TextPainter для измерения высоты текста
+    final textSpan = TextSpan(
+      text: errorText ?? '',
+      style: AppTextStyles.textL.copyWith(color: errorColor700),
+    );
+
+    final textPainter = TextPainter(
+      text: textSpan,
+      textDirection: TextDirection.ltr,
+      maxLines: 2,
+    );
+
+    // Задаем максимальную ширину для расчета высоты
+    textPainter.layout(
+        maxWidth: 350 - leftPading); // 350 - maxWidth, 32 - left padding
+    final textHeight = textPainter.height + 5; // Добавляем небольшой отступ
+
     return TweenAnimationBuilder<double>(
       duration: const Duration(milliseconds: 200),
       curve: Curves.easeOut,
@@ -213,12 +231,13 @@ class _ErrorWidget extends StatelessWidget {
           opacity: value,
           child: Container(
             constraints: const BoxConstraints(maxWidth: 350),
-            height: value * 20, // Регулируем высоту контейнера
+            height: value * textHeight, // Используем рассчитанную высоту
             padding: const EdgeInsets.only(
-              left: 32,
+              left: leftPading,
             ),
             child: Text(
               errorText ?? '',
+              maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: AppTextStyles.textL.copyWith(color: errorColor700),
             ),
@@ -254,11 +273,11 @@ class _SymbolCounter extends StatelessWidget {
           opacity: value,
           child: Container(
             height: value * 20,
-            padding: const EdgeInsets.only(right: 32),
+            padding: const EdgeInsets.only(right: 24),
             alignment: Alignment.centerRight,
             child: Text(
               '${currentLength ?? 0}/${maxLength ?? 0}',
-              style: AppTextStyles.textS.copyWith(color: grayColor25),
+              style: AppTextStyles.textM.copyWith(color: grayColor25),
             ),
           ),
         );
