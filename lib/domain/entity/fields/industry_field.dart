@@ -1,20 +1,20 @@
 import 'package:jobs/domain/entity/fields/validoation_result.dart';
 
 class IndustryField {
-  final String? value;
+  final String value;
   final String? errorMessage;
   final bool hasError;
   final bool isDirty;
 
   const IndustryField._({
-    this.value,
+    required this.value,
     this.errorMessage,
     this.hasError = false,
     this.isDirty = false,
   });
 
   factory IndustryField({
-    String? value,
+    String value = '',
     bool isDirty = false,
     String? externalErrorMessage,
   }) {
@@ -36,15 +36,14 @@ class IndustryField {
     );
   }
 
-  static ValidationResult _validate(String? value) {
-    if (value == null || value.isEmpty) {
+  static ValidationResult _validate(String value) {
+    if (value.isEmpty) {
       return const ValidationResult.invalid('Field cannot be empty');
     }
     return const ValidationResult.valid();
   }
 
   IndustryField copyWith({String? value}) {
-    if (value == null && this.value == null) return this;
     return IndustryField(
       value: value ?? this.value,
       isDirty: true,
@@ -55,7 +54,7 @@ class IndustryField {
 
   @override
   String toString() =>
-      'DateOfBirth(value: $value, isValid: $isValid, error: $errorMessage, isDirty: $isDirty)';
+      'IndustryField(value: $value, isValid: $isValid, error: $errorMessage, isDirty: $isDirty)';
 
   @override
   bool operator ==(Object other) {

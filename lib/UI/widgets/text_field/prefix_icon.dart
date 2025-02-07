@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:jobs/UI/widgets/custom_icon.dart';
 
 class PrefixIcon extends StatelessWidget {
   const PrefixIcon({
@@ -8,20 +8,17 @@ class PrefixIcon extends StatelessWidget {
     required Color iconColor,
   }) : _iconColor = iconColor;
 
-  final String? iconPath;
+  final String iconPath;
   final Color _iconColor;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 30).copyWith(right: 16),
-      child: iconPath == null
-          ? const SizedBox.shrink()
-          : SvgPicture.asset(
-              iconPath!,
-              colorFilter: ColorFilter.mode(_iconColor, BlendMode.srcIn),
-              fit: BoxFit.none,
-            ),
-    );
+        padding: const EdgeInsets.only(left: 30, right: 16),
+        child: CustomIcon(
+          iconPath: iconPath,
+          iconColor: _iconColor,
+          boxFit: BoxFit.none,
+        ));
   }
 }

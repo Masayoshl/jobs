@@ -191,6 +191,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/UserIcon.svg
   String get userIcon => 'assets/icons/UserIcon.svg';
 
+  /// File path: assets/icons/UserIconFilled.svg
+  String get userIconFilled => 'assets/icons/UserIconFilled.svg';
+
   /// File path: assets/icons/UserSignIcon.svg
   String get userSignIcon => 'assets/icons/UserSignIcon.svg';
 
@@ -261,6 +264,7 @@ class $AssetsIconsGen {
         userAddIcon,
         userCheckIcon,
         userIcon,
+        userIconFilled,
         userSignIcon,
         usersIcon,
         videoIcon,

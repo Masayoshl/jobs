@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jobs/UI/common/button_state.dart';
 import 'package:jobs/UI/theme/theme.dart';
+import 'package:jobs/UI/widgets/custom_icon.dart';
 
 class ConfirmButton extends StatelessWidget {
   const ConfirmButton({
@@ -14,10 +15,12 @@ class ConfirmButton extends StatelessWidget {
     this.width,
     this.height,
     this.backgroundColor,
+    this.iconPath,
     super.key,
   });
 
   final String text;
+
   final Function(BuildContext) onPressed;
   final ButtonStateBase? state;
   final double? bottom;
@@ -27,18 +30,37 @@ class ConfirmButton extends StatelessWidget {
   final double? width;
   final double? height;
   final Color? backgroundColor;
+  final String? iconPath;
 
   @override
   Widget build(BuildContext context) {
     final isEnabled = state?.isEnabled ?? true;
+    final icon = iconPath == null
+        ? const SizedBox.shrink()
+        : Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: CustomIcon(
+              iconPath: iconPath!,
+              iconColor: Colors.white,
+              size: 24,
+            ),
+          );
+
     final child = state?.isInProcess ?? false
         ? const CircularProgressIndicator(
             color: Colors.white,
             strokeWidth: 2,
           )
-        : Text(
-            text,
-            style: AppTextStyles.textXLSemibold.copyWith(color: Colors.white),
+        : Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              icon,
+              Text(
+                text,
+                style:
+                    AppTextStyles.textXLSemibold.copyWith(color: Colors.white),
+              ),
+            ],
           );
 
     final color =

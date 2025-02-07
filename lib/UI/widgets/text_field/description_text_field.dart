@@ -25,21 +25,23 @@ class DescriptionTextField extends BaseTextField {
   State<DescriptionTextField> createState() => _CustomTextFieldState();
 }
 
+const _borderRadius = 30.0;
+
 class _CustomTextFieldState extends BaseTextFieldState<DescriptionTextField> {
   @override
   InputDecoration buildInputDecoration(PrefixIcon? prefixIcon) {
     final decoration = InputDecoration(
       contentPadding: const EdgeInsets.all(16),
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(30),
+        borderRadius: BorderRadius.circular(_borderRadius),
         borderSide: const BorderSide(color: Colors.white),
       ),
       enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(30),
+        borderRadius: BorderRadius.circular(_borderRadius),
         borderSide: const BorderSide(color: Colors.white),
       ),
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(30),
+        borderRadius: BorderRadius.circular(_borderRadius),
         borderSide: const BorderSide(color: Colors.white),
       ),
       hintText: widget.hintText,
@@ -53,7 +55,7 @@ class _CustomTextFieldState extends BaseTextFieldState<DescriptionTextField> {
   BoxDecoration buildBoxDecoration(List<BoxShadow> borderColor) {
     return BoxDecoration(
       color: Colors.white,
-      borderRadius: BorderRadius.circular(30),
+      borderRadius: BorderRadius.circular(_borderRadius),
       boxShadow: borderColor,
     );
   }

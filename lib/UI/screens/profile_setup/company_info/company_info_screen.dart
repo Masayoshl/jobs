@@ -93,7 +93,7 @@ class CompanyInfoBody extends StatelessWidget {
           ),
         );
       }
-      return SliverFillRemaining();
+      return const SliverFillRemaining();
     });
   }
 }
@@ -276,12 +276,16 @@ class CompanyInfoBottom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final model = context.read<CompanyInfoViewModel>();
+    final buttonState =
+        context.select((CompanyInfoViewModel value) => value.state.buttonState);
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         ConfirmButton(
+          state: buttonState,
           text: 'Save & Continue',
-          onPressed: (_) {},
+          onPressed: (context) => model.onButtonPressed(context),
           top: 10,
           bottom: 16,
           left: 32,

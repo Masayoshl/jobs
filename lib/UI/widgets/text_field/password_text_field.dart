@@ -25,6 +25,8 @@ class PasswordTextField extends BaseTextField {
   State<PasswordTextField> createState() => _PasswordTextFieldState();
 }
 
+const _borderRadius = 128.0;
+
 class _PasswordTextFieldState extends BaseTextFieldState<PasswordTextField> {
   bool _isObscured = true;
 
@@ -44,15 +46,15 @@ class _PasswordTextFieldState extends BaseTextFieldState<PasswordTextField> {
 
     final decoration = InputDecoration(
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(128),
+        borderRadius: BorderRadius.circular(_borderRadius),
         borderSide: const BorderSide(color: Colors.white),
       ),
       enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(128),
+        borderRadius: BorderRadius.circular(_borderRadius),
         borderSide: const BorderSide(color: Colors.white),
       ),
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(128),
+        borderRadius: BorderRadius.circular(_borderRadius),
         borderSide: const BorderSide(color: Colors.white),
       ),
       hintText: widget.hintText,
@@ -66,7 +68,7 @@ class _PasswordTextFieldState extends BaseTextFieldState<PasswordTextField> {
   BoxDecoration buildBoxDecoration(List<BoxShadow> borderColor) {
     return BoxDecoration(
       color: Colors.white,
-      borderRadius: BorderRadius.circular(128),
+      borderRadius: BorderRadius.circular(_borderRadius),
       boxShadow: borderColor,
     );
   }

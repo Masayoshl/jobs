@@ -19,13 +19,15 @@ abstract class MainRouterNames {
       '/sign_in/sign_up/profile_setup/account_type/select_country/company_info';
   static const industry =
       '/sign_in/sign_up/profile_setup/account_type/select_country/company_info/industry';
+  static const profilePhoto =
+      '/sign_in/sign_up/profile_setup/account_type/select_country/company_info/profile_photo';
 }
 
 class MainRouter {
   static final _screenFactory = ScreenFactory();
 
   //! Юзать если нужно поверсатать один екран =>
-  final home = _screenFactory.makeAccountType();
+  final home = _screenFactory.makeProfilePhoto();
 
   Route<Object> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -85,6 +87,10 @@ class MainRouter {
         return MaterialPageRoute(
           builder: (_) => _screenFactory.makeIndustry(selectedIndustry),
           fullscreenDialog: true,
+        );
+      case MainRouterNames.profilePhoto:
+        return MaterialPageRoute(
+          builder: (_) => _screenFactory.makeProfilePhoto(),
         );
       default:
         const widget = Text('Navigation Error!!!');

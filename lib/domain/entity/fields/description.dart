@@ -1,20 +1,20 @@
 import 'package:jobs/domain/entity/fields/validoation_result.dart';
 
 class Description {
-  final String? value;
+  final String value;
   final String? errorMessage;
   final bool hasError;
   final bool isDirty;
 
   const Description._({
-    this.value,
+    required this.value,
     this.errorMessage,
     this.hasError = false,
     this.isDirty = false,
   });
 
   factory Description({
-    String? value,
+    String value = '',
     bool isDirty = false,
     String? externalErrorMessage,
   }) {
@@ -48,7 +48,6 @@ class Description {
   }
 
   Description copyWith({String? value}) {
-    if (value == null && this.value == null) return this;
     return Description(
       value: value ?? this.value,
       isDirty: true,

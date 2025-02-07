@@ -1,5 +1,7 @@
 part of 'theme.dart';
 
+const primaryColor25 = Color(0xffECF4FC);
+const primaryColor50 = Color(0xffD3E7FF);
 const primaryColor300 = Color(0xff6FAFFF);
 const primaryColor500 = Color(0xff0A77FF); //* prymary default
 

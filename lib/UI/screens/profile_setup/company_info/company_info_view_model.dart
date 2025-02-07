@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/countries.dart';
+import 'package:jobs/UI/common/button_state.dart';
+import 'package:jobs/UI/router/main_router.dart';
 
 import 'package:jobs/domain/entity/entity.dart';
 import 'package:jobs/domain/entity/fields/description.dart';
@@ -39,6 +41,25 @@ class CompanyInfoState {
               minLength: 0,
             ),
         location = location ?? Location();
+  ButtonState get buttonState {
+    if (isLoading) return ButtonState.inProcess;
+    if (errorMessage != null) return ButtonState.disabled;
+    if (name.hasError ||
+        contactEmail.hasError ||
+        phoneNumber.hasError ||
+        industry.hasError ||
+        website.hasError ||
+        description.hasError) return ButtonState.disabled;
+
+    if (name.value.isEmpty ||
+        contactEmail.value.isEmpty ||
+        phoneNumber.value.isEmpty ||
+        industry.value.isEmpty ||
+        website.value.isEmpty ||
+        description.value.isEmpty) return ButtonState.disabled;
+
+    return ButtonState.enabled; // Default state
+  }
 
   CompanyInfoState copyWith({
     Name? name,
@@ -67,13 +88,13 @@ class CompanyInfoState {
 
 class CompanyInfoViewModel extends ChangeNotifier {
   final String initialCountryCode;
-  CompanyInfoState _state = CompanyInfoState();
+
   final _profileService = ProfileService();
+  CompanyInfoState _state = CompanyInfoState();
   CompanyInfoState get state => _state;
-  String get accountType => _profileService.accountType;
 
   CompanyInfoViewModel(this.initialCountryCode) {
-    _initialize();
+    _initializeCountryCode();
   }
 
   void _updateState({
@@ -101,16 +122,6 @@ class CompanyInfoViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> _initialize() async {
-    try {
-      await _profileService.initialize();
-      _initializeCountryCode();
-    } finally {
-      print(_profileService.accountType);
-      _updateState(isLoading: false);
-    }
-  }
-
   void _initializeCountryCode() {
     if (initialCountryCode.isEmpty) return;
     try {
@@ -122,7 +133,7 @@ class CompanyInfoViewModel extends ChangeNotifier {
         maxLength: country.maxLength,
         minLength: country.minLength,
       );
-      _updateState(phoneNumber: phoneNumber);
+      _updateState(phoneNumber: phoneNumber, isLoading: false);
     } catch (e) {
       debugPrint('$initialCountryCode Error initializing phone: $e');
     }
@@ -150,7 +161,6 @@ class CompanyInfoViewModel extends ChangeNotifier {
   }
 
   void changeDescription(String value) async {
-    print('value: $value');
     final newDescription = Description(value: value, isDirty: true);
     _updateState(description: newDescription);
   }
@@ -184,17 +194,22 @@ class CompanyInfoViewModel extends ChangeNotifier {
     _updateState(location: newAddress);
   }
 
+  void navToProfilePhoto(BuildContext context) {
+    Navigator.of(context).pushNamed(MainRouterNames.profilePhoto);
+  }
+
   Future<void> onButtonPressed(BuildContext context) async {
-    _state = _state.copyWith(isLoading: true);
-    notifyListeners();
+    _updateState(isLoading: true);
 
     try {
       await _profileService.setAccountInfo();
-      _state = _state.copyWith(isLoading: false);
     } on ProfileServiceError catch (e) {
       _updateState(isLoading: false, errorMessage: e.message);
     } catch (e) {
       _updateState(isLoading: false, errorMessage: e.toString());
+    } finally {
+      _state = _state.copyWith(isLoading: false);
+      navToProfilePhoto(context);
     }
   }
 }

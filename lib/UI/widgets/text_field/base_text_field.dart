@@ -202,7 +202,7 @@ class _ErrorWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const leftPading = 24.0;
-    // Создаем TextPainter для измерения высоты текста
+
     final textSpan = TextSpan(
       text: errorText ?? '',
       style: AppTextStyles.textL.copyWith(color: errorColor700),
@@ -214,10 +214,8 @@ class _ErrorWidget extends StatelessWidget {
       maxLines: 2,
     );
 
-    // Задаем максимальную ширину для расчета высоты
-    textPainter.layout(
-        maxWidth: 350 - leftPading); // 350 - maxWidth, 32 - left padding
-    final textHeight = textPainter.height + 5; // Добавляем небольшой отступ
+    textPainter.layout(maxWidth: 350 - leftPading);
+    final textHeight = textPainter.height + 5;
 
     return TweenAnimationBuilder<double>(
       duration: const Duration(milliseconds: 200),
@@ -231,7 +229,7 @@ class _ErrorWidget extends StatelessWidget {
           opacity: value,
           child: Container(
             constraints: const BoxConstraints(maxWidth: 350),
-            height: value * textHeight, // Используем рассчитанную высоту
+            height: value * textHeight,
             padding: const EdgeInsets.only(
               left: leftPading,
             ),

@@ -9,6 +9,8 @@ import 'package:jobs/UI/screens/profile_setup/industry/industry_screen.dart';
 import 'package:jobs/UI/screens/profile_setup/industry/industry_view_model.dart';
 import 'package:jobs/UI/screens/profile_setup/personal_info/personal_info_screen.dart';
 import 'package:jobs/UI/screens/profile_setup/personal_info/personal_info_view_model.dart';
+import 'package:jobs/UI/screens/profile_setup/profile_photo/profile_photo_screen.dart';
+import 'package:jobs/UI/screens/profile_setup/profile_photo/profile_photo_view_model.dart';
 import 'package:jobs/UI/screens/profile_setup/profile_setup_screen.dart';
 import 'package:jobs/UI/screens/profile_setup/profile_setup_view_model.dart';
 import 'package:jobs/UI/screens/profile_setup/select_country/select_country_screen.dart';
@@ -109,6 +111,13 @@ class ScreenFactory {
     return ChangeNotifierProvider(
       create: (_) => IndustryViewModel(selectedIndustry),
       child: const IndustryScreen(),
+    );
+  }
+
+  Widget makeProfilePhoto() {
+    return ChangeNotifierProvider(
+      create: (_) => ProfilePhotoViewModel(),
+      child: const ProfilePhotoScreen(),
     );
   }
 }
