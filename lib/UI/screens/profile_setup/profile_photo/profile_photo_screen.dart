@@ -61,7 +61,7 @@ class ProfilePhoto extends StatelessWidget {
         context.select((ProfilePhotoViewModel model) => model.state.file);
     return ProfileAvatarFrame(
       file: file,
-      onTap: () => model.onGalleryButtonPressed(),
+      onTap: () => model.onImagePressed(),
     );
   }
 }
@@ -74,7 +74,10 @@ class CameraButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final model = context.read<ProfilePhotoViewModel>();
+    final buttonState = context
+        .select((ProfilePhotoViewModel model) => model.state.cameraButtonState);
     return ConfirmButton(
+      state: buttonState,
       onPressed: (_) => model.onCameraButtonPressed(),
       text: 'Camera',
       iconPath: Assets.icons.cameraIcon,
@@ -95,7 +98,10 @@ class GalleryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final model = context.read<ProfilePhotoViewModel>();
+    final buttonState = context.select(
+        (ProfilePhotoViewModel model) => model.state.galleryButtonState);
     return ConfirmButton(
+      state: buttonState,
       onPressed: (_) => model.onGalleryButtonPressed(),
       text: 'Choose From Gallary',
       iconPath: Assets.icons.gallaryIcon,
@@ -113,9 +119,13 @@ class ProfilePhotoBottom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final model = context.read<ProfilePhotoViewModel>();
+    final buttonState = context.select(
+        (ProfilePhotoViewModel model) => model.state.primaryButtonState);
     return ConfirmButton(
+      state: buttonState,
       text: 'Continue',
-      onPressed: (context) {},
+      onPressed: (context) => model.onPrimaryButtonPressed(context),
       top: 10,
       bottom: 16,
       left: 32,

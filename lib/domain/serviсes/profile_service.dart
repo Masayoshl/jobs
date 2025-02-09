@@ -50,4 +50,10 @@ class ProfileService {
     final token = await sessionToken;
     await _profileApiProvider.setAccountInfo(token);
   }
+
+  Future<void> setAccountImage(String path) async {
+    _sessionDataProvider.saveApiKey('665523');
+    final token = await sessionToken;
+    await _profileApiProvider.setAccountImage(token, path);
+  }
 }

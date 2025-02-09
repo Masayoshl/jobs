@@ -21,7 +21,7 @@ plugins {
  android {
         ndkVersion = "25.1.8937393"
         namespace = "com.example.jobs"
-        compileSdk = flutter.compileSdkVersion
+        compileSdk = flutter.compileSdkVersion //try 33
    
     compileOptions {
       sourceCompatibility JavaVersion.VERSION_17
@@ -51,7 +51,10 @@ plugins {
         }
     }
 }
-
+dependencies {
+    implementation "androidx.appcompat:appcompat:1.6.1"
+    
+}
 flutter {
     source = "../.."
 }

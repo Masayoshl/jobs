@@ -15,4 +15,9 @@ class ProfileApiProvider {
     await Future.delayed(const Duration(seconds: 1));
     debugPrint('Success set info. token:$sessionToken');
   }
+
+  Future<void> setAccountImage(String sessionToken, String path) async {
+    await Future.delayed(const Duration(seconds: 2));
+    debugPrint('Success set info. token:$sessionToken, file:$path');
+  }
 }
