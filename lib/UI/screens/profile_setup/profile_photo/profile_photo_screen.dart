@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:jobs/UI/theme/theme.dart';
 
-import 'package:jobs/UI/widgets/screen_builder/screen_builder.dart';
+import 'package:jobs/UI/screens/profile_setup/profile_photo/profile_photo_view_model.dart';
+import 'package:jobs/UI/screens/profile_setup/profile_photo/widgets/profile_avatar_frame.dart';
+import 'package:jobs/UI/theme/theme.dart';
 import 'package:jobs/UI/widgets/widgets.dart';
 import 'package:jobs/gen/assets.gen.dart';
+import 'package:provider/provider.dart';
 
 class ProfilePhotoScreen extends StatelessWidget {
   const ProfilePhotoScreen({super.key});
@@ -11,8 +13,6 @@ class ProfilePhotoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const ScreenBuilder(
-      useSliverContent: true,
-      overridePhysics: AlwaysScrollableScrollPhysics(),
       header: CustomHeader(text: 'Setup your Profile'),
       content: ProfilePhotoBody(),
       footer: ProfilePhotoBottom(),
@@ -25,63 +25,85 @@ class ProfilePhotoBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverPadding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      sliver: SliverList(
-        delegate: SliverChildListDelegate([
-          Container(
-            margin: const EdgeInsets.only(top: 30),
-            height: 16,
-            child: LinearProgressIndicator(
-              value: 0.3,
-              color: purple400,
-              backgroundColor: neutralColor500,
-              borderRadius: BorderRadius.circular(13),
-            ),
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        children: [
+          StepProgressIndicator(
+            totalSteps: 5,
+            currentStep: 4,
           ),
-          const Padding(
+          Padding(
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 32),
             child: Text(
               'Let’s Finish Setup by Adding Your Profile Photo.',
               style: AppTextStyles.displayTextSemibold,
             ),
           ),
-          const ProfileAvatarFrame(),
-          ConfirmButton(
-            onPressed: (_) {},
-            text: 'Choose From Gallary',
-            iconPath: Assets.icons.gallaryIcon,
-            width: 276,
-            height: 52,
-            left: 62,
-            right: 62,
-          )
-        ]),
+          ProfilePhoto(),
+          CameraButton(),
+          GalleryButton(),
+        ],
       ),
     );
   }
 }
 
-class ProfileAvatarFrame extends StatelessWidget {
-  const ProfileAvatarFrame({
-    this.image,
+class ProfilePhoto extends StatelessWidget {
+  const ProfilePhoto({
     super.key,
   });
-  final Image? image;
+
   @override
   Widget build(BuildContext context) {
-    final defaultImage = CustomIcon(
-      size: 128,
-      iconPath: Assets.icons.userIconFilled,
-      iconColor: Colors.white,
+    final model = context.read<ProfilePhotoViewModel>();
+    final file =
+        context.select((ProfilePhotoViewModel model) => model.state.file);
+    return ProfileAvatarFrame(
+      file: file,
+      onTap: () => model.onGalleryButtonPressed(),
     );
-    return CircleAvatar(
-      backgroundColor: primaryColor25,
-      radius: 128,
-      child: CircleAvatar(
-          backgroundColor: primaryColor50,
-          radius: 107,
-          child: image ?? defaultImage),
+  }
+}
+
+class CameraButton extends StatelessWidget {
+  const CameraButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final model = context.read<ProfilePhotoViewModel>();
+    return ConfirmButton(
+      onPressed: (_) => model.onCameraButtonPressed(),
+      text: 'Camera',
+      iconPath: Assets.icons.cameraIcon,
+      width: 167,
+      height: 52,
+      left: 100,
+      right: 100,
+      bottom: 24,
+    );
+  }
+}
+
+class GalleryButton extends StatelessWidget {
+  const GalleryButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final model = context.read<ProfilePhotoViewModel>();
+    return ConfirmButton(
+      onPressed: (_) => model.onGalleryButtonPressed(),
+      text: 'Choose From Gallary',
+      iconPath: Assets.icons.gallaryIcon,
+      width: 276,
+      height: 52,
+      top: 0,
+      left: 62,
+      right: 62,
     );
   }
 }

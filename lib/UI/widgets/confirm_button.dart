@@ -27,6 +27,7 @@ class ConfirmButton extends StatelessWidget {
   final double? top;
   final double? left;
   final double? right;
+
   final double? width;
   final double? height;
   final Color? backgroundColor;
@@ -36,14 +37,11 @@ class ConfirmButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final isEnabled = state?.isEnabled ?? true;
     final icon = iconPath == null
-        ? const SizedBox.shrink()
-        : Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: CustomIcon(
-              iconPath: iconPath!,
-              iconColor: Colors.white,
-              size: 24,
-            ),
+        ? null
+        : CustomIcon(
+            iconPath: iconPath!,
+            iconColor: Colors.white,
+            size: 24,
           );
 
     final child = state?.isInProcess ?? false
@@ -51,16 +49,9 @@ class ConfirmButton extends StatelessWidget {
             color: Colors.white,
             strokeWidth: 2,
           )
-        : Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              icon,
-              Text(
-                text,
-                style:
-                    AppTextStyles.textXLSemibold.copyWith(color: Colors.white),
-              ),
-            ],
+        : Text(
+            text,
+            style: AppTextStyles.textXLSemibold.copyWith(color: Colors.white),
           );
 
     final color =
@@ -72,24 +63,22 @@ class ConfirmButton extends StatelessWidget {
           right: right ?? 18,
           bottom: bottom ?? 32,
           top: top ?? 32),
-      width: width ?? 360,
-      height: height ?? 60,
+      constraints: BoxConstraints.tightFor(
+        width: width ?? 360,
+        height: height ?? 60,
+      ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(128),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
-            spreadRadius: 1,
-            blurRadius: 1,
-            offset: const Offset(0, 2),
-          ),
-        ],
       ),
-      child: FilledButton(
-          style: ButtonStyle(
-              backgroundColor: WidgetStateProperty.all<Color>(color)),
-          onPressed: isEnabled ? () => onPressed(context) : null,
-          child: child),
+      child: FilledButton.icon(
+        style: ButtonStyle(
+            shadowColor: const WidgetStatePropertyAll(Colors.black),
+            elevation: const WidgetStatePropertyAll(8),
+            backgroundColor: WidgetStateProperty.all<Color>(color)),
+        onPressed: isEnabled ? () => onPressed(context) : null,
+        label: child,
+        icon: icon,
+      ),
     );
   }
 }
