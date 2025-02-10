@@ -31,6 +31,7 @@ class ProfilePhotoState {
   }
 
   ButtonState get primaryButtonState {
+    if (isGalleryLoading || isCameraLoading) return ButtonState.disabled;
     if (isLoading) return ButtonState.inProcess;
     return ButtonState.enabled;
   }

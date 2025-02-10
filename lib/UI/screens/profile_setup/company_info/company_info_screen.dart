@@ -6,11 +6,9 @@ import 'package:jobs/UI/screens/profile_setup/personal_info/widgets/phone_text_f
 import 'package:jobs/UI/screens/profile_setup/widgets/dashed_line_text.dart';
 import 'package:jobs/UI/screens/profile_setup/widgets/skip_text_button.dart';
 import 'package:jobs/UI/theme/theme.dart';
-import 'package:jobs/UI/widgets/text_field/description_text_field.dart';
 import 'package:jobs/gen/assets.gen.dart';
 import 'package:provider/provider.dart';
 
-import '../../../widgets/screen_builder/screen_builder.dart';
 import '../../../widgets/widgets.dart';
 
 class CompanyInfoScreen extends StatelessWidget {

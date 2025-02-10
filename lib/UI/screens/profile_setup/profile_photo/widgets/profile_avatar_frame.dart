@@ -38,27 +38,29 @@ class ProfileAvatarFrame extends StatelessWidget {
       );
     }
 
-    return Material(
-      borderOnForeground: true,
-      borderRadius: BorderRadius.circular(frameRadius),
-      color: Colors.transparent,
-      elevation: 8,
-      child: Ink(
-        decoration: BoxDecoration(
-          color: primaryColor25,
-          borderRadius: BorderRadius.circular(frameRadius),
-        ),
-        child: InkWell(
-          splashColor: primaryColor500.withValues(alpha: 0.6),
-          highlightColor: primaryColor500.withValues(alpha: 0.3),
-          borderRadius: BorderRadius.circular(frameRadius),
-          onTap: onTap,
-          child: Container(
-            padding: const EdgeInsets.all(frameRadius - imageRadius),
-            child: CircleAvatar(
-              backgroundColor: primaryColor50,
-              radius: imageRadius,
-              child: imageWidget,
+    return UnconstrainedBox(
+      child: Material(
+        borderOnForeground: true,
+        borderRadius: BorderRadius.circular(frameRadius),
+        color: Colors.transparent,
+        elevation: 8,
+        child: Ink(
+          decoration: BoxDecoration(
+            color: primaryColor25,
+            borderRadius: BorderRadius.circular(frameRadius),
+          ),
+          child: InkWell(
+            splashColor: primaryColor500.withValues(alpha: 0.6),
+            highlightColor: primaryColor500.withValues(alpha: 0.3),
+            borderRadius: BorderRadius.circular(frameRadius),
+            onTap: onTap,
+            child: Container(
+              padding: const EdgeInsets.all(frameRadius - imageRadius),
+              child: CircleAvatar(
+                backgroundColor: primaryColor50,
+                radius: imageRadius,
+                child: imageWidget,
+              ),
             ),
           ),
         ),

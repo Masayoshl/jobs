@@ -13,6 +13,7 @@ class ProfilePhotoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const ScreenBuilder(
+      useSliverContent: true,
       header: CustomHeader(text: 'Setup your Profile'),
       content: ProfilePhotoBody(),
       footer: ProfilePhotoBottom(),
@@ -25,26 +26,36 @@ class ProfilePhotoBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16),
-      child: Column(
-        children: [
-          StepProgressIndicator(
-            totalSteps: 5,
-            currentStep: 4,
+    return Consumer<ProfilePhotoViewModel>(
+      builder: (context, model, _) {
+        final state = model.state;
+        if (state.isGalleryLoading || state.isCameraLoading) {
+          return const SliverFillRemaining(
+            child: Center(child: CircularProgressIndicator()),
+          );
+        } else {}
+        return SliverPadding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          sliver: SliverList(
+            delegate: SliverChildListDelegate(const [
+              StepProgressIndicator(
+                totalSteps: 5,
+                currentStep: 4,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 32),
+                child: Text(
+                  'Let’s Finish Setup by Adding Your Profile Photo.',
+                  style: AppTextStyles.displayTextSemibold,
+                ),
+              ),
+              ProfilePhoto(),
+              CameraButton(),
+              GalleryButton(),
+            ]),
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 32),
-            child: Text(
-              'Let’s Finish Setup by Adding Your Profile Photo.',
-              style: AppTextStyles.displayTextSemibold,
-            ),
-          ),
-          ProfilePhoto(),
-          CameraButton(),
-          GalleryButton(),
-        ],
-      ),
+        );
+      },
     );
   }
 }
@@ -59,6 +70,7 @@ class ProfilePhoto extends StatelessWidget {
     final model = context.read<ProfilePhotoViewModel>();
     final file =
         context.select((ProfilePhotoViewModel model) => model.state.file);
+
     return ProfileAvatarFrame(
       file: file,
       onTap: () => model.onImagePressed(),
